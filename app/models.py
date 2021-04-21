@@ -21,7 +21,7 @@ class Player(models.Model):
     birthday = models.DateField()
     height = models.FloatField()
     nationality = models.CharField(max_length=70)
-    position = models.CharField(max_length=2, choices=POSITION_CHOICES)
+    position = models.CharField(max_length=3, choices=POSITION_CHOICES)
     best_foot = models.CharField(max_length=1, choices=BEST_FOOT)
     preferred_number = models.IntegerField()
     # player_img = models.CharField(max_length=100,default="default_player.png")
@@ -62,8 +62,8 @@ class Competition(models.Model):
 
 # TODO: Criar a relação de Contrato (depois podiamos buscar clubes anteriores assim i sink)
 class PlayerPlaysFor(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE())
-    team = models.ForeignKey(Team, on_delete=models.CASCADE())
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
     # TODO: EM VEZ DE DATA COLOCAR SEASON?
     date_joined = models.DateField()
     date_left = models.DateField(blank=True)
