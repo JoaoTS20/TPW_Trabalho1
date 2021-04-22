@@ -7,5 +7,8 @@ def test(request):
     return render(request, 'test.html', {})
 
 
-def main(request):
-    return render(request, 'main.html', {})
+def home(request):
+    return render(request, 'home.html', {})
+
+def competitions(request):
+    return render(request, 'competitions.html', {})
