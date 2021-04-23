@@ -744,6 +744,18 @@ section {
   color: #fff;
 }
 
+.featured-services .ClubName {
+  color: #106eea;
+  line-height: 28px;
+}
+
+.featured-services .icon-box:hover .title a, .featured-services .icon-box:hover .ClubName {
+  color: #fff;
+}
+
+
+
+
 .featured-services .icon-box:hover .icon i {
   color: #fff;
 }
