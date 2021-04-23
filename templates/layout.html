@@ -15,11 +15,11 @@
 
     <!-- Font Awesome  -->
     <link rel="stylesheet" href="{% static 'fa/css/all.min.css' %}">
+    <title>Football Nerds</title>
 
 
-
+    <link rel="icon" href="{% static 'img/football_icon.ico' %}" />
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <title>Layout</title>
 </head>
 
 <body>
@@ -54,7 +54,7 @@
         <ul>
           <li><a href="{% url 'home'%}">Home</a></li>
           <li><a href="{% url 'competitions' %}">Competitions</a></li>
-          <li><a href="#services">Teams</a></li>
+          <li><a href="{% url 'teams' %}">Teams</a></li>
           <li><a href="#portfolio">Players</a></li>
           <li><a href="#team">Managers</a></li>
 

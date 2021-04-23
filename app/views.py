@@ -10,5 +10,10 @@ def test(request):
 def home(request):
     return render(request, 'home.html', {})
 
+
 def competitions(request):
     return render(request, 'competitions.html', {})
+
+
+def teams(request):
+    return render(request, 'teams.html', {})
