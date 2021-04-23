@@ -5,8 +5,9 @@ from django.contrib.auth.models import User
 class NormalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     #Todo Adicionar aqui parâmetros como clubes_favoritos jogadores_favoritos e assim.
-    #Comentários que fez?
-    #Cargo Relacionado no Futebol (yes/no)?
+    #Talvez não parametros mas tabelas pra poderem ter mais do q um
+    #Comentários que fez? tabela
+    #Cargo Relacionado no Futebol (yes/no)? talvez
 
 
 # podes adicionar mais fields no Player Team e Competition se quiseres
@@ -53,19 +54,38 @@ class Team(models.Model):
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
     # TODO: ALTEREI AQUI TALVEZ FAZER O MESMO COM COMPETITIONS E TEAMS
     players = models.ManyToManyField(Player, through='PlayerPlaysFor')
+    city = models.CharField(max_length=20)
+    country = models.CharField(max_length=20)
     # players = models.ManyToManyField(Player)
     # o players aqui pode ser mudado para o player talvez
     # TODO: TROFÉUS CONQUISTADOS?
     # TODO: CITY AND COUNTRY?
+    # tem de se arranjar uma forma de adicionar talvez q uma competição acabou
+    # para se apurar quem ganhou talvez?
 
 
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
-    teams = models.ManyToManyField(Team)
+    #teams = models.ManyToManyField(Team)
     # pus as teams aqui porque assim podemos ter clubes a participarem em mais q uma competição
     # TODO: Pode ficar assim desde que não temos problemas com um clube sair da competição
     # TODO: A FAZER SEASON atributo aqui?
+
+#Talvez pôr esta também
+"""
+class ManagerManages(models.Model):
+    manager = models.ForeignKey(Manager,on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    season_joined = models.IntegerField()
+    season_left = models.IntegerField(blank=True)
+"""
+
+# Se calhar fica melhor assim e podemos usar seasons
+class ClubPlaysIn(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    season = models.IntegerField()
 
 
 # TODO: Criar a relação de Contrato (depois podiamos buscar clubes anteriores assim i sink)
@@ -73,6 +93,7 @@ class PlayerPlaysFor(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     # TODO: EM VEZ DE DATA COLOCAR SEASON?
+    # sim se calhar fica melhor e interliga com os outros pk usam todos season
     date_joined = models.DateField()
     date_left = models.DateField(blank=True)
 
