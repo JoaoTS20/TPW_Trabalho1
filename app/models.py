@@ -1,4 +1,12 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+
+class NormalUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #Todo Adicionar aqui parâmetros como clubes_favoritos jogadores_favoritos e assim.
+    #Comentários que fez?
+    #Cargo Relacionado no Futebol (yes/no)?
 
 
 # podes adicionar mais fields no Player Team e Competition se quiseres

@@ -17,3 +17,6 @@ def competitions(request):
 
 def teams(request):
     return render(request, 'teams.html', {})
+
+def players(request):
+    return render(request, 'players.html', {})
