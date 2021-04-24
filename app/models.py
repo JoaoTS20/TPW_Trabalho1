@@ -5,6 +5,7 @@ from django.core.validators import RegexValidator
 
 # Todo Hugo Comments Players,Games,Competitions
 
+
 class Player(models.Model):
     POSITION_CHOICES = (
         ('ST', 'Striker'),
@@ -30,6 +31,14 @@ class Player(models.Model):
     player_img = models.CharField(max_length=100, default="default_player.png")
     # TODO: TROFÉUS CONQUISTADOS?
 
+    def to_dict(self):
+        return {
+            "name": self.name, "birthday": self.birthday, "height": self.height,
+            "nationality": self.nationality, "position": self.position,
+            "best_foot": self.best_foot, "preferred_number": self.preferred_number,
+            "player_img": self.player_img
+        }
+
 
 class Staff(models.Model):
     name = models.CharField(max_length=90)
@@ -53,7 +62,15 @@ class Team(models.Model):
     # tem de se arranjar uma forma de adicionar talvez q uma competição acabou
     # para se apurar quem ganhou talvez?
 
-#Adicionei o tipo de competição
+    def to_dict(self):
+        return {
+            "full_name": self.full_name, "abreviated_name": self.abreviated_name,
+            "founding_year": self.founding_year, "club_badge_img": self.club_badge_img,
+            "city": self.city, "country": self.country
+        }
+
+
+# Adicionei o tipo de competição
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
@@ -64,12 +81,17 @@ class Competition(models.Model):
         code='invalid_season'
     )])"""
 
+    def to_dict(self):
+        return {
+            "full_name": self.full_name, "competition_badge_img": self.competition_badge_img
+        }
+
 
 # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
-    ngame = models.IntegerField() #Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
-    #Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
-    #Talvez possamos criar outro atributo com descrição e assim usando o ngame pra ordenar
+    ngame = models.IntegerField()  # Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
+    # Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
+    # Talvez possamos criar outro atributo com descrição e assim usando o ngame pra ordenar
     description = models.CharField(max_length=25)
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
@@ -81,6 +103,14 @@ class Match(models.Model):
         message='Season must follow the format year-year',
         code='invalid_season'
     )])"""
+
+    def to_dict(self):
+        return {
+            "ngame": self.ngame, "description": self.description,
+            "home_team": self.home_team.to_dict(), "away_team": self.away_team.to_dict(),
+            "competition": self.competition.to_dict(), "home_goals": self.home_goals,
+            "away_goals": self.away_goals
+        }
 
 
 # Equipa joga em determinada Competicão (de terminada época) (Penso que podemos alterar para o manytomanyfield e não preciso isto)
@@ -138,36 +168,36 @@ class NormalUser(models.Model):
 # Não sei se será preciso mais algum atributo?
 
 class FavouritePlayer(models.Model):
-    player = models.ForeignKey(Player,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
 
 class FavouriteTeam(models.Model):
-    team = models.ForeignKey(Team,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
 
 class FavouriteCompetition(models.Model):
-    competition = models.ForeignKey(Competition,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
 
 class CommentPlayer(models.Model):
-    player = models.ForeignKey(Player,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
 
 
 class CommentMatch(models.Model):
-    match = models.ForeignKey(Match,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
 
 
 class CommentCompetition(models.Model):
-    competition = models.ForeignKey(Competition,on_delete=models.CASCADE)
-    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
