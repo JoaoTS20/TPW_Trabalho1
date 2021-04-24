@@ -1,16 +1,17 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+from django.core.validators import RegexValidator
+
+# Todo Hugo Comments Players,Games,Competitions
+
 
 class NormalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #Todo Adicionar aqui parâmetros como clubes_favoritos jogadores_favoritos e assim.
-    #Talvez não parametros mas tabelas pra poderem ter mais do q um
-    #Comentários que fez? tabela
-    #Cargo Relacionado no Futebol (yes/no)? talvez
+    job_football_related = models.BooleanField()
+    # Todo Hugo Tabelas Clubes_Favoritos Jogadores_Favoritos Competição Favorita! ou manytomanyfield simples
 
 
-# podes adicionar mais fields no Player Team e Competition se quiseres
 class Player(models.Model):
     POSITION_CHOICES = (
         ('ST', 'Striker'),
@@ -33,17 +34,15 @@ class Player(models.Model):
     position = models.CharField(max_length=3, choices=POSITION_CHOICES)
     best_foot = models.CharField(max_length=1, choices=BEST_FOOT)
     preferred_number = models.IntegerField()
-    # player_img = models.CharField(max_length=100,default="default_player.png")
-    # este pode-se adicionar depois
-    # Talvez adicionar equipas passadas?
+    player_img = models.CharField(max_length=100, default="default_player.png")
     # TODO: TROFÉUS CONQUISTADOS?
 
 
-class Manager(models.Model):
+class Staff(models.Model):
     name = models.CharField(max_length=90)
     birthday = models.DateField()
     nationality = models.CharField(max_length=70)
-    # TODO: RELACAO TAMBÉM PARA VER OS CLUBES QUE TREINOU?
+    function = models.CharField(max_length=70)
     # TODO: TROFÉUS CONQUISTADOS?
 
 
@@ -52,59 +51,80 @@ class Team(models.Model):
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
-    # TODO: ALTEREI AQUI TALVEZ FAZER O MESMO COM COMPETITIONS E TEAMS
-    players = models.ManyToManyField(Player, through='PlayerPlaysFor')
     city = models.CharField(max_length=20)
     country = models.CharField(max_length=20)
-    # players = models.ManyToManyField(Player)
-    # o players aqui pode ser mudado para o player talvez
+    players = models.ManyToManyField(Player, through='PlayerPlaysFor')
+
     # TODO: TROFÉUS CONQUISTADOS?
-    # TODO: CITY AND COUNTRY?
+
     # tem de se arranjar uma forma de adicionar talvez q uma competição acabou
     # para se apurar quem ganhou talvez?
 
-
+#Adicionei o tipo de competição
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
-    #teams = models.ManyToManyField(Team)
-    # pus as teams aqui porque assim podemos ter clubes a participarem em mais q uma competição
-    # TODO: Pode ficar assim desde que não temos problemas com um clube sair da competição
-    # TODO: A FAZER SEASON atributo aqui?
-
-#Talvez pôr esta também
-"""
-class ManagerManages(models.Model):
-    manager = models.ForeignKey(Manager,on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    season_joined = models.IntegerField()
-    season_left = models.IntegerField(blank=True)
-"""
-
-# Se calhar fica melhor assim e podemos usar seasons
-class ClubPlaysIn(models.Model):
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
-    season = models.IntegerField()
+    teams = models.ManyToManyField(Team, through='ClubPlaysIn')
+    """season = models.CharField(max_length=5, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])"""
 
 
-# TODO: Criar a relação de Contrato (depois podiamos buscar clubes anteriores assim i sink)
-class PlayerPlaysFor(models.Model):
-    player = models.ForeignKey(Player, on_delete=models.CASCADE)
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    # TODO: EM VEZ DE DATA COLOCAR SEASON?
-    # sim se calhar fica melhor e interliga com os outros pk usam todos season
-    date_joined = models.DateField()
-    date_left = models.DateField(blank=True)
-
-
-# TODO: EU pensar que aqui não falta nada. depois temos de ver como e se fazemos seasons
+# Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
-    ngame = models.IntegerField()
+    ngame = models.IntegerField() #Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     home_goals = models.IntegerField()
     away_goals = models.IntegerField()
-    season = models.IntegerField()
-    # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
+    """season = models.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])"""
+
+
+# Equipa joga em determinada Competicão (de terminada época) (Penso que podemos alterar para o manytomanyfield e não preciso isto)
+class ClubPlaysIn(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    season = models.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])
+
+
+# Treinador da Equipa em Determinada Época (Também dá para buscar clubes do treinador em cada época)
+class ManagerManages(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    season = models.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])
+
+
+# Jogadores da Equipa em Determinada Época (Também dá para buscar clubes do jogador em cada época)
+class PlayerPlaysFor(models.Model):
+    player = models.ForeignKey(Player, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    season = models.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])
+
+
+class CompetitionsMatches(models.Model):
+    competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
+    match = models.ForeignKey(Match, on_delete=models.CASCADE)
+    season = models.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])

@@ -1,5 +1,6 @@
-{% extends 'layout.html' %}
 
+{% extends 'layout.html' %}
+{% load  static %}
 {% block content %}
 
     <section id="services" class="services" >
@@ -12,11 +13,12 @@
         </div>
 
         <div class="row">
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
-            <div class="icon-box">
-              <div class="icon"><i class="bx bxl-dribbble"></i></div>
-              <h4><a href="">Liga NOS</a></h4>
-              <p style="color: white">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi</p>
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4"  data-aos="zoom-in" data-aos-delay="100">
+            <div class="icon-box" >
+              <img class="center" style="width: 250px; height: 250px" src="{% static 'img/ligatest.png' %}">
+                <br>
+              <!--h4><a href="">Liga NOS</a></h4-->
+
             </div>
           </div>
 
