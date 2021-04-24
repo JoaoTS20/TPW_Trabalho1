@@ -75,6 +75,7 @@ class Competition(models.Model):
 # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
     ngame = models.IntegerField() #Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
+    #Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -128,3 +129,20 @@ class CompetitionsMatches(models.Model):
         message='Season must follow the format year-year',
         code='invalid_season'
     )])
+
+# Não sei se será preciso mais algum atributo?
+
+class FavouritePlayer(models.Model):
+    player = models.ForeignKey(Player,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+
+
+class FavouriteTeam(models.Model):
+    team = models.ForeignKey(Team,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+
+
+class FavouriteCompetition(models.Model):
+    competition = models.ForeignKey(Competition,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+
