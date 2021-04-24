@@ -5,13 +5,6 @@ from django.core.validators import RegexValidator
 
 # Todo Hugo Comments Players,Games,Competitions
 
-
-class NormalUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    job_football_related = models.BooleanField()
-    # Todo Hugo Tabelas Clubes_Favoritos Jogadores_Favoritos Competição Favorita! ou manytomanyfield simples
-
-
 class Player(models.Model):
     POSITION_CHOICES = (
         ('ST', 'Striker'),
@@ -76,6 +69,8 @@ class Competition(models.Model):
 class Match(models.Model):
     ngame = models.IntegerField() #Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
     #Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
+    #Talvez possamos criar outro atributo com descrição e assim usando o ngame pra ordenar
+    description = models.CharField(max_length=25)
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -130,6 +125,16 @@ class CompetitionsMatches(models.Model):
         code='invalid_season'
     )])
 
+
+class NormalUser(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    job_football_related = models.BooleanField()
+    favouriteplayers = models.ManyToManyField(Player, through='FavouritePlayer')
+    favouriteteams = models.ManyToManyField(Team, through='FavouriteTeam')
+    favouritecompetitions = models.ManyToManyField(Competition, through='FavouriteCompetition')
+    # Todo Hugo Tabelas Clubes_Favoritos Jogadores_Favoritos Competição Favorita! ou manytomanyfield simples
+
+
 # Não sei se será preciso mais algum atributo?
 
 class FavouritePlayer(models.Model):
@@ -146,3 +151,23 @@ class FavouriteCompetition(models.Model):
     competition = models.ForeignKey(Competition,on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
 
+
+class CommentPlayer(models.Model):
+    player = models.ForeignKey(Player,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    timeofpost = models.DateTimeField()
+    comment = models.CharField(max_length=120)
+
+
+class CommentMatch(models.Model):
+    match = models.ForeignKey(Match,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    timeofpost = models.DateTimeField()
+    comment = models.CharField(max_length=120)
+
+
+class CommentCompetition(models.Model):
+    competition = models.ForeignKey(Competition,on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser,on_delete=models.CASCADE)
+    timeofpost = models.DateTimeField()
+    comment = models.CharField(max_length=120)
