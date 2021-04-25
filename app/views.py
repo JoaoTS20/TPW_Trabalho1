@@ -19,7 +19,7 @@ def home(request):
 def match_details(request, id):
     t_parms = {
         'match': Match.objects.get(id=id),
-        'comments':CommentMatch.objects.get(match_id=id)
+        'comments': CommentMatch.objects.get(match_id=id)
     }
     return render(request, 'match_details.html', t_parms)
 
@@ -38,7 +38,8 @@ def competition_details(request, id, season='2020-2021'):
         'competition': Competition.objects.get(id=id),
         'teams': Team.objects.filter(clubplaysin__competition_id=id, clubplaysin__season=season),
         'comments': CommentCompetition.objects.filter(competition_id=id),
-        'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season)
+        'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
+        'seasons': ClubPlaysIn.objects.filter(competition_id=id)
     }
     return render(request, 'competition_details.html', t_parms)
 
@@ -72,7 +73,9 @@ def team_details(request, id, season='2020-2021'):
     t_parms = {
         'team': Team.objects.get(id=id),
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
-        'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season)
+        'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
+        'seasons': ClubPlaysIn.objects.filter(competition_id=id)
+
     }
     return render(request, 'team_details.html', t_parms)
 
@@ -87,24 +90,28 @@ def player_details(request, id):
     t_parms = {
         'player': Player.objects.get(id=id),
         'teams': Team.objects.filter(playerplaysfor__player_id=id),
-        'season':PlayerPlaysFor.objects.filter(player_id=id),
+        'season': PlayerPlaysFor.objects.filter(player_id=id),
         'comments': CommentPlayer.objects.filter(player_id=id)
     }
     return render(request, 'player_details.html', t_parms)
 
+
 # Staff Related
 def staff(request):
-        t_parms={
-            'staffs': Staff.objects.all(),
-        }
-        return render(request,'staff.html', t_parms)
+    t_parms = {
+        'staffs': Staff.objects.all(),
+    }
+    return render(request, 'staff.html', t_parms)
 
-def staff_details(request,id):
-        t_parms={
-            'staff': Staff.objects.get(id=id),
-            'teams': Team.objects.filter(managermanages__staff_id=id)
-        }
-        return render(request,'staff_details.html', t_parms)
+
+def staff_details(request, id):
+    t_parms = {
+        'staff': Staff.objects.get(id=id),
+        'teams': Team.objects.filter(managermanages__staff_id=id)
+    }
+    return render(request, 'staff_details.html', t_parms)
+
+
 # User Related
 
 def signup(request):
