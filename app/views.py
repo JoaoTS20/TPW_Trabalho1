@@ -5,7 +5,7 @@ import datetime
 # Create your views here.
 from app.forms import TeamFilterForm, SignUpForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match
+    Match, CommentPlayer, CommentMatch
 
 
 def test(request):
@@ -15,6 +15,16 @@ def test(request):
 def home(request):
     return render(request, 'home.html', {})
 
+
+def match_details(request, id):
+    t_parms = {
+        'match': Match.objects.get(id=id),
+        'comments':CommentMatch.objects.get(match_id=id)
+    }
+    return render(request, 'match_details.html', t_parms)
+
+
+# Competition Related:
 
 def competitions(request):
     t_parms = {
@@ -31,6 +41,9 @@ def competition_details(request, id, season='2020-2021'):
         'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season)
     }
     return render(request, 'competition_details.html', t_parms)
+
+
+# Team Related
 
 
 def teams(request):
@@ -64,9 +77,34 @@ def team_details(request, id, season='2020-2021'):
     return render(request, 'team_details.html', t_parms)
 
 
+# Player Related
+
 def players(request):
     return render(request, 'players.html', {})
 
+
+def player_details(request, id):
+    t_parms = {
+        'player': Player.objects.get(id=id),
+        'teams': Team.objects.filter(playerplaysfor__player_id=id),
+        'comments': CommentPlayer.objects.filter(commentplayer__pl_id=id)
+    }
+    return render(request, 'team_details.html', t_parms)
+
+# Staff Related
+def staff(request):
+        t_parms={
+            'staffs': Staff.objects.all(),
+        }
+        return render(request,'staff.html', t_parms)
+
+def staff_details(request,id):
+        t_parms={
+            'staff': Staff.objects.get(id=id),
+            'teams': Team.objects.filter(managermanages__staff_id=id)
+        }
+        return render(request,'staff_details.html', t_parms)
+# User Related
 
 def signup(request):
     if request.method == 'POST':

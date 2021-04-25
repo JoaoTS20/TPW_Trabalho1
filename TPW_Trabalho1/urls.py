@@ -33,6 +33,12 @@ urlpatterns = [
     path('teams/<int:id>/<str:season>', views.team_details, name='team_details_season'),
 
     path('players/', views.players, name='players'),
+    path('players/<int:id>', views.player_details, name='player_details'),
+
+    path('staff/', views.staff, name='staff'),
+    path('staff/<int:id>', views.staff_details, name='staff_details'),
+
+    path('match/<int:id>',views.match_details, name='match_details'),
 
     path('layoutest/', views.test, name='teste'),
 
