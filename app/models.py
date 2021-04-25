@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 # Adicionar str aos models e adicionar name no team
 
 class Player(models.Model):
-    POSITION_CHOICES = (
+    POSITION_CHOICES = ( #Isto está trocado!!!!!!!!! meter cena de full name
         ('ST', 'Striker'),
         ('LW', 'Left Winger'),
         ('RW', 'Right Winger'),
@@ -19,7 +19,7 @@ class Player(models.Model):
         ('CB', 'Center Back'),
         ('GR', 'Goalkeeper'),
     )
-    BEST_FOOT = (('L', 'Left'), ('R', 'Right'))
+    BEST_FOOT = (('L', 'Left'), ('R', 'Right')) #Isto está trocado!!!!!!!!!
 
     name = models.CharField(max_length=90)
     birthday = models.DateField()

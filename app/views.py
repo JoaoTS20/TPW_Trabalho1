@@ -5,7 +5,7 @@ import datetime
 # Create your views here.
 from app.forms import TeamFilterForm, SignUpForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match, CommentPlayer, CommentMatch
+    Match, CommentPlayer, CommentMatch, PlayerPlaysFor
 
 
 def test(request):
@@ -80,16 +80,17 @@ def team_details(request, id, season='2020-2021'):
 # Player Related
 
 def players(request):
-    return render(request, 'players.html', {})
+    return render(request, 'players.html', {'players': Player.objects.all()})
 
 
 def player_details(request, id):
     t_parms = {
         'player': Player.objects.get(id=id),
         'teams': Team.objects.filter(playerplaysfor__player_id=id),
-        'comments': CommentPlayer.objects.filter(commentplayer__pl_id=id)
+        'season':PlayerPlaysFor.objects.filter(player_id=id),
+        'comments': CommentPlayer.objects.filter(player_id=id)
     }
-    return render(request, 'team_details.html', t_parms)
+    return render(request, 'player_details.html', t_parms)
 
 # Staff Related
 def staff(request):
