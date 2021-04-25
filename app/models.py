@@ -46,6 +46,7 @@ class Staff(models.Model): #ACRESCENTAR IMAGE
     birthday = models.DateField()
     nationality = models.CharField(max_length=70)
     function = models.CharField(max_length=70)
+    staff_badge_img = models.CharField(max_length=100, default="default_staff.png")
     # TODO: TROFÉUS CONQUISTADOS?
 
 
@@ -77,6 +78,8 @@ class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
     teams = models.ManyToManyField(Team, through='ClubPlaysIn')
+    # não sei se fica bem assim não sei como funciona o choices
+    comp_type = models.CharField(max_length=3, choices=(("L", "League"), ("C", "Cup")))
     """season = models.CharField(max_length=5, validators=[RegexValidator(
         regex='[0-9]{4}-[0-9]{4}',
         message='Season must follow the format year-year',
