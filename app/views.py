@@ -4,7 +4,8 @@ import datetime
 
 # Create your views here.
 from app.forms import TeamFilterForm, SignUpForm
-from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser
+from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
+    Match
 
 
 def test(request):
@@ -16,7 +17,20 @@ def home(request):
 
 
 def competitions(request):
-    return render(request, 'competitions.html', {})
+    t_parms = {
+        'competitions': Competition.objects.all()
+    }
+    return render(request, 'competitions.html', t_parms)
+
+
+def competition_details(request, id, season='2020-2021'):
+    t_parms = {
+        'competition': Competition.objects.get(id=id),
+        'teams': Team.objects.filter(clubplaysin__competition_id=id, clubplaysin__season=season),
+        'comments': CommentCompetition.objects.filter(competition_id=id),
+        'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season)
+    }
+    return render(request, 'competition_details.html', t_parms)
 
 
 def teams(request):
@@ -41,9 +55,11 @@ def teams(request):
     return render(request, 'teams.html', t_parms)
 
 
-def team_details(request, id):
+def team_details(request, id, season='2020-2021'):
     t_parms = {
-        'team': Team.objects.get(id=id)
+        'team': Team.objects.get(id=id),
+        'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
+        'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season)
     }
     return render(request, 'team_details.html', t_parms)
 
@@ -61,7 +77,7 @@ def signup(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
-            NormalUser(user=user,job_football_related=job_football_related).save()
+            NormalUser(user=user, job_football_related=job_football_related).save()
             login(request, user)
             return redirect('home')
     else:
@@ -70,4 +86,13 @@ def signup(request):
 
 
 def profile(request):
-    return render(request, 'profile.html', {})
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    else:
+        t_parms = {
+            'userInfo': NormalUser.objects.get(user__username=request.user.username),
+            'favouriteTeams': Team.objects.filter(favouriteteam__user__user_id=request.user.id),
+            'favouritePlayers': Player.objects.filter(favouriteplayer__user__user_id=request.user.id),
+            'favouriteCompetition': Competition.objects.filter(favouritecompetition__user__user_id=request.user.id)
+        }
+        return render(request, 'profile.html', t_parms)
