@@ -3,48 +3,50 @@
 {% block content %}
 
 <h2>{{ title }}</h2>
-<div class="row" >
-    <div class="col-md-8">
-        <section id="loginForm">
-            <form action="." method="post" class="form-horizontal">
+    <div style="padding-top: 20px; width:800px;">
+            <form action="." method="post" >
                 {% csrf_token %}
-                <h4>Use a local account to log in.</h4>
-                <hr />
-                <div class="form-floating">
+                <h2>Log In</h2>
+                <p>Enter your credentials</p>
 
-                {{ form.username.label_tag }}
-                    <div class="col-md-10">
+                <hr />
+                <div class="form-group">
+			        <div class="input-group mb-3" style="max-width: 50%">
+				        <span class="input-group-text"><i class="fa fa-user"></i></span>
                         {{ form.username }}
-                    </div>
+                        <small style="color: grey"> {{ form.username.help_text }}</small>
+                        {% for error in form.username.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+			        </div>
                 </div>
                 <div class="form-group">
-                    {{ form.password.label_tag }}
-                    <div class="col-md-10">
+			        <div class="input-group mb-3" style="max-width: 50%">
+				        <span class="input-group-text"><i class="fa fa-user"></i></span>
                         {{ form.password }}
-                    </div>
+                        <small style="color: grey"> {{ form.password.help_text }}</small>
+                        {% for error in form.password.errors %}
+                            <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+			        </div>
                 </div>
                 <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="hidden" name="next" value="/" />
-                        <input type="submit" value="Log in" class="btn btn-default" />
-                    </div>
+                    {% if form.errors %}
+                    <small style="color: red" >Please enter a correct username and password.</small>
+                    {% endif %}
+                    <br>
+                    <input type="hidden" name="next" value="/" />
+                    <button style="background: #106eea;font-size: 15px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg">Log In</button>
                 </div>
-                {% if form.errors %}
-                <p class="validation-summary-errors">Please enter a correct user name and password.</p>
-                {% endif %}
-                {% if form.errors %}
-                <p class="validation-summary-errors">Please enter a correct user name and password.</p>
-                {% endif %}
             </form>
                 <div class="form-group">
-                    <div><a style="font-weight: bolder" href="{% url 'sign_up' %}">Register</a></div>
+                    <div>Don't have an account? <a style="font-weight: bolder" href="{% url 'sign_up' %}">Register</a></div>
                 </div>
-        </section>
     </div>
     <div class="col-md-4">
         <section id="socialLoginForm"></section>
     </div>
-</div>
+
 
 {% endblock %}
 

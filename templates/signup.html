@@ -10,7 +10,7 @@
 </head>
 <body>
 {% block content %}
-<div class="signup-form" style="padding-top: 20px; width:800px; margin:0 auto;">
+<div class="signup-form" style="padding-top: 20px; width:800px; ">
     <form action="." method="post">
         {% csrf_token %}
 		<h2>Sign Up</h2>
@@ -30,7 +30,7 @@
 			<div class="input-group mb-3" style="max-width: 50%">
 				<span class="input-group-text"><i class="fas fa-paper-plane"></i></span>
                 {{ form.email }}
-                {% for error in form.username.errors %}
+                {% for error in form.email.errors %}
                     <p style="color: red">{{ error }}</p>
                 {% endfor %}
                 <small style="color: grey"> {{ form.email.help_text }}</small>
@@ -42,12 +42,6 @@
                 {{ form.password1 }}
                 {% for error in form.password1.errors %}
                     <p style="color: red">{{ error }}</p>
-                {% endfor %}
-                {% for error in form.password1.errors %}
-                    <p><small style="color: red">{{ error }}</small></p>
-                {% endfor %}
-                {% for error in form.password1.errors %}
-                    <small style="color: red">{{ error }}</small>
                 {% endfor %}
                 <small style="color: grey"> {{ form.password1.help_text }}</small>
 			</div>
