@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 # Todo Hugo Comments Players,Games,Competitions
-
+# Adicionar str aos models e adicionar name no team
 
 class Player(models.Model):
     POSITION_CHOICES = (
@@ -50,6 +50,7 @@ class Staff(models.Model):
 
 class Team(models.Model):
     full_name = models.CharField(max_length=70)
+    #name= models.CharField(max_length=70)
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
@@ -89,7 +90,7 @@ class Competition(models.Model):
 
 # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
-    ngame = models.IntegerField()  # Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
+    ngame = models.CharField(max_length=50)  # Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
     # Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
     # Talvez possamos criar outro atributo com descrição e assim usando o ngame pra ordenar
     description = models.CharField(max_length=25)

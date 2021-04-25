@@ -1,0 +1,18 @@
+
+{% extends 'layout.html' %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team {{ team.full_name }}</title>
+</head>
+<body>
+{% block content %}
+    <h1>{{ team.full_name }}</h1>
+
+
+
+{% endblock %}
+</body>
+</html>

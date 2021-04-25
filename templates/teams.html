@@ -21,27 +21,32 @@
 <body>
 {% block content %}
 <section id="featured-services" class="featured-services">
-
-
         <div class="section-title">
           <h2>Teams</h2>
           <h3>Check our <span>Teams</span></h3>
           <p>Teams from all over the world with accurate data.</p>
+          <form action="." method="post">
+              {% csrf_token %}
+              {{ form }}
+              <input type="submit" value="Search">
+          </form>
+            <button href="{% url 'teams' %}">Reset</button>
+
         </div>
 
       <div class="container" data-aos="fade-up">
-
+        {% for team in teams %}
         <div class="row">
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-                <img class="center" src="{% static 'img/aroucatest.png' %}">
+                <a href="{{ team.id }}"><img  class="center" src="{% static team.club_badge_img %}"></a>
                 <br>
-                 <h1 class="ClubName" style="text-align: center">FC Arouca </h1>
-
+                 <h1 class="ClubName" style="text-align: center"><a  class="ClubName" href="{{ team.id }}">{{ team.full_name }} </a></h1>
             </div>
           </div>
+        {% endfor %}
 
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+          <!--div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
               <div class="icon"><i class="bx bx-file"></i></div>
               <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
@@ -63,7 +68,7 @@
               <h4 class="title"><a href="">Nemo Enim</a></h4>
               <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
             </div>
-          </div>
+          </div-->
 
         </div>
 
