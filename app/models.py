@@ -7,7 +7,7 @@ from django.core.validators import RegexValidator
 # Adicionar str aos models e adicionar name no team
 
 class Player(models.Model):
-    real_name = models.CharField(max_length=100)
+    #real_name = models.CharField(max_length=100)
     POSITION_CHOICES = ( #Isto está trocado!!!!!!!!! meter cena de full name
         ('ST', 'Striker'),
         ('LW', 'Left Winger'),
@@ -52,7 +52,7 @@ class Staff(models.Model): #ACRESCENTAR IMAGE
 
 class Team(models.Model):
     full_name = models.CharField(max_length=70)
-    name = models.CharField(max_length=70)
+    #name = models.CharField(max_length=70)
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
@@ -67,7 +67,7 @@ class Team(models.Model):
 
     def to_dict(self):
         return {
-            "full_name": self.full_name, "name": self.name, "abreviated_name": self.abreviated_name,
+            "full_name": self.full_name, "abreviated_name": self.abreviated_name,
             "founding_year": self.founding_year, "club_badge_img": self.club_badge_img,
             "city": self.city, "country": self.country
         }
@@ -79,7 +79,7 @@ class Competition(models.Model):
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
     teams = models.ManyToManyField(Team, through='ClubPlaysIn')
     # não sei se fica bem assim não sei como funciona o choices
-    comp_type = models.CharField(max_length=3, choices=(("L", "League"), ("C", "Cup")))
+    #comp_type = models.CharField(max_length=3, choices=(("L", "League"), ("C", "Cup")))
     """season = models.CharField(max_length=5, validators=[RegexValidator(
         regex='[0-9]{4}-[0-9]{4}',
         message='Season must follow the format year-year',

@@ -5,10 +5,66 @@ import datetime
 # Create your views here.
 from app.forms import TeamFilterForm, SignUpForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match, CommentPlayer, CommentMatch, PlayerPlaysFor
+    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches
 
 
 def test(request):
+    t1 = Team(full_name="Futebol Clube do Porto", abreviated_name="FCP",
+             country="Portugal", city="Porto", founding_year=1893)
+    t1.save()
+    t2 = Team(full_name="Sport Lisboa e Benfica", abreviated_name="SLB",
+             country="Portugal", city="Lisboa", founding_year=1904)
+    t2.save()
+    t3 = Team(full_name="Sporting Clube de Portugal", abreviated_name="SCP",
+             country="Portugal", city="Lisboa", founding_year=1906)
+    t3.save()
+    t4 = Team(full_name="Sporting Clube de Braga", abreviated_name="SCB",
+             country="Portugal", city="Braga", founding_year=1921)
+    t4.save()
+
+    c = Competition(full_name="Liga NOS")
+    c.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t1)
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t2)
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t3)
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t4)
+    cpf.save()
+
+    m1 = Match(ngame=1, competition=c, home_team=t1, away_team=t2,
+              home_goals=3, away_goals=1, description="Matchday 1")
+    m1.save()
+
+    m2 = Match(ngame=1, competition=c, home_team=t3, away_team=t4,
+              home_goals=2, away_goals=2, description="Matchday 1")
+    m2.save()
+
+    m3 = Match(ngame=2, competition=c, home_team=t3, away_team=t1,
+               home_goals=1, away_goals=1, description="Matchday 2")
+    m3.save()
+
+    m4 = Match(ngame=2, competition=c, home_team=t2, away_team=t4,
+               home_goals=4, away_goals=2, description="Matchday 2")
+    m4.save()
+
+    cm = CompetitionsMatches(competition=c, match= m1, season="2020-2021")
+    cm.save()
+
+    cm = CompetitionsMatches(competition=c, match=m2, season="2020-2021")
+    cm.save()
+
+    cm = CompetitionsMatches(competition=c, match=m3, season="2020-2021")
+    cm.save()
+
+    cm = CompetitionsMatches(competition=c, match=m4, season="2020-2021")
+    cm.save()
+
     return render(request, 'test.html', {})
 
 
@@ -34,6 +90,48 @@ def competitions(request):
 
 
 def competition_details(request, id, season='2020-2021'):
+    teams = Team.objects.filter(clubplaysin__competition=id, clubplaysin__season=season)
+    table = []
+    for t in teams:
+        dic = {
+            "team": t, "points": 0, "home_goal": 0, "away_goal": 0,
+            "home_concede": 0, "away_concede": 0,
+            "win": 0, "draw": 0, "loss": 0
+               }
+        home_matches = Match.objects.filter(competitionsmatches__competition_id=id,
+                                            competitionsmatches__season=season,
+                                            home_team=t)
+        for m in home_matches:
+            if m.home_goals > m.away_goals:
+                dic["win"] += 1
+                dic["points"] += 3
+            elif m.home_goals == m.away_goals:
+                dic["draw"] += 1
+                dic["points"] += 1
+            else:
+                dic["loss"] += 1
+            dic["home_goal"] += m.home_goals
+            dic["home_concede"] += m.away_goals
+        away_matches = Match.objects.filter(competitionsmatches__competition_id=id,
+                                            competitionsmatches__season=season,
+                                            away_team=t)
+        for m in away_matches:
+            if m.home_goals < m.away_goals:
+                dic["win"] += 1
+                dic["points"] += 3
+            elif m.home_goals == m.away_goals:
+                dic["draw"] += 1
+                dic["points"] += 1
+            else:
+                dic["loss"] += 1
+            dic["away_goal"] += m.away_goals
+            dic["away_concede"] += m.home_goals
+
+        table.append(dic)
+    table.sort(key=lambda k: k["points"])
+    print(table)
+
+
     t_parms = {
         'competition': Competition.objects.get(id=id),
         'teams': Team.objects.filter(clubplaysin__competition_id=id, clubplaysin__season=season),
@@ -135,3 +233,4 @@ def profile(request):
             'favouriteCompetition': Competition.objects.filter(favouritecompetition__user__user_id=request.user.id)
         }
         return render(request, 'profile.html', t_parms)
+
