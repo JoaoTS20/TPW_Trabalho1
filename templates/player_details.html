@@ -18,13 +18,13 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{% static player.player_img %}" alt="Admin" class="rounded-circle" width="150">
+                    <img src="{% static player.player_img %}" alt="Admin" class="rounded-circle" width="150" height="150">
                     <div class="mt-3">
                       <h4>{{ player.name }}</h4>
                       <p class="text-secondary mb-1">{{ player.birthday }}</p>
                       <p class="text-muted font-size-sm">{{ player.position }}</p>
-                      <button class="btn btn-primary">Follow</button>
-                      <button class="btn btn-outline-primary">Message</button>
+                      <button class="btn btn-primary">Favourite</button>
+                      <!--button class="btn btn-outline-primary">Message</button-->
                     </div>
                   </div>
                 </div>
@@ -71,7 +71,7 @@
                       <h6 class="mb-0">Height</h6>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        {{player.height}} cm
+                        {{player.height}} m
                     </div>
                   </div>
                   <hr>
@@ -108,30 +108,15 @@
                   <div class="card h-100">
                     <div class="card-body">
                       <h6 class="d-flex align-items-center mb-3">Teams</h6>
-                      {% for team in teams %}
-                          {% for sea in season %}
-                        <small>{{ team.abreviated_name }}</small>
-                      <div  style="height: 5px">
-                            {{ sea }}
-                      </div>
+                        {% for team in teams %}
+                            <small>{{ team.full_name }} - </small>
+                            {% for sea in season %}
+                            {% if sea.team.id == team.id %}
+                             <small>{{ sea.season }}</small>
+                                <br>
+                            {% endif %}
+                            {% endfor %}
                       {% endfor %}
-                    {% endfor %}
-                        <small>Website Markup</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>One Page</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Mobile Template</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
-                      <small>Backend API</small>
-                      <div class="progress mb-3" style="height: 5px">
-                        <div class="progress-bar bg-primary" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                      </div>
                     </div>
                   </div>
                 </div>
@@ -166,6 +151,20 @@
             </div>
           </div>
         </div>
+          <div class="my-3 p-3 bg-body rounded shadow-sm">
+            <h6 class="border-bottom pb-2 mb-0">Comments</h6>
+              {% for comment in comments %}
+            <div class=" border-bottom d-flex text-muted pt-3">
+              <p class="pb-3 mb-0 small lh-sm ">
+                <strong class="d-block text-gray-dark">{{ comment.user.user }}</strong>
+                {{ comment.comment }}
+                  <br>
+                  <small>{{ comment.timeofpost }}</small>
+              </p>
+            </div>
+              {% endfor %}
+            </div>
+          </div>
     </div>
 
 

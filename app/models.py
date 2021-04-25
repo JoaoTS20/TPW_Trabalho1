@@ -41,7 +41,7 @@ class Player(models.Model):
         }
 
 
-class Staff(models.Model):
+class Staff(models.Model): #ACRESCENTAR IMAGE
     name = models.CharField(max_length=90)
     birthday = models.DateField()
     nationality = models.CharField(max_length=70)
