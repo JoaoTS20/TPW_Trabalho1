@@ -7,6 +7,7 @@ from django.core.validators import RegexValidator
 # Adicionar str aos models e adicionar name no team
 
 class Player(models.Model):
+    real_name = models.CharField(max_length=100)
     POSITION_CHOICES = ( #Isto está trocado!!!!!!!!! meter cena de full name
         ('ST', 'Striker'),
         ('LW', 'Left Winger'),
@@ -33,10 +34,10 @@ class Player(models.Model):
 
     def to_dict(self):
         return {
-            "name": self.name, "birthday": self.birthday, "height": self.height,
-            "nationality": self.nationality, "position": self.position,
-            "best_foot": self.best_foot, "preferred_number": self.preferred_number,
-            "player_img": self.player_img
+            "name": self.name, "real_name": self.real_name, "birthday": self.birthday,
+            "height": self.height, "nationality": self.nationality,
+            "position": self.position, "best_foot": self.best_foot,
+            "preferred_number": self.preferred_number, "player_img": self.player_img
         }
 
 
@@ -50,7 +51,7 @@ class Staff(models.Model):
 
 class Team(models.Model):
     full_name = models.CharField(max_length=70)
-    #name= models.CharField(max_length=70)
+    name = models.CharField(max_length=70)
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
@@ -65,7 +66,7 @@ class Team(models.Model):
 
     def to_dict(self):
         return {
-            "full_name": self.full_name, "abreviated_name": self.abreviated_name,
+            "full_name": self.full_name, "name": self.name, "abreviated_name": self.abreviated_name,
             "founding_year": self.founding_year, "club_badge_img": self.club_badge_img,
             "city": self.city, "country": self.country
         }
