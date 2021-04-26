@@ -3,33 +3,31 @@ from django.contrib.auth.models import User
 
 from django.core.validators import RegexValidator
 
-# Todo Hugo Comments Players,Games,Competitions
-# Adicionar str aos models e adicionar name no team
 
 class Player(models.Model):
-    POSITION_CHOICES = ( #Isto está trocado!!!!!!!!! meter cena de full name
-        ('ST', 'Striker'),
-        ('LW', 'Left Winger'),
-        ('RW', 'Right Winger'),
-        ('CAM', 'Central Attacking Midfielder'),
-        ('CM', 'Central Midfielder'),
-        ('CDM', 'Central Defensive Midfielder'),
-        ('LB', 'Left Back'),
-        ('RB', 'Right Back'),
-        ('CB', 'Center Back'),
-        ('GR', 'Goalkeeper'),
+    POSITION_CHOICES = (
+        ('Striker', 'ST-Striker'),
+        ('Left Winger', 'LW-Left Winger'),
+        ('Right Winger', 'RW-Right Winger'),
+        ('Central Attacking Midfielder', 'CAM-Central Attacking Midfielder'),
+        ('Central Midfielder', 'CM-Central Midfielder'),
+        ('Central Defensive Midfielder', 'CDM-Central Defensive Midfielder'),
+        ('Left Back', 'LB-Left Back'),
+        ('Right Back', 'RB-Right Back'),
+        ('Center Back', 'CB-Center Back'),
+        ('Goalkeeper', 'GR-Goalkeeper'),
     )
-    BEST_FOOT = (('L', 'Left'), ('R', 'Right')) #Isto está trocado!!!!!!!!!
+    BEST_FOOT = (('Left', 'L-Left'), ('Right', 'R-Right'), ('Both', 'B-Both'))
 
+    full_name = models.CharField(max_length=120)
     name = models.CharField(max_length=90)
     birthday = models.DateField()
     height = models.FloatField()
     nationality = models.CharField(max_length=70)
-    position = models.CharField(max_length=3, choices=POSITION_CHOICES)
-    best_foot = models.CharField(max_length=1, choices=BEST_FOOT)
+    position = models.CharField(max_length=28, choices=POSITION_CHOICES)
+    best_foot = models.CharField(max_length=5, choices=BEST_FOOT)
     preferred_number = models.IntegerField()
     player_img = models.CharField(max_length=100, default="default_player.png")
-    # TODO: TROFÉUS CONQUISTADOS?
 
     def to_dict(self):
         return {
@@ -39,29 +37,36 @@ class Player(models.Model):
             "player_img": self.player_img
         }
 
+    def __str__(self):
+        return self.full_name
 
-class Staff(models.Model): #ACRESCENTAR IMAGE
+
+class Staff(models.Model):
+    full_name = models.CharField(max_length=120)
     name = models.CharField(max_length=90)
     birthday = models.DateField()
     nationality = models.CharField(max_length=70)
     function = models.CharField(max_length=70)
-    # TODO: TROFÉUS CONQUISTADOS?
+    staff_img = models.CharField(max_length=100, default="default_staff.png")
+
+    def __str__(self):
+        return self.full_name
 
 
 class Team(models.Model):
     full_name = models.CharField(max_length=70)
-    #name= models.CharField(max_length=70)
+    name = models.CharField(max_length=70)
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
     city = models.CharField(max_length=20)
     country = models.CharField(max_length=20)
     players = models.ManyToManyField(Player, through='PlayerPlaysFor')
-
-    # TODO: TROFÉUS CONQUISTADOS?
-
-    # tem de se arranjar uma forma de adicionar talvez q uma competição acabou
-    # para se apurar quem ganhou talvez?
+    formation = models.CharField(max_length=5, validators=[RegexValidator(
+        regex='[0-9]{1}-[0-9]{1}-[0-9]{1}',
+        message='Season must follow the format number-number-number',
+        code='invalid_formation'
+    )])
 
     def to_dict(self):
         return {
@@ -70,12 +75,15 @@ class Team(models.Model):
             "city": self.city, "country": self.country
         }
 
+    def __str__(self):
+        return self.full_name
 
-# Adicionei o tipo de competição
+
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
     teams = models.ManyToManyField(Team, through='ClubPlaysIn')
+    region = models.CharField(max_length=70)
     """season = models.CharField(max_length=5, validators=[RegexValidator(
         regex='[0-9]{4}-[0-9]{4}',
         message='Season must follow the format year-year',
@@ -87,13 +95,14 @@ class Competition(models.Model):
             "full_name": self.full_name, "competition_badge_img": self.competition_badge_img
         }
 
+    def __str__(self):
+        return self.full_name
+
 
 # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
-    ngame = models.CharField(max_length=50)  # Todo Hugo Talvez mudar isto para descrição jogo ou assim para ser 'MatchDay 38' ou 'SEMI-FINALS'
-    # Talvez seja uma boa ideia mas não sei como podemos ordenar depois ?
-    # Talvez possamos criar outro atributo com descrição e assim usando o ngame pra ordenar
-    description = models.CharField(max_length=25)
+    ngame = models.IntegerField()
+    description = models.CharField(max_length=25) # Descrição 'MatchDay 38' ou 'SEMI-FINALS'
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -113,8 +122,11 @@ class Match(models.Model):
             "away_goals": self.away_goals
         }
 
+    def __str__(self):
+        return self.description
 
-# Equipa joga em determinada Competicão (de terminada época) (Penso que podemos alterar para o manytomanyfield e não preciso isto)
+
+# Equipa joga em determinada Competicão (de terminada época)
 class ClubPlaysIn(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -124,9 +136,12 @@ class ClubPlaysIn(models.Model):
         code='invalid_season'
     )])
 
+    def __str__(self):
+        return self.team.full_name + '-' + self.competition.full_name + '-' + self.season
+
 
 # Treinador da Equipa em Determinada Época (Também dá para buscar clubes do treinador em cada época)
-class ManagerManages(models.Model):
+class StaffManages(models.Model):
     staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     season = models.CharField(max_length=9, validators=[RegexValidator(
@@ -134,6 +149,9 @@ class ManagerManages(models.Model):
         message='Season must follow the format year-year',
         code='invalid_season'
     )])
+
+    def __str__(self):
+        return self.staff.full_name + '-' + self.team.full_name + '-' + self.season
 
 
 # Jogadores da Equipa em Determinada Época (Também dá para buscar clubes do jogador em cada época)
@@ -146,6 +164,9 @@ class PlayerPlaysFor(models.Model):
         code='invalid_season'
     )])
 
+    def __str__(self):
+        return self.player.full_name + '-' + self.team.full_name + '-' + self.season
+
 
 class CompetitionsMatches(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -156,6 +177,9 @@ class CompetitionsMatches(models.Model):
         code='invalid_season'
     )])
 
+    def __str__(self):
+        return self.competition.full_name + '-' + self.match + '-' + self.season
+
 
 class NormalUser(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -163,31 +187,45 @@ class NormalUser(models.Model):
     favouriteplayers = models.ManyToManyField(Player, through='FavouritePlayer')
     favouriteteams = models.ManyToManyField(Team, through='FavouriteTeam')
     favouritecompetitions = models.ManyToManyField(Competition, through='FavouriteCompetition')
-    # Todo Hugo Tabelas Clubes_Favoritos Jogadores_Favoritos Competição Favorita! ou manytomanyfield simples
 
+    def __str__(self):
+        return self.user.username
 
-# Não sei se será preciso mais algum atributo?
 
 class FavouritePlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.player.full_name + '-' + self.user.user.username
 
 
 class FavouriteTeam(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.team.full_name + '-' + self.user.user.username
+
 
 class FavouriteCompetition(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return self.competition.full_name + '-' + self.user
+
+
+# Comments
 
 class CommentPlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.player.full_name + '-' + self.user.user.username + '-' + self.comment
 
 
 class CommentMatch(models.Model):
@@ -196,9 +234,25 @@ class CommentMatch(models.Model):
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
 
+    def __str__(self):
+        return self.match.description + '-' + self.user.user.username + '-' + self.comment
+
 
 class CommentCompetition(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
     timeofpost = models.DateTimeField()
     comment = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.competition.full_name + '-' + self.user.user.username + '-' + self.comment
+
+
+class CommentTeam(models.Model):
+    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+    timeofpost = models.DateTimeField()
+    comment = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.team.full_name + '-' + self.user.user.username + '-' + self.comment

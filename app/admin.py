@@ -1,5 +1,8 @@
 from django.contrib import admin
-from app.models import Player, Staff, Team, Competition, Match, ClubPlaysIn, ManagerManages, PlayerPlaysFor, CompetitionsMatches, NormalUser, FavouritePlayer, FavouriteTeam, FavouriteCompetition, CommentPlayer, CommentCompetition, CommentMatch
+from app.models import Player, Staff, Team, Competition, Match, ClubPlaysIn,  PlayerPlaysFor, \
+    CompetitionsMatches, NormalUser, FavouritePlayer, FavouriteTeam, FavouriteCompetition, CommentPlayer, \
+    CommentCompetition, CommentMatch, StaffManages
+
 # Register your models here.
 admin.site.register(Player)
 admin.site.register(Staff)
@@ -7,7 +10,7 @@ admin.site.register(Team)
 admin.site.register(Competition)
 admin.site.register(Match)
 admin.site.register(ClubPlaysIn)
-admin.site.register(ManagerManages)
+admin.site.register(StaffManages)
 admin.site.register(PlayerPlaysFor)
 admin.site.register(CompetitionsMatches)
 admin.site.register(NormalUser)
