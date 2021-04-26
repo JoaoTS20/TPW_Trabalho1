@@ -31,48 +31,20 @@
               <input type="submit" value="Search">
           </form>
             <button href="{% url 'teams' %}">Reset</button>
-
         </div>
 
       <div class="container" data-aos="fade-up">
         <div class="row" >
             {% for team in teams %}
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" style="padding-bottom: 20px">
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-3">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
                 <a href="{{ team.id }}"><img  class="center" src="{% static team.club_badge_img %}"></a>
                 <br>
                  <h1 class="ClubName" style="text-align: center"><a  class="ClubName" href="{{ team.id }}">{{ team.abreviated_name }}</a></h1>
             </div>
           </div>
-
         {% endfor %}
-
-          <!--div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="200">
-              <div class="icon"><i class="bx bx-file"></i></div>
-              <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
-              <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="300">
-              <div class="icon"><i class="bx bx-tachometer"></i></div>
-              <h4 class="title"><a href="">Magni Dolores</a></h4>
-              <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia</p>
-            </div>
-          </div>
-
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-            <div class="icon-box" data-aos="fade-up" data-aos-delay="400">
-              <div class="icon"><i class="bx bx-world"></i></div>
-              <h4 class="title"><a href="">Nemo Enim</a></h4>
-              <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis</p>
-            </div>
-          </div-->
-
         </div>
-
       </div>
     </section>
 
