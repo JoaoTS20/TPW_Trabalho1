@@ -11,7 +11,7 @@ from django.urls import reverse
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, InsertCompetition
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
-    FavouriteCompetition
+    FavouriteCompetition, CommentStaff
 
 
 def test(request):
@@ -347,11 +347,23 @@ def staff(request):
 
 
 def staff_details(request, id):
+    if request.method == 'POST':
+        if not request.user.is_authenticated or request.user.username == 'admin':
+            return redirect('/login')
+        normal = NormalUser.objects.get(user__username=request.user.username)
+        print(normal.id)
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            CommentStaff(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                          staff=Staff.objects.get(id=id)).save()
+            return HttpResponseRedirect(str(id))  # render(request, 'player_details.html', t_parms)
     t_parms = {
         'staff': Staff.objects.get(id=id),
         'teams': Team.objects.filter(staffmanages__staff_id=id),
         'seasons': StaffManages.objects.filter(staff_id=id),
-        'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365)
+        'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
+        'formComment': MakeCommentForm(),
     }
     return render(request, 'staff_details.html', t_parms)
 

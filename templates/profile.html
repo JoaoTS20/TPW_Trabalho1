@@ -10,21 +10,83 @@
 </head>
 <body>
 {% block content %}
-    {{ userInfo.user.username }}
-
-    {% for player in favouritePlayers %}
-        {{ player.full_name }}
-    {% endfor %}
-
-    {% for team in favouriteTeams %}
-        {{ team.name }}
-    {% endfor %}
-
-    {% for competition in favouriteCompetition %}
-        {{ competition.full_name }}
-    {% endfor %}
-
-
+    <section id="services" class="services" >
+        <div class="section-title">
+          <h2>Profile</h2>
+          <h3>Hello <span>{{ userInfo.user.username}}</span></h3>
+          <p>Competitions from all over the world with accurate data.</p>
+        </div>
+      <div class="container" data-aos="fade-up">
+        <h2> Favourite Teams</h2>
+          <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Badge</th>
+              <th scope="col">Name</th>
+              <th scope="col">Country</th>
+              <th scope="col">Formation</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for team in favouriteTeams %}
+            <tr>
+                <th scope="row"><a href="{% url 'teams'%}{{ team.id }}"><img src="{% static team.club_badge_img %}" style="width: 30px; height: 30px"></a></th>
+                <td><a href="{% url 'teams'%}{{ team.id }}">{{ team.full_name }}</a></td>
+              <td>{{ team.country }}</td>
+              <td>{{ team.formation }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <br>
+        <h2> Favourite Players</h2>
+          <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Picture</th>
+              <th scope="col">Name</th>
+              <th scope="col">Height</th>
+              <th scope="col">Position</th>
+              <th scope="col">Nationality</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for player in favouritePlayers %}
+            <tr>
+                <th scope="row"><a href="{% url 'players'%}{{ player.id }}"><img src="{% static player.player_img %}" style="width: 30px; height: 30px"></a></th>
+                <td><a href="{% url 'players'%}{{ player.id }}">{{ player.name }}</a></td>
+                <td>{{ player.height }} m</td>
+                <td>{{ player.position }}</td>
+                <td>{{ player.nationality }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+        <br>
+              <h2> Favourite Competitions</h2>
+          <hr>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Logo</th>
+              <th scope="col">Name</th>
+              <th scope="col">Region</th>
+            </tr>
+          </thead>
+          <tbody>
+          {% for competition in favouriteCompetition %}
+            <tr>
+                <th scope="row"><a href="{% url 'competitions'%}{{ competition.id }}"><img src="{% static competition.competition_badge_img %}" style="width: 30px; height: 30px"></a></th>
+                <td><a href="{% url 'competitions'%}{{ competition.id }}">{{ competition.full_name }}</a></td>
+                <td>{{ competition.region }}</td>
+            </tr>
+          {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </section>
 
 {% endblock %}
 </body>
