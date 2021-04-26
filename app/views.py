@@ -209,7 +209,8 @@ def player_details(request, id):
         'player': Player.objects.get(id=id),
         'teams': Team.objects.filter(playerplaysfor__player_id=id),
         'season': PlayerPlaysFor.objects.filter(player_id=id),
-        'comments': CommentPlayer.objects.filter(player_id=id)
+        'comments': CommentPlayer.objects.filter(player_id=id),
+        'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days/365)
     }
     return render(request, 'player_details.html', t_parms)
 

@@ -38,7 +38,7 @@ class Player(models.Model):
         }
 
     def __str__(self):
-        return self.full_name
+        return self.full_name + '-' + self.name
 
 
 class Staff(models.Model):
