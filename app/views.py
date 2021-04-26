@@ -8,7 +8,7 @@ from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer
+    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam
 
 
 def test(request):
@@ -191,13 +191,46 @@ def teams(request):
 
 
 def team_details(request, id, season='2020-2021'):
+    if request.method == 'POST':
+        if not request.user.is_authenticated or request.user.username == 'admin':
+            return redirect('/login')
+        normal = NormalUser.objects.get(user__username=request.user.username)
+        print(normal.id)
+        if 'remove' in request.POST:
+            s = FavouriteTeam.objects.get(team_id=id, user_id=normal.id)
+            s.delete()
+            print("Removed from Favourites")
+            return HttpResponseRedirect(str(id))
+        elif 'add' in request.POST:
+            s = FavouriteTeam(team_id=id, user_id=normal.id)
+            s.save()
+            print("Added to Favourites")
+            return HttpResponseRedirect(str(id))
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            CommentTeam(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,team=Team.objects.get(id=id)).save()
+            return HttpResponseRedirect(str(id))
+
+    if not request.user.is_authenticated or request.user.username == 'admin':
+        favouriteteam = False
+    else:
+        normal = NormalUser.objects.get(user__username=request.user.username)
+        if FavouriteTeam.objects.filter(team_id=id, user_id=normal.id):
+            favouriteteam = True
+            print("Está nos Favoritos")
+        else:
+            favouriteteam = False
+            print("Não está nos Favoritos")
     t_parms = {
         'team': Team.objects.get(id=id),
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
         'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
         'seasons': set(ClubPlaysIn.objects.filter(competition_id=id)),
-        'staff': StaffManages.objects.filter(team_id=id)
-
+        'staff': StaffManages.objects.filter(team_id=id),
+        'comments': CommentTeam.objects.filter(team_id=id),
+        'favouriteteam': favouriteteam,
+        'formComment': MakeCommentForm(),
     }
     return render(request, 'team_details.html', t_parms)
 

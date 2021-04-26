@@ -233,7 +233,7 @@ class CommentPlayer(models.Model):
 class CommentMatch(models.Model):
     match = models.ForeignKey(Match, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-    timeofpost = models.DateTimeField()
+    timeofpost = models.DateTimeField(default=datetime.now)
     comment = models.CharField(max_length=120)
 
     def __str__(self):
@@ -243,7 +243,7 @@ class CommentMatch(models.Model):
 class CommentCompetition(models.Model):
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-    timeofpost = models.DateTimeField()
+    timeofpost = models.DateTimeField(default=datetime.now)
     comment = models.CharField(max_length=120)
 
     def __str__(self):
@@ -253,7 +253,7 @@ class CommentCompetition(models.Model):
 class CommentTeam(models.Model):
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-    timeofpost = models.DateTimeField()
+    timeofpost = models.DateTimeField(default=datetime.now)
     comment = models.CharField(max_length=120)
 
     def __str__(self):
