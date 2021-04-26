@@ -75,10 +75,9 @@
             </div>
             <div class="col-md-8">
                 <select class="form-select-lg  mb-3 btn btn-default dropdown-toggle" style="border-color: #106eea" aria-label="Default select example" onchange="javascript:location.href = this.value;">
-                    <option selected>Select a Season:</option>
-                  <option value="{% url 'teams' %}{{ team.id }}/2020-2021">2020-2021</option>
+                    <option value="{% url 'teams' %}{{ team.id }}/2020-2021" selected>Select a Season:</option>
                     {% for season in seasons  %}
-                        <option value="{% url 'teams' %}{{ team.id }}/{{ season.season }}">{{ season.season }}</option>
+                        <option value="{% url 'teams' %}{{ team.id }}/{{ season }}">{{ season }}</option>
                     {% endfor %}
                 </select>
                 <br>

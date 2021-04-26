@@ -215,7 +215,7 @@ class FavouriteCompetition(models.Model):
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.competition.full_name + '-' + self.user
+        return self.competition.full_name + '-' + self.user.user.username
 
 
 # Comments

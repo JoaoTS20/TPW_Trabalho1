@@ -8,7 +8,8 @@ from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam
+    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
+    FavouriteCompetition
 
 
 def test(request):
@@ -153,15 +154,48 @@ def competition_details(request, id, season='2020-2021'):
         table.append(dic)
     table.sort(key=lambda k: k["points"])
     print(table)
+    if request.method == 'POST':
+        if not request.user.is_authenticated or request.user.username == 'admin':
+            return redirect('/login')
+        normal = NormalUser.objects.get(user__username=request.user.username)
+        print(normal.id)
+        if 'remove' in request.POST:
+            s = FavouriteCompetition.objects.get(competition_id=id, user_id=normal.id)
+            s.delete()
+            print("Removed from Favourites")
+            return HttpResponseRedirect(str(id))
+        elif 'add' in request.POST:
+            s = FavouriteCompetition(competition_id=id, user_id=normal.id)
+            s.save()
+            print("Added to Favourites")
+            return HttpResponseRedirect(str(id))
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            CommentCompetition(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,competition=Competition.objects.get(id=id)).save()
+            return HttpResponseRedirect(str(id))
 
+    if not request.user.is_authenticated or request.user.username == 'admin':
+        favouritecompetition = False
+    else:
+        normal = NormalUser.objects.get(user__username=request.user.username)
+        if FavouriteCompetition.objects.filter(competition_id=id, user_id=normal.id):
+            favouritecompetition = True
+            print("Está nos Favoritos")
+        else:
+            favouritecompetition = False
+            print("Não está nos Favoritos")
     t_parms = {
         'competition': Competition.objects.get(id=id),
         'table': table,
-        'teams': Team.objects.filter(clubplaysin__competition_id=id, clubplaysin__season=season),
+        'teams': teams,
+        'favouritecompetition': favouritecompetition,
+        'formComment': MakeCommentForm(),
         'comments': CommentCompetition.objects.filter(competition_id=id),
         'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
-        'seasons': ClubPlaysIn.objects.filter(competition_id=id)
+        'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct()
     }
+
     return render(request, 'competition_details.html', t_parms)
 
 
@@ -226,7 +260,7 @@ def team_details(request, id, season='2020-2021'):
         'team': Team.objects.get(id=id),
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
         'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
-        'seasons': set(ClubPlaysIn.objects.filter(competition_id=id)),
+        'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
         'staff': StaffManages.objects.filter(team_id=id),
         'comments': CommentTeam.objects.filter(team_id=id),
         'favouriteteam': favouriteteam,

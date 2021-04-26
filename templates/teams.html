@@ -35,15 +35,16 @@
         </div>
 
       <div class="container" data-aos="fade-up">
-        {% for team in teams %}
-        <div class="row">
-          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
+        <div class="row" >
+            {% for team in teams %}
+          <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0" style="padding-bottom: 20px">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
                 <a href="{{ team.id }}"><img  class="center" src="{% static team.club_badge_img %}"></a>
                 <br>
-                 <h1 class="ClubName" style="text-align: center"><a  class="ClubName" href="{{ team.id }}">{{ team.name }} </a></h1>
+                 <h1 class="ClubName" style="text-align: center"><a  class="ClubName" href="{{ team.id }}">{{ team.abreviated_name }}</a></h1>
             </div>
           </div>
+
         {% endfor %}
 
           <!--div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
