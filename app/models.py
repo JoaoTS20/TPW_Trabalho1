@@ -104,7 +104,7 @@ class Competition(models.Model):
 # Primeiro fazemos com isto e depois podemos adicionar marcadores e coisas assim
 class Match(models.Model):
     ngame = models.IntegerField()
-    description = models.CharField(max_length=25) # Descrição 'MatchDay 38' ou 'SEMI-FINALS'
+    description = models.CharField(max_length=25)  # Descrição 'MatchDay 38' ou 'SEMI-FINALS'
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
@@ -258,3 +258,13 @@ class CommentTeam(models.Model):
 
     def __str__(self):
         return self.team.full_name + '-' + self.user.user.username + '-' + self.comment
+
+
+class CommentStaff(models.Model):
+    staff = models.ForeignKey(Staff, on_delete=models.CASCADE)
+    user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
+    timeofpost = models.DateTimeField(default=datetime.now)
+    comment = models.CharField(max_length=120)
+
+    def __str__(self):
+        return self.staff.full_name + '-' + self.user.user.username + '-' + self.comment
