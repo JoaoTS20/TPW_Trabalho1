@@ -195,7 +195,7 @@ def team_details(request, id, season='2020-2021'):
         'team': Team.objects.get(id=id),
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
         'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
-        'seasons': ClubPlaysIn.objects.filter(competition_id=id),
+        'seasons': set(ClubPlaysIn.objects.filter(competition_id=id)),
         'staff': StaffManages.objects.filter(team_id=id)
 
     }
@@ -224,7 +224,7 @@ def player_details(request, id):
                 favouriteplayer = False
             t_parms = {
                 'player': Player.objects.get(id=id),
-                'teams': Team.objects.filter(playerplaysfor__player_id=id),
+                'teams': set(Team.objects.filter(playerplaysfor__player_id=id)),
                 'season': PlayerPlaysFor.objects.filter(player_id=id),
                 'comments': CommentPlayer.objects.filter(player_id=id),
                 'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
@@ -238,7 +238,7 @@ def player_details(request, id):
         favouriteplayer = False
     t_parms = {
         'player': Player.objects.get(id=id),
-        'teams': Team.objects.filter(playerplaysfor__player_id=id),
+        'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()), #TODO: Encontrar melhor solução
         'season': PlayerPlaysFor.objects.filter(player_id=id),
         'comments': CommentPlayer.objects.filter(player_id=id),
         'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),

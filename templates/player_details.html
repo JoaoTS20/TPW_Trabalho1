@@ -40,7 +40,7 @@
                   <form action="{% url 'players' %}{{ player.id }}" method="post">
                       {% csrf_token %}
                       {{ formComment.comment }}
-                      <input style="background: #106eea;font-size: 12px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg">Comment</input>
+                      <button style="background: #106eea;font-size: 12px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg">Comment</button>
                   </form>
               </div>
             </div>
@@ -97,26 +97,24 @@
                     <hr>
                     <div class="card mb-3">
                 <div class="card-body">
-                    {% for team in teams %}
-                  <div class="row">
+                {% for team in teams %}
+                {% for sea in season %}
+                    <div class="row">
                     <div class="col-sm-3">
-                      <a href="{% url 'teams' %}{{ team.id }}"><h6 class="mb-0">{{ team.name}}</h6></a>
+                       <a href="{% url 'teams' %}{{ team.id }}"><h6 class="mb-0">{{ team.name}}</h6></a>
                     </div>
-                      {% for sea in season %}
-                      {% if sea.team.id == team.id %}
                     <div class="col-sm-9 text-secondary">
+                        {% if sea.team.id == team.id %}
                         {{sea.season}}
+                        {% endif %}
                     </div>
-                      {% endif %}
-                      {% endfor %}
-                    {% endfor %}
                   </div>
                   <hr>
-                    </div>
-
+                {% endfor %}
+                {% endfor %}
                 </div>
                 </div>
-
+            </div>
             </div>
           </div>
         </div>
@@ -135,8 +133,6 @@
             </div>
           </div>
     </div>
-
-
 {% endblock %}
 </body>
 </html>
