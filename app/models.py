@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -221,7 +223,7 @@ class FavouriteCompetition(models.Model):
 class CommentPlayer(models.Model):
     player = models.ForeignKey(Player, on_delete=models.CASCADE)
     user = models.ForeignKey(NormalUser, on_delete=models.CASCADE)
-    timeofpost = models.DateTimeField()
+    timeofpost = models.DateTimeField(default=datetime.now)
     comment = models.CharField(max_length=120)
 
     def __str__(self):

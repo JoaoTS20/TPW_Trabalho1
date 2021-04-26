@@ -1,11 +1,14 @@
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import datetime
 
 # Create your views here.
-from app.forms import TeamFilterForm, SignUpForm
+from django.urls import reverse
+
+from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
-    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages
+    Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer
 
 
 def test(request):
@@ -193,7 +196,7 @@ def team_details(request, id, season='2020-2021'):
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
         'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
         'seasons': ClubPlaysIn.objects.filter(competition_id=id),
-        'staff':StaffManages.objects.filter(team_id=id)
+        'staff': StaffManages.objects.filter(team_id=id)
 
     }
     return render(request, 'team_details.html', t_parms)
@@ -206,12 +209,41 @@ def players(request):
 
 
 def player_details(request, id):
+    # if request.method == 'POST':
+    # FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id).delete()
+    # print("yupi")  # Not Working
+
+    if request.method == 'POST':
+        form = MakeCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.cleaned_data['comment']
+            CommentPlayer(user=NormalUser.objects.get(user__username=request.user.username), comment=comment, player=Player.objects.get(id=id)).save()
+            if FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id) is not None:
+                favouriteplayer = True
+            else:
+                favouriteplayer = False
+            t_parms = {
+                'player': Player.objects.get(id=id),
+                'teams': Team.objects.filter(playerplaysfor__player_id=id),
+                'season': PlayerPlaysFor.objects.filter(player_id=id),
+                'comments': CommentPlayer.objects.filter(player_id=id),
+                'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
+                'favouriteplayer': favouriteplayer,
+                'formComment': MakeCommentForm()
+            }
+            return  HttpResponseRedirect(str(id)) #render(request, 'player_details.html', t_parms)
+    if FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id) is not None:
+        favouriteplayer = True
+    else:
+        favouriteplayer = False
     t_parms = {
         'player': Player.objects.get(id=id),
         'teams': Team.objects.filter(playerplaysfor__player_id=id),
         'season': PlayerPlaysFor.objects.filter(player_id=id),
         'comments': CommentPlayer.objects.filter(player_id=id),
-        'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days/365)
+        'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
+        'favouriteplayer': favouriteplayer,
+        'formComment': MakeCommentForm()
     }
     return render(request, 'player_details.html', t_parms)
 
@@ -227,7 +259,9 @@ def staff(request):
 def staff_details(request, id):
     t_parms = {
         'staff': Staff.objects.get(id=id),
-        'teams': Team.objects.filter(staffmanages__staff_id=id)
+        'teams': Team.objects.filter(staffmanages__staff_id=id),
+        'seasons': StaffManages.objects.filter(staff_id=id),
+        'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365)
     }
     return render(request, 'staff_details.html', t_parms)
 

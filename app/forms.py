@@ -10,6 +10,22 @@ class TeamFilterForm(forms.Form):
     competition = forms.CharField(label='Search by Competition:', required=False)
 
 
+class MakeCommentForm(forms.Form):
+    comment = forms.CharField(widget=forms.Textarea, label='Add Comment')
+    fields = ('comment')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['rows'] = 3
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['style'] = 'resize:none'
+
+class FavouriteForm(forms.Form):
+    favouritecheck = forms.CheckboxInput()
+
+
 class LogInForm(AuthenticationForm):
     username = forms.CharField(label="Username", max_length=150)
     password = forms.CharField(label="Password", widget=forms.PasswordInput)
