@@ -22,8 +22,17 @@ class MakeCommentForm(forms.Form):
             self.fields[myField].widget.attrs['class'] = 'form-control'
             self.fields[myField].widget.attrs['style'] = 'resize:none'
 
+
 class FavouriteForm(forms.Form):
     favouritecheck = forms.CheckboxInput()
+    fields = ('favouritecheck')
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-check-input'
+            self.fields[myField].widget.attrs['type'] = 'checkbox'
 
 
 class LogInForm(AuthenticationForm):

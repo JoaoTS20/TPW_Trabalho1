@@ -12,9 +12,10 @@
 {% block content %}
     {{ userInfo.user.username }}
 
-    {% for team in favouriteTeams %}
-        {{ team.full_name }}
+    {% for player in favouritePlayers %}
+        {{ player.full_name }}
     {% endfor %}
+
 
 {% endblock %}
 </body>

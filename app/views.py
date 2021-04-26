@@ -6,7 +6,7 @@ import datetime
 # Create your views here.
 from django.urls import reverse
 
-from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm
+from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer
 
@@ -212,16 +212,30 @@ def player_details(request, id):
     # if request.method == 'POST':
     # FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id).delete()
     # print("yupi")  # Not Working
-
+    normal=NormalUser.objects.get(user__username=request.user.username)
+    print(normal.id)
     if request.method == 'POST':
+        if 'remove' in request.POST:
+            s = FavouritePlayer.objects.get(player_id=id, user_id=normal.id)
+            s.delete()
+            print("Removed from Favourites")
+            return HttpResponseRedirect(str(id))
+        elif 'add' in request.POST:
+            s=FavouritePlayer(player_id=id, user_id=normal.id)
+            s.save()
+            print("Added to Favourites")
+            return HttpResponseRedirect(str(id))
         form = MakeCommentForm(request.POST)
         if form.is_valid():
             comment = form.cleaned_data['comment']
-            CommentPlayer(user=NormalUser.objects.get(user__username=request.user.username), comment=comment, player=Player.objects.get(id=id)).save()
-            if FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id) is not None:
+            CommentPlayer(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                          player=Player.objects.get(id=id)).save()
+            if FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id):
                 favouriteplayer = True
+                print("Está nos Favoritos")
             else:
                 favouriteplayer = False
+                print("Não está nos Favoritos")
             t_parms = {
                 'player': Player.objects.get(id=id),
                 'teams': set(Team.objects.filter(playerplaysfor__player_id=id)),
@@ -231,19 +245,22 @@ def player_details(request, id):
                 'favouriteplayer': favouriteplayer,
                 'formComment': MakeCommentForm()
             }
-            return  HttpResponseRedirect(str(id)) #render(request, 'player_details.html', t_parms)
-    if FavouritePlayer.objects.filter(player_id=id, user_id=request.user.id) is not None:
+            return HttpResponseRedirect(str(id))  # render(request, 'player_details.html', t_parms)
+    if FavouritePlayer.objects.filter(player_id=id, user_id=normal.id):
         favouriteplayer = True
+        print("Está nos Favoritos")
     else:
         favouriteplayer = False
+        print("Não está nos Favoritos")
     t_parms = {
         'player': Player.objects.get(id=id),
-        'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()), #TODO: Encontrar melhor solução
+        'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),  # TODO: Encontrar melhor solução
         'season': PlayerPlaysFor.objects.filter(player_id=id),
         'comments': CommentPlayer.objects.filter(player_id=id),
         'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
         'favouriteplayer': favouriteplayer,
-        'formComment': MakeCommentForm()
+        'formComment': MakeCommentForm(),
+        'formFavourite': FavouriteForm(),
     }
     return render(request, 'player_details.html', t_parms)
 
