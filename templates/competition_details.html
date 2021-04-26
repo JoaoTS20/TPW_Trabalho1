@@ -71,7 +71,8 @@
                         <div class="d-flex flex-column align-items-center text-center">
                         <a href="{% url 'teams'%}{{ team.id }}"><img src="{% static team.club_badge_img %}" style="width: 100px; height: 100px"></a>
                         </div>
-                {% endfor %}
+                    {% endfor %}
+                </div>
                 </div>
                 </div>
               </div>
@@ -79,7 +80,7 @@
           </div>
     </div>
     </div>
-          </div>
+    </div>
         <h2>Classification</h2>
             <hr>
             <div class="card mb-3">
@@ -100,7 +101,6 @@
     </div>
         <h2>Matches</h2>
         <hr>
-    <div>
               <div class="card mb-3">
                 <div class="card-body">
                   <div class="row">
@@ -112,44 +112,8 @@
                     </div>
                   </div>
                   <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Height</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                        {{player.height}} m
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Nationality</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{ player.nationality }}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Best Foot</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{ player.best_foot }}
-                    </div>
-                  </div>
-                  <hr>
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Preferred Number</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      {{ player.preferred_number }}
-                    </div>
-                  </div>
                 </div>
               </div>
-        </div>
     <div class="my-3 p-3 bg-body rounded shadow-sm">
             <h3 class="border-bottom pb-2 mb-0">Comments</h3>
               {% for comment in comments %}
