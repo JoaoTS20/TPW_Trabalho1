@@ -6,6 +6,22 @@ from django.contrib.auth.models import User
 from django.core.validators import RegexValidator
 
 
+def teamdir(instance,filename):
+    return "teams/"+"_".join(str(instance.full_name).split(" "))+"."+filename.split(".")[1]
+
+
+def compdir(instance,filename):
+    return "competitions/"+"_".join(str(instance.full_name).split(" "))+"."+filename.split(".")[1]
+
+
+def playerdir(instance,filename):
+    return "players/"+"_".join(str(instance.full_name).split(" "))+"."+filename.split(".")[1]
+
+
+def staffdir(instance,filename):
+    return "staff/"+"_".join(str(instance.full_name).split(" "))+"."+filename.split(".")[1]
+
+
 class Player(models.Model):
     POSITION_CHOICES = (
         ('Striker', 'ST-Striker'),
@@ -268,3 +284,4 @@ class CommentStaff(models.Model):
 
     def __str__(self):
         return self.staff.full_name + '-' + self.user.user.username + '-' + self.comment
+
