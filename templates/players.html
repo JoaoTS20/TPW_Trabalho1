@@ -16,6 +16,28 @@
           <p>Players from all over the world with accurate data.</p>
         </div>
       <div class="container" data-aos="fade-up">
+          <form class="form-row" style="text-align: center" action="{% url 'players' %}" method="post">
+              <div class="form-group col-md-3">
+              {% csrf_token %}
+              {{ form.full_name }}
+              </div>
+              <div class="form-group col-md-2">
+              {{ form.nationality }}
+              </div>
+              <div class="form-group col-md-2">
+              {{ form.position }}
+              </div>
+              <div class="form-group col-md-2">
+              {{ form.foot }}
+              </div>
+              <div class="form-group col-md-2">
+              {{ form.order }}
+              </div>
+              <div class="form-group col-md-1">
+              <button class="btn btn-primary" style="background: #106eea;" name="search" type="submit" value="search">Search</button>
+              </div>
+          </form>
+            <hr>
        <div class="row">
            {% for player in players %}
           <div class="col-md-6 col-lg-2 d-flex align-items-stretch mb-5 mb-lg-3">
