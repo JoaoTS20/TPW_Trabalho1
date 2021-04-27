@@ -154,7 +154,7 @@ def competition_details(request, id, season='2020-2021'):
             dic["away_concede"] += m.home_goals
 
         table.append(dic)
-    table.sort(key=lambda k: k["points"])
+    table.sort(key=lambda k: -k["points"])
     print(table)
     if request.method == 'POST':
         if not request.user.is_authenticated or request.user.username == 'admin':

@@ -83,22 +83,36 @@
     </div>
         <h2>Classification</h2>
             <hr>
-            <div class="card mb-3">
-                <div class="card-body">
-                    {% for doc in table %}
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="d-flex flex-column align-items-center text-center">
-                        <p>
-                            {{ doc.items }}
-                        </p>
-                  </div>
-                {% endfor %}
-                </div>
-              </div>
-            </div>
-        </div>
-    </div>
-    </div>
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="text-align:center" scope="col">Team</th>
+                      <th style="text-align:center" scope="col">Wins</th>
+                      <th style="text-align:center" scope="col">Draws</th>
+                      <th style="text-align:center" scope="col">Loses</th>
+                      <th style="text-align:center" scope="col">Goals Scored Home</th>
+                      <th style="text-align:center" scope="col">Goals Scored Away</th>
+                      <th style="text-align:center" scope="col">Goals Conceded Home</th>
+                      <th style="text-align:center" scope="col">Goals Conceded Away</th>
+                      <th style="text-align:center" scope="col">Points</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for pos in table %}
+                    <tr>
+                      <td style="text-align:center" ><a href="{% url 'teams'%}{{ pos.team.id }}"><img src="{% static pos.team.club_badge_img %}" style="width: 30px; height: 30px"></a></td>
+                      <td style="text-align:center">{{ pos.win }}</td>
+                      <td style="text-align:center">{{ pos.draw }}</td>
+                      <td style="text-align:center">{{ pos.loss }}</td>
+                      <td style="text-align:center">{{ pos.home_goal }}</td>
+                      <td style="text-align:center">{{ pos.away_goal }}</td>
+                      <td style="text-align:center">{{ pos.home_concede }}</td>
+                      <td style="text-align:center">{{ pos.away_concede }}</td>
+                      <td style="text-align:center">{{ pos.points }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
         <h2>Matches</h2>
         <hr>
               <table class="table table-striped">
@@ -142,6 +156,9 @@
               {% endfor %}
             </div>
           </div>
+    </div>
+          </div>
+    </div>
     </div>
 
 
