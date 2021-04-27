@@ -64,3 +64,16 @@ class SignUpForm(UserCreationForm):
     class Meta:
         model = User
         fields = ("username", "email", "password1", "password2", "job_football_related",)
+
+
+class InsertCompetition(forms.Form):
+    full_name = forms.CharField(max_length=70, label="Full Name")
+    file = forms.FileField(label="Image",required=False)
+    region = forms.CharField(max_length=70,label="Region")
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            for myField in self.fields:
+                self.fields[myField].widget.attrs['class'] = 'form-control'
+                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label

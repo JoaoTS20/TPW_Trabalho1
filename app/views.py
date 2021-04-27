@@ -2,11 +2,13 @@ from django.contrib.auth import authenticate, login
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import datetime
+from django.conf import settings as django_settings
+import os
 
 # Create your views here.
 from django.urls import reverse
 
-from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm
+from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, InsertCompetition
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff
@@ -396,3 +398,33 @@ def profile(request):
             'favouriteCompetition': Competition.objects.filter(favouritecompetition__user__user_id=request.user.id)
         }
         return render(request, 'profile.html', t_parms)
+
+
+def insert_competition(request):
+    # TODO: inserir autenticação
+    if request.method == "POST":
+        print("entrou aqui")
+        print(request.FILES)
+        form = InsertCompetition(request.POST, request.FILES)
+        if form.is_valid():
+
+            c = Competition(full_name=form.cleaned_data["full_name"],
+                            region=form.cleaned_data["region"])
+            c.save()
+
+            # Escrever ficheiro
+            f = request.FILES['file']
+            with open(os.path.join(django_settings.STATIC_ROOT,
+                                   'img/competitions/'+str(c.id)+"."+f.name.split(".")[1]),'wb+') as destination:
+                for chunk in f.chunks():
+                    destination.write(chunk)
+
+            c.competition_badge_img = str(c.id)+"."+f.name.split(".")[1]
+            c.save()
+            return render(request, "insert_competition.html", {"form": form})
+        else:
+            print(form.errors)
+    else:
+        form = InsertCompetition()
+        return render(request, "insert_competition.html", {"form": form})
+
