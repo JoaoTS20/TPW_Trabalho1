@@ -9,7 +9,8 @@ import os
 from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
-    InsertCompetitionForm, InsertTeamForm
+    InsertCompetitionForm, InsertTeamForm, InsertPlayerForm, InsertStaffForm, InsertMatchForm, InsertClubPlaysInForm, \
+    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff

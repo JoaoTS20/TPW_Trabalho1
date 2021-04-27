@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django.contrib.auth.models import User
 
-from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches
+from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches, Match
 
 
 class TeamFilterForm(forms.Form):
@@ -82,6 +82,12 @@ class InsertStaffForm(forms.ModelForm):
 
 class InsertTeamForm(forms.ModelForm):
     # specify the name of model to use
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+                self.fields[myField].widget.attrs['class'] = 'form-control'
+
     class Meta:
         model = Team
         fields = "__all__"
@@ -96,14 +102,13 @@ class InsertCompetitionForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-            for myField in self.fields:
                 self.fields[myField].widget.attrs['class'] = 'form-control'
                 self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 
 
 class InsertMatchForm(forms.ModelForm):
     class Meta:
-        model = Player
+        model = Match
         fields = "__all__"
 
 
