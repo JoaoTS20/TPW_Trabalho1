@@ -6,6 +6,43 @@ from django.contrib.auth.models import User
 from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches, Match
 
 
+class PlayerFilterForm(forms.Form):
+    CHOICES = (
+        ('', 'Order By'),
+        ('birthday', ' Birthday'),
+        ('full_name', 'Full Name'),
+        ('height', 'Height'),
+    )
+    POSITION_CHOICES = (
+        ('', 'Position'),
+        ('Striker', 'ST-Striker'),
+        ('Left Winger', 'LW-Left Winger'),
+        ('Right Winger', 'RW-Right Winger'),
+        ('Central Attacking Midfielder', 'CAM-Central Attacking Midfielder'),
+        ('Central Midfielder', 'CM-Central Midfielder'),
+        ('Central Defensive Midfielder', 'CDM-Central Defensive Midfielder'),
+        ('Left Back', 'LB-Left Back'),
+        ('Right Back', 'RB-Right Back'),
+        ('Center Back', 'CB-Center Back'),
+        ('Goalkeeper', 'GR-Goalkeeper'),
+    )
+    BEST_FOOT = (('', 'Best Foot'),('Left', 'L-Left'), ('Right', 'R-Right'), ('Both', 'B-Both'))
+
+    full_name = forms.CharField(label='Search by Name', required=False)
+    position = forms.ChoiceField(choices=POSITION_CHOICES, required=False)
+    nationality = forms.CharField(label='Search by Nationality', required=False)
+    foot = forms.ChoiceField(choices=BEST_FOOT, required=False)
+    order = forms.ChoiceField(choices=CHOICES, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            if self.fields[myField] != 'order' and self.fields[myField] != 'position' and self.fields[myField] != 'foot':
+                self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
+                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+
+
 class TeamFilterForm(forms.Form):
     CHOICES = (
         ('', 'Order By'),
@@ -21,7 +58,7 @@ class TeamFilterForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-            if self.fields[myField]!= 'order':
+            if self.fields[myField] != 'order':
                 self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
                 self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 

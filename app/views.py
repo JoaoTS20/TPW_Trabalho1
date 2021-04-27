@@ -10,7 +10,7 @@ from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
     InsertCompetitionForm, InsertTeamForm, InsertPlayerForm, InsertStaffForm, InsertMatchForm, InsertClubPlaysInForm, \
-    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm
+    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm, PlayerFilterForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff
@@ -215,12 +215,12 @@ def teams(request):
             country = form.cleaned_data['country']
             competition = form.cleaned_data['competition']
             order = form.cleaned_data['order']
+            print('Parameters:')
             print(full_name)
             print(country)
             print(competition)
             print(order)
             if order != '':
-                print("heu")
                 t_parms = {
                     'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
                                                  clubplaysin__competition__full_name__contains=competition).order_by(order),
@@ -290,7 +290,40 @@ def team_details(request, id, season='2020-2021'):
 # Player Related
 
 def players(request):
-    return render(request, 'players.html', {'players': Player.objects.all()})
+    if request.method == 'POST':
+        form = PlayerFilterForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            position = form.cleaned_data['position']
+            nationality = form.cleaned_data['nationality']
+            foot = form.cleaned_data['foot']
+            order = form.cleaned_data['order']
+            print('Parameters:')
+            print(full_name)
+            print(position)
+            print(nationality)
+            print(foot)
+            print(order)
+            if order != '':
+                t_parms = {
+                    'players': Player.objects.filter(name__contains=full_name, position__contains=position,
+                                                 nationality__contains=nationality,best_foot__contains=foot).order_by(order),
+                    'form': PlayerFilterForm()
+                }
+            else:
+                t_parms = {
+                    'players': Player.objects.filter(name__contains=full_name ,position__contains=position,
+                                                   nationality__contains=nationality, best_foot__contains=foot),
+                    'form': PlayerFilterForm()
+                }
+            # return render(request, 'teams.html', t_parms)
+    else:
+        t_parms = {
+            'players': Player.objects.all(),
+            'form': PlayerFilterForm()
+        }
+    return render(request, 'players.html', t_parms)
+
 
 
 def player_details(request, id):
