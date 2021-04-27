@@ -3,7 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django.contrib.auth.models import User
 
-from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches, Match
+from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches, Match, \
+    Competition
 
 
 class TeamFilterForm(forms.Form):
@@ -92,7 +93,7 @@ class InsertTeamForm(forms.ModelForm):
         model = Team
         fields = "__all__"
 
-
+"""
 class InsertCompetitionForm(forms.Form):
     full_name = forms.CharField(max_length=70, label="Full Name")
     file = forms.FileField(label="Image", required=False)
@@ -102,8 +103,9 @@ class InsertCompetitionForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-                self.fields[myField].widget.attrs['class'] = 'form-control'
-                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+"""
 
 
 class InsertMatchForm(forms.ModelForm):
@@ -134,3 +136,10 @@ class InsertCompetitionsMatchesForm(forms.ModelForm):
     class Meta:
         model = CompetitionsMatches
         fields = "__all__"
+
+
+class InsertCompetitionForm(forms.ModelForm):
+    class Meta:
+        model = Competition
+        fields = "__all__"
+

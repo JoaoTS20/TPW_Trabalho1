@@ -402,7 +402,7 @@ def profile(request):
         }
         return render(request, 'profile.html', t_parms)
 
-
+"""
 def insert_competition(request):
     # TODO: inserir autenticação
     if request.method == "POST":
@@ -430,9 +430,47 @@ def insert_competition(request):
     else:
         form = InsertCompetitionForm()
         return render(request, "insert_competition.html", {"form": form})
+"""
 
 
+# TODO: inserir autenticação
 def insert_team(request):
+    if request.method == "POST":
+        form = InsertTeamForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "insert_team.html", {"form": form})
     form = InsertTeamForm()
+    return render(request, "insert_team.html", {"form": form})
+
+
+def insert_staff(request):
+    if request.method == "POST":
+        form = InsertStaffForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "insert_team.html", {"form": form})
+    form = InsertStaffForm()
+    return render(request, "insert_team.html", {"form": form})
+
+
+def insert_player(request):
+    if request.method == "POST":
+        form = InsertPlayerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "insert_team.html", {"form": form})
+    form = InsertPlayerForm()
+    return render(request, "insert_team.html", {"form": form})
+
+
+def insert_competition(request):
+    if request.method == "POST":
+        print(request.FILES)
+        form = InsertCompetitionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "insert_team.html", {"form": form})
+    form = InsertCompetitionForm()
     return render(request, "insert_team.html", {"form": form})
 
