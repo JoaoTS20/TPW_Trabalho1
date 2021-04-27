@@ -46,6 +46,7 @@ class Player(models.Model):
     best_foot = models.CharField(max_length=5, choices=BEST_FOOT)
     preferred_number = models.IntegerField()
     player_img = models.CharField(max_length=100, default="default_player.png")
+    #player_img = models.ImageField(upload_to=playerdir, default="players/default_player.png")
 
     def to_dict(self):
         return {
@@ -66,7 +67,7 @@ class Staff(models.Model):
     nationality = models.CharField(max_length=70)
     function = models.CharField(max_length=70)
     staff_img = models.CharField(max_length=100, default="default_staff.png")
-
+    #staff_img = models.ImageField(upload_to=staffdir, default="staff/default_staff.png")
     def __str__(self):
         return self.full_name
 
@@ -77,6 +78,7 @@ class Team(models.Model):
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
     club_badge_img = models.CharField(max_length=100, default="default_club.png")
+    #club_badge_img = models.ImageField(upload_to=teamdir, default="teams/default_club.png")
     city = models.CharField(max_length=20)
     country = models.CharField(max_length=20)
     players = models.ManyToManyField(Player, through='PlayerPlaysFor')
@@ -100,6 +102,7 @@ class Team(models.Model):
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
     competition_badge_img = models.CharField(max_length=100, default="default_league.png")
+    #competition_badge_img = models.ImageField(upload_to=compdir, default="competitions/default_league.png")
     teams = models.ManyToManyField(Team, through='ClubPlaysIn')
     region = models.CharField(max_length=70)
     """season = models.CharField(max_length=5, validators=[RegexValidator(
