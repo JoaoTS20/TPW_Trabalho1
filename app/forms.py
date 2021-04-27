@@ -83,6 +83,27 @@ class CompetitionFilterForm(forms.Form):
                 self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 
 
+class StaffFilterForm(forms.Form):
+    CHOICES = (
+        ('', 'Order By'),
+        ('function', 'Function'),
+        ('full_name', 'Full Name'),
+        ('birthday','Birthday')
+    )
+    full_name = forms.CharField(label='Search by Name', required=False)
+    nationality = forms.CharField(label='Search by Nationality', required=False)
+    function = forms.CharField(label='Search by Function', required=False)
+    order = forms.ChoiceField(choices=CHOICES, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            if self.fields[myField] != 'order':
+                self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
+                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+
+
 class MakeCommentForm(forms.Form):
     comment = forms.CharField(widget=forms.Textarea, label='Add Comment')
     fields = ('comment')

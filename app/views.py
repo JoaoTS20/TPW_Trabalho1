@@ -11,7 +11,7 @@ from django.urls import reverse
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
     InsertCompetitionForm, InsertTeamForm, InsertPlayerForm, InsertStaffForm, InsertMatchForm, InsertClubPlaysInForm, \
     InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm, PlayerFilterForm, \
-    CompetitionFilterForm
+    CompetitionFilterForm, StaffFilterForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff
@@ -123,7 +123,8 @@ def competitions(request):
             print(order)
             if order != '':
                 t_parms = {
-                    'competitions': Competition.objects.filter(full_name__contains=full_name, region__contains=region).order_by(order),
+                    'competitions': Competition.objects.filter(full_name__contains=full_name,
+                                                               region__contains=region).order_by(order),
                     'form': CompetitionFilterForm()
                 }
             else:
@@ -134,7 +135,7 @@ def competitions(request):
     else:
         t_parms = {
             'competitions': Competition.objects.all(),
-            'form' : CompetitionFilterForm()
+            'form': CompetitionFilterForm()
         }
     return render(request, 'competitions.html', t_parms)
 
@@ -245,7 +246,8 @@ def teams(request):
             if order != '':
                 t_parms = {
                     'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
-                                                 clubplaysin__competition__full_name__contains=competition).order_by(order),
+                                                 clubplaysin__competition__full_name__contains=competition).order_by(
+                        order),
                     'form': TeamFilterForm()
                 }
             else:
@@ -329,13 +331,14 @@ def players(request):
             if order != '':
                 t_parms = {
                     'players': Player.objects.filter(name__contains=full_name, position__contains=position,
-                                                 nationality__contains=nationality,best_foot__contains=foot).order_by(order),
+                                                     nationality__contains=nationality,
+                                                     best_foot__contains=foot).order_by(order),
                     'form': PlayerFilterForm()
                 }
             else:
                 t_parms = {
-                    'players': Player.objects.filter(name__contains=full_name ,position__contains=position,
-                                                   nationality__contains=nationality, best_foot__contains=foot),
+                    'players': Player.objects.filter(name__contains=full_name, position__contains=position,
+                                                     nationality__contains=nationality, best_foot__contains=foot),
                     'form': PlayerFilterForm()
                 }
             # return render(request, 'teams.html', t_parms)
@@ -345,7 +348,6 @@ def players(request):
             'form': PlayerFilterForm()
         }
     return render(request, 'players.html', t_parms)
-
 
 
 def player_details(request, id):
@@ -410,9 +412,34 @@ def player_details(request, id):
 
 # Staff Related
 def staff(request):
-    t_parms = {
-        'staffs': Staff.objects.all(),
-    }
+    if request.method == 'POST':
+        form = StaffFilterForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            nationality = form.cleaned_data['nationality']
+            function = form.cleaned_data['function']
+            order = form.cleaned_data['order']
+            print('Parameters:')
+            print(full_name)
+            print(nationality)
+            print(function)
+            print(order)
+            if order != '':
+                t_parms = {
+                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function, nationality__contains=nationality).order_by(
+                        order),
+                    'form': StaffFilterForm()
+                }
+            else:
+                t_parms = {
+                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function, nationality__contains=nationality),
+                    'form': StaffFilterForm()
+                }
+    else:
+        t_parms = {
+            'staffs': Staff.objects.all(),
+            'form': StaffFilterForm()
+        }
     return render(request, 'staff.html', t_parms)
 
 
