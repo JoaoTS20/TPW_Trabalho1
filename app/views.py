@@ -214,13 +214,15 @@ def teams(request):
             full_name = form.cleaned_data['full_name']
             country = form.cleaned_data['country']
             competition = form.cleaned_data['competition']
-
+            print(full_name)
+            print(country)
+            print(competition)
             t_parms = {
                 'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
                                              clubplaysin__competition__full_name__contains=competition),
                 'form': TeamFilterForm()
             }
-            return render(request, 'teams.html', t_parms)
+            #return render(request, 'teams.html', t_parms)
     else:
         t_parms = {
             'teams': Team.objects.all(),

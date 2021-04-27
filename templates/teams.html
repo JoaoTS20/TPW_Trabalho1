@@ -25,12 +25,11 @@
           <h2>Teams</h2>
           <h3>Check our <span>Teams</span></h3>
           <p>Teams from all over the world with accurate data.</p>
-          <form action="." method="post">
+          <form action="{% url 'teams' %}" method="post">
               {% csrf_token %}
               {{ form }}
-              <input type="submit" value="Search">
+              <button name="search" type="submit" value="search">Search</button>
           </form>
-            <button href="{% url 'teams' %}">Reset</button>
         </div>
 
       <div class="container" data-aos="fade-up">
