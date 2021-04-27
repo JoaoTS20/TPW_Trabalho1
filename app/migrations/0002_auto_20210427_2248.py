@@ -13,13 +13,6 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.CreateModel(
-            name='testImageModel',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('image', models.ImageField(default='teams/default_club.png', upload_to=app.models.testdir)),
-            ],
-        ),
         migrations.AlterField(
             model_name='commentcompetition',
             name='timeofpost',

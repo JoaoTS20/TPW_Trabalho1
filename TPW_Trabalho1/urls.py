@@ -33,6 +33,7 @@ urlpatterns = [
     path('teams/<int:id>', views.team_details, name='team_details'),
     path('teams/<int:id>/<str:season>', views.team_details, name='team_details_season'),
     path('insertteam/', views.insert_team, name='insert_team'),
+    path('editteam/<int:id>/', views.edit_team, name='edit_team'),
 
     path('players/', views.players, name='players'),
     path('players/<int:id>', views.player_details, name='player_details'),

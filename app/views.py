@@ -568,3 +568,16 @@ def insert_competition(request):
     form = InsertCompetitionForm()
     return render(request, "insert_team.html", {"form": form})
 
+
+def edit_team(request, id):
+    if request.method == "POST":
+        form = InsertTeamForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "edit_all.html", {"form": form, "title": "Team"})
+        else:
+            print(form.errors)
+    form = InsertTeamForm(instance=Team.objects.get(id=id))
+    return render(request, "edit_all.html", {"form": form, "title": "Team"})
+
+
