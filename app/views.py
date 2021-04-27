@@ -10,7 +10,8 @@ from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
     InsertCompetitionForm, InsertTeamForm, InsertPlayerForm, InsertStaffForm, InsertMatchForm, InsertClubPlaysInForm, \
-    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm, PlayerFilterForm
+    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm, PlayerFilterForm, \
+    CompetitionFilterForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff
@@ -111,9 +112,30 @@ def match_details(request, id):
 # Competition Related:
 
 def competitions(request):
-    t_parms = {
-        'competitions': Competition.objects.all()
-    }
+    if request.method == 'POST':
+        form = CompetitionFilterForm(request.POST)
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            region = form.cleaned_data['region']
+            order = form.cleaned_data['order']
+            print('Parameters:')
+            print(full_name)
+            print(order)
+            if order != '':
+                t_parms = {
+                    'competitions': Competition.objects.filter(full_name__contains=full_name, region__contains=region).order_by(order),
+                    'form': CompetitionFilterForm()
+                }
+            else:
+                t_parms = {
+                    'competitions': Competition.objects.filter(full_name__contains=full_name, region__contains=region),
+                    'form': CompetitionFilterForm()
+                }
+    else:
+        t_parms = {
+            'competitions': Competition.objects.all(),
+            'form' : CompetitionFilterForm()
+        }
     return render(request, 'competitions.html', t_parms)
 
 

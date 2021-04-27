@@ -26,7 +26,7 @@ class PlayerFilterForm(forms.Form):
         ('Center Back', 'CB-Center Back'),
         ('Goalkeeper', 'GR-Goalkeeper'),
     )
-    BEST_FOOT = (('', 'Best Foot'),('Left', 'L-Left'), ('Right', 'R-Right'), ('Both', 'B-Both'))
+    BEST_FOOT = (('', 'Best Foot'), ('Left', 'L-Left'), ('Right', 'R-Right'), ('Both', 'B-Both'))
 
     full_name = forms.CharField(label='Search by Name', required=False)
     position = forms.ChoiceField(choices=POSITION_CHOICES, required=False)
@@ -38,7 +38,8 @@ class PlayerFilterForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-            if self.fields[myField] != 'order' and self.fields[myField] != 'position' and self.fields[myField] != 'foot':
+            if self.fields[myField] != 'order' and self.fields[myField] != 'position' and self.fields[
+                myField] != 'foot':
                 self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
                 self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 
@@ -52,6 +53,25 @@ class TeamFilterForm(forms.Form):
     full_name = forms.CharField(label='Search by Name', required=False)
     country = forms.CharField(label='Search by Country', required=False)
     competition = forms.CharField(label='Search by Competition', required=False)
+    order = forms.ChoiceField(choices=CHOICES, required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            if self.fields[myField] != 'order':
+                self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
+                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+
+
+class CompetitionFilterForm(forms.Form):
+    CHOICES = (
+        ('', 'Order By'),
+        ('region', 'Region'),
+        ('full_name', 'Full Name'),
+    )
+    full_name = forms.CharField(label='Search by Name', required=False)
+    region = forms.CharField(label='Search by Region', required=False)
     order = forms.ChoiceField(choices=CHOICES, required=False)
 
     def __init__(self, *args, **kwargs):
