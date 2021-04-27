@@ -581,3 +581,39 @@ def edit_team(request, id):
     return render(request, "edit_all.html", {"form": form, "title": "Team"})
 
 
+def edit_staff(request, id):
+    if request.method == "POST":
+        form = InsertStaffForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "edit_all.html", {"form": form, "title": "Staff"})
+        else:
+            print(form.errors)
+    form = InsertStaffForm(instance=Staff.objects.get(id=id))
+    return render(request, "edit_all.html", {"form": form, "title": "Staff"})
+
+
+def edit_player(request, id):
+    if request.method == "POST":
+        form = InsertPlayerForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "edit_all.html", {"form": form, "title": "Player"})
+        else:
+            print(form.errors)
+    form = InsertPlayerForm(instance=Player.objects.get(id=id))
+    return render(request, "edit_all.html", {"form": form, "title": "Player"})
+
+
+def edit_competition(request, id):
+    if request.method == "POST":
+        form = InsertCompetitionForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return render(request, "edit_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+    form = InsertCompetitionForm(instance=Competition.objects.get(id=id))
+    return render(request, "edit_all.html", {"form": form, "title": "Competition"})
+
+
