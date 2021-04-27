@@ -533,9 +533,9 @@ def insert_team(request):
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, "insert_team.html", {"form": form})
+            return render(request, "insert_all.html", {"form": form, "title": "Team"})
     form = InsertTeamForm()
-    return render(request, "insert_team.html", {"form": form})
+    return render(request, "insert_all.html", {"form": form, "title": "Team"})
 
 
 def insert_staff(request):
@@ -543,9 +543,9 @@ def insert_staff(request):
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, "insert_team.html", {"form": form})
+            return render(request, "insert_all.html", {"form": form, "title": "Staff"})
     form = InsertStaffForm()
-    return render(request, "insert_team.html", {"form": form})
+    return render(request, "insert_all.html", {"form": form, "title": "Staff"})
 
 
 def insert_player(request):
@@ -553,9 +553,9 @@ def insert_player(request):
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, "insert_team.html", {"form": form})
+            return render(request, "insert_all.html", {"form": form, "title": "Player"})
     form = InsertPlayerForm()
-    return render(request, "insert_team.html", {"form": form})
+    return render(request, "insert_all.html", {"form": form, "title": "Player"})
 
 
 def insert_competition(request):
@@ -564,9 +564,9 @@ def insert_competition(request):
         form = InsertCompetitionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, "insert_team.html", {"form": form})
+            return render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertCompetitionForm()
-    return render(request, "insert_team.html", {"form": form})
+    return render(request, "insert_all.html", {"form": form, "title": "Competition"})
 
 
 def edit_team(request, id):
