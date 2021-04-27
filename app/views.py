@@ -214,15 +214,25 @@ def teams(request):
             full_name = form.cleaned_data['full_name']
             country = form.cleaned_data['country']
             competition = form.cleaned_data['competition']
+            order = form.cleaned_data['order']
             print(full_name)
             print(country)
             print(competition)
-            t_parms = {
-                'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
-                                             clubplaysin__competition__full_name__contains=competition),
-                'form': TeamFilterForm()
-            }
-            #return render(request, 'teams.html', t_parms)
+            print(order)
+            if order != '':
+                print("heu")
+                t_parms = {
+                    'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
+                                                 clubplaysin__competition__full_name__contains=competition).order_by(order),
+                    'form': TeamFilterForm()
+                }
+            else:
+                t_parms = {
+                    'teams': Team.objects.filter(full_name__contains=full_name, country__contains=country,
+                                                 clubplaysin__competition__full_name__contains=competition),
+                    'form': TeamFilterForm()
+                }
+            # return render(request, 'teams.html', t_parms)
     else:
         t_parms = {
             'teams': Team.objects.all(),
@@ -437,4 +447,3 @@ def insert_competition(request):
 def insert_team(request):
     form = InsertTeamForm()
     return render(request, "insert_team.html", {"form": form})
-

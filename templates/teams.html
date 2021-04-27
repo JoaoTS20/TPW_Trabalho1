@@ -25,14 +25,27 @@
           <h2>Teams</h2>
           <h3>Check our <span>Teams</span></h3>
           <p>Teams from all over the world with accurate data.</p>
-          <form action="{% url 'teams' %}" method="post">
-              {% csrf_token %}
-              {{ form }}
-              <button name="search" type="submit" value="search">Search</button>
-          </form>
         </div>
-
       <div class="container" data-aos="fade-up">
+          <form class="form-row" style="text-align: center" action="{% url 'teams' %}" method="post">
+              <div class="form-group col-md-3">
+              {% csrf_token %}
+              {{ form.full_name }}
+              </div>
+              <div class="form-group col-md-3">
+              {{ form.country }}
+              </div>
+              <div class="form-group col-md-3">
+              {{ form.competition }}
+              </div>
+              <div class="form-group col-md-2">
+              {{ form.order }}
+              </div>
+              <div class="form-group col-md-1">
+              <button class="btn btn-primary" style="background: #106eea;" name="search" type="submit" value="search">Search</button>
+              </div>
+          </form>
+      <hr>
         <div class="row" >
             {% for team in teams %}
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-3">

@@ -7,10 +7,23 @@ from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPla
 
 
 class TeamFilterForm(forms.Form):
+    CHOICES = (
+        ('', 'Order By'),
+        ('founding_year', 'Founding Year'),
+        ('full_name', 'Full Name'),
+    )
+    full_name = forms.CharField(label='Search by Name', required=False)
+    country = forms.CharField(label='Search by Country', required=False)
+    competition = forms.CharField(label='Search by Competition', required=False)
+    order = forms.ChoiceField(choices=CHOICES, required=False)
 
-    full_name = forms.CharField(label='Search by Name:', required=False)
-    country = forms.CharField(label='Search by Country:', required=False)
-    competition = forms.CharField(label='Search by Competition:', required=False)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            if self.fields[myField]!= 'order':
+                self.fields[myField].widget.attrs['class'] = "form-control mb-2 mr-sm-2"
+                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 
 
 class MakeCommentForm(forms.Form):
@@ -87,7 +100,7 @@ class InsertTeamForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-                self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['class'] = 'form-control'
 
     class Meta:
         model = Team
@@ -103,8 +116,8 @@ class InsertCompetitionForm(forms.Form):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-                self.fields[myField].widget.attrs['class'] = 'form-control'
-                self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+            self.fields[myField].widget.attrs['placeholder'] = self.fields[myField].label
 
 
 class InsertMatchForm(forms.ModelForm):
