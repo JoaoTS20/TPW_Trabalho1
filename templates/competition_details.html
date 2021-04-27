@@ -101,18 +101,32 @@
     </div>
         <h2>Matches</h2>
         <hr>
-              <div class="card mb-3">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-sm-3">
-                      <h6 class="mb-0">Full Name</h6>
-                    </div>
-                    <div class="col-sm-9 text-secondary">
-                      Kenneth Valdez
-                    </div>
-                  </div>
-                  <hr>
-                </div>
+              <table class="table table-striped">
+                  <thead>
+                    <tr>
+                      <th style="text-align:center" scope="col">Ngame</th>
+                      <th style="text-align:center" scope="col">Description</th>
+                      <th style="text-align:center" scope="col">Home Team</th>
+                      <th style="text-align:center" scope="col">Away Team</th>
+                      <th style="text-align:center" scope="col">Home Goals</th>
+                      <th style="text-align:center" scope="col">Away Goals</th>
+                      <th style="text-align:center" scope="col">Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                  {% for match in matches %}
+                    <tr>
+                      <th  style="text-align:center" scope="row">{{ match.ngame }}</th>
+                      <td style="text-align:center" >{{ match.description }}</td>
+                      <td style="text-align:center"><a href="{% url 'teams'%}{{ match.home_team.id }}"><img src="{% static match.home_team.club_badge_img %}" style="width: 30px; height: 30px"></a></td>
+                        <td style="text-align:center"><a href="{% url 'teams'%}{{ match.away_team.id }}"><img src="{% static match.away_team.club_badge_img %}" style="width: 30px; height: 30px"></a></td>
+                      <td style="text-align:center">{{ match.home_goals }}</td>
+                      <td style="text-align:center">{{ match.away_goals }}</td>
+                      <td style="text-align:center">{{ match.home_goals }}-{{ match.away_goals }}</td>
+                    </tr>
+                  {% endfor %}
+                  </tbody>
+                </table>
               </div>
     <div class="my-3 p-3 bg-body rounded shadow-sm">
             <h3 class="border-bottom pb-2 mb-0">Comments</h3>
