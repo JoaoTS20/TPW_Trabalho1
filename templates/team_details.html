@@ -28,9 +28,9 @@
                       <form action="{% url 'teams' %}{{ team.id }}" method="post" >
                         {% csrf_token %}
                         {% if favouriteteam %}
-                            <button class="btn btn-primary" name="remove" remove="remove"> Remove Favourite</button>
+                            <button style="background: #106eea;" class="btn btn-primary" name="remove" remove="remove"> Remove Favourite</button>
                         {% else %}
-                            <button class="btn btn-primary" value="add" name="add">Add Favourite</button>
+                            <button style="background: #106eea;" class="btn btn-primary" value="add" name="add">Add Favourite</button>
                         {% endif %}
                       </form>
                       <!--button class="btn btn-outline-primary">Message</button-->
