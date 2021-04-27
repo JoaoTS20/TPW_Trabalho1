@@ -8,7 +8,8 @@ import os
 # Create your views here.
 from django.urls import reverse
 
-from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, InsertCompetition
+from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
+    InsertCompetitionForm, InsertTeamForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
     FavouriteCompetition, CommentStaff
@@ -174,7 +175,8 @@ def competition_details(request, id, season='2020-2021'):
         form = MakeCommentForm(request.POST)
         if form.is_valid():
             comment = form.cleaned_data['comment']
-            CommentCompetition(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,competition=Competition.objects.get(id=id)).save()
+            CommentCompetition(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                               competition=Competition.objects.get(id=id)).save()
             return HttpResponseRedirect(str(id))
 
     if not request.user.is_authenticated or request.user.username == 'admin':
@@ -245,7 +247,8 @@ def team_details(request, id, season='2020-2021'):
         form = MakeCommentForm(request.POST)
         if form.is_valid():
             comment = form.cleaned_data['comment']
-            CommentTeam(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,team=Team.objects.get(id=id)).save()
+            CommentTeam(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                        team=Team.objects.get(id=id)).save()
             return HttpResponseRedirect(str(id))
 
     if not request.user.is_authenticated or request.user.username == 'admin':
@@ -278,7 +281,6 @@ def players(request):
 
 
 def player_details(request, id):
-
     if request.method == 'POST':
         if not request.user.is_authenticated or request.user.username == 'admin':
             return redirect('/login')
@@ -356,7 +358,7 @@ def staff_details(request, id):
         if form.is_valid():
             comment = form.cleaned_data['comment']
             CommentStaff(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
-                          staff=Staff.objects.get(id=id)).save()
+                         staff=Staff.objects.get(id=id)).save()
             return HttpResponseRedirect(str(id))  # render(request, 'player_details.html', t_parms)
     t_parms = {
         'staff': Staff.objects.get(id=id),
@@ -405,7 +407,7 @@ def insert_competition(request):
     if request.method == "POST":
         print("entrou aqui")
         print(request.FILES)
-        form = InsertCompetition(request.POST, request.FILES)
+        form = InsertCompetitionForm(request.POST, request.FILES)
         if form.is_valid():
 
             c = Competition(full_name=form.cleaned_data["full_name"],
@@ -415,16 +417,21 @@ def insert_competition(request):
             # Escrever ficheiro
             f = request.FILES['file']
             with open(os.path.join(django_settings.STATIC_ROOT,
-                                   'img/competitions/'+str(c.id)+"."+f.name.split(".")[1]),'wb+') as destination:
+                                   'img/competitions/' + str(c.id) + "." + f.name.split(".")[1]), 'wb+') as destination:
                 for chunk in f.chunks():
                     destination.write(chunk)
 
-            c.competition_badge_img = str(c.id)+"."+f.name.split(".")[1]
+            c.competition_badge_img = str(c.id) + "." + f.name.split(".")[1]
             c.save()
             return render(request, "insert_competition.html", {"form": form})
         else:
             print(form.errors)
     else:
-        form = InsertCompetition()
+        form = InsertCompetitionForm()
         return render(request, "insert_competition.html", {"form": form})
+
+
+def insert_team(request):
+    form = InsertTeamForm()
+    return render(request, "insert_team.html", {"form": form})
 
