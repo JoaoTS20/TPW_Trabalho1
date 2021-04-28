@@ -107,11 +107,14 @@ def home(request):
 
 
 def match_details(request, id):
-    t_parms = {
-        'match': Match.objects.get(id=id),
-        'comments': CommentMatch.objects.get(match_id=id)
-    }
-    return render(request, 'match_details.html', t_parms)
+    try:
+        t_parms = {
+            'match': Match.objects.get(id=id),
+            'comments': CommentMatch.objects.get(match_id=id)
+        }
+        return render(request, 'match_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Match not Found")
 
 
 # Competition Related:
@@ -233,19 +236,22 @@ def competition_details(request, id, season='2020-2021'):
                 favouritecompetition = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-    t_parms = {
-        'competition': Competition.objects.get(id=id),
-        'table': table,
-        'teams': teams,
-        'favouritecompetition': favouritecompetition,
-        'formComment': MakeCommentForm(),
-        'comments': CommentCompetition.objects.filter(competition_id=id),
-        'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
-        'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct(),
-        'deleteeditbbt': deleteeditbbt
-    }
+    try:
+        t_parms = {
+            'competition': Competition.objects.get(id=id),
+            'table': table,
+            'teams': teams,
+            'favouritecompetition': favouritecompetition,
+            'formComment': MakeCommentForm(),
+            'comments': CommentCompetition.objects.filter(competition_id=id),
+            'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
+            'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct(),
+            'deleteeditbbt': deleteeditbbt
+        }
 
-    return render(request, 'competition_details.html', t_parms)
+        return render(request, 'competition_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Competition not Found")
 
 
 # Team Related
@@ -334,18 +340,21 @@ def team_details(request, id, season='2020-2021'):
                 favouriteteam = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-    t_parms = {
-        'team': Team.objects.get(id=id),
-        'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
-        'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
-        'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
-        'staff': StaffManages.objects.filter(team_id=id),
-        'comments': CommentTeam.objects.filter(team_id=id),
-        'favouriteteam': favouriteteam,
-        'formComment': MakeCommentForm(),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'team_details.html', t_parms)
+    try:
+        t_parms = {
+            'team': Team.objects.get(id=id),
+            'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
+            'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
+            'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
+            'staff': StaffManages.objects.filter(team_id=id),
+            'comments': CommentTeam.objects.filter(team_id=id),
+            'favouriteteam': favouriteteam,
+            'formComment': MakeCommentForm(),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'team_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Team not Found")
 
 
 # Player Related
@@ -435,18 +444,20 @@ def player_details(request, id):
                 favouriteplayer = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-
-    t_parms = {
-        'player': Player.objects.get(id=id),
-        'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),  # TODO: Encontrar melhor solução
-        'season': PlayerPlaysFor.objects.filter(player_id=id),
-        'comments': CommentPlayer.objects.filter(player_id=id),
-        'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
-        'favouriteplayer': favouriteplayer,
-        'formComment': MakeCommentForm(),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'player_details.html', t_parms)
+    try:
+        t_parms = {
+            'player': Player.objects.get(id=id),
+            'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),  # TODO: Encontrar melhor solução
+            'season': PlayerPlaysFor.objects.filter(player_id=id),
+            'comments': CommentPlayer.objects.filter(player_id=id),
+            'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
+            'favouriteplayer': favouriteplayer,
+            'formComment': MakeCommentForm(),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'player_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Player not Found")
 
 
 # Staff Related
@@ -510,17 +521,19 @@ def staff_details(request, id):
         deleteeditbbt = True
     else:
         deleteeditbbt = False
-
-    t_parms = {
-        'staff': Staff.objects.get(id=id),
-        'teams': Team.objects.filter(staffmanages__staff_id=id),
-        'seasons': StaffManages.objects.filter(staff_id=id),
-        'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
-        'formComment': MakeCommentForm(),
-        'comments': CommentStaff.objects.filter(staff_id=id),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'staff_details.html', t_parms)
+    try:
+        t_parms = {
+            'staff': Staff.objects.get(id=id),
+            'teams': Team.objects.filter(staffmanages__staff_id=id),
+            'seasons': StaffManages.objects.filter(staff_id=id),
+            'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
+            'formComment': MakeCommentForm(),
+            'comments': CommentStaff.objects.filter(staff_id=id),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'staff_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Staff not Found")
 
 
 # User Related
