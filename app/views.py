@@ -384,9 +384,10 @@ def player_details(request, id):
 
     if not request.user.is_authenticated:
         favouriteplayer = False
+        deleteeditbbt = False
     else:
         if request.user.username == 'admin':
-            deletebbt=True
+            deleteeditbbt=True
             favouriteplayer = False
         else:
             normal = NormalUser.objects.get(user__username=request.user.username)
@@ -396,7 +397,7 @@ def player_details(request, id):
             else:
                 favouriteplayer = False
                 print("Não está nos Favoritos")
-            deletebbt = False
+            deleteeditbbt = False
 
     t_parms = {
         'player': Player.objects.get(id=id),
@@ -406,7 +407,7 @@ def player_details(request, id):
         'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
         'favouriteplayer': favouriteplayer,
         'formComment': MakeCommentForm(),
-        'deletebbt': deletebbt
+        'deleteeditbbt': deleteeditbbt
     }
     return render(request, 'player_details.html', t_parms)
 
