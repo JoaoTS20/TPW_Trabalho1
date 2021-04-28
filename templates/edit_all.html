@@ -1,9 +1,17 @@
 {% extends 'layout.html' %}
 {% block content %}
     <h1>Edit {{ title }}</h1>
-    <form action="." method="post" enctype="multipart/form-data">
+    <hr>
+    <form class="form-row"  action="." method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
+        {% for field in form %}
+        <div class="form-group col-md-6">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        </div>
+        {% endfor %}
+        <div class="form-group col-md-8">
+        <button style="background: #106eea;font-size: 15px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg" value="Submit">Edit</button>
+        </div>
     </form>
 {% endblock %}

@@ -2,6 +2,7 @@
 {% extends 'layout.html' %}
 {% load static %}
 
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -42,7 +43,7 @@
            {% for player in players %}
           <div class="col-md-6 col-lg-2 d-flex align-items-stretch mb-5 mb-lg-3">
             <div class="d-flex flex-column align-items-center text-center">
-                <img src="{% static player.player_img %}" alt="stockfoto" class="rounded-circle" width="160" height="160">
+                <img src="{% static 'img/' %}{{ player.player_img.url }}" alt="stockfoto" class="rounded-circle" width="160" height="160">
                 <div class="mt-3">
                     <h4><a href="{{ player.id }}">{{ player.name }}</a></h4>
                 </div>

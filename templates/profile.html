@@ -11,11 +11,25 @@
 <body>
 {% block content %}
     <section id="services" class="services" >
-        <div class="section-title">
+        <div class="section-title" >
           <h2>Profile</h2>
           <h3>Hello <span>{{ userInfo.user.username}}</span></h3>
-          <p>Competitions from all over the world with accurate data.</p>
         </div>
+        <h2 align="center"> My Area</h2>
+        <hr>
+        <br>
+    <div class="container" data-aos="fade-up">
+
+    <ul class="list-group col-md-3">
+        <h2 align="center">Insert</h2>
+      <li class="list-group-item"><a href="{% url 'insert_player' %}">Insert Player</a></li>
+      <li class="list-group-item"><a href="{% url 'insert_competition' %}">Insert Competition</a></li>
+      <li class="list-group-item"><a href="{% url 'insert_staff' %}">Insert Staff</a></li>
+      <li class="list-group-item"><a href="{% url 'insert_team' %}">Insert Team</a></li>
+    </ul>
+    <br>
+
+    </div>
       <div class="container" data-aos="fade-up">
         <h2> Favourite Teams</h2>
           <hr>

@@ -7,11 +7,19 @@
 </head>
 <body>
 {% block content %}
-    <h1>Insert {{ title }}</h1>
-    <form action="." method="post" enctype="multipart/form-data">
+    <h1 style="padding-top: 30px">Insert {{ title }}</h1>
+    <hr>
+    <form class="form-row"  action="." method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {{ form }}
-        <input type="submit" value="Submit">
+        {% for field in form %}
+        <div class="form-group col-md-6">
+        <label>{{ field.label }}</label>
+        {{ field }}
+        </div>
+        {% endfor %}
+        <div class="form-group col-md-8">
+        <button style="background: #106eea;font-size: 15px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg" value="Submit">Insert</button>
+        </div>
     </form>
 {% endblock %}
 </body>
