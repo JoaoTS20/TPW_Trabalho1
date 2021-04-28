@@ -66,7 +66,6 @@ class Staff(models.Model):
     nationality = models.CharField(max_length=70)
     function = models.CharField(max_length=70)
     staff_img = models.ImageField(upload_to=staffdir, default="staff/default_staff.png")
-
     def __str__(self):
         return self.full_name
 

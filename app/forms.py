@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
 from django.contrib.auth.models import User
-
+from django.core.validators import RegexValidator
 from app.models import Team, Player, Staff, ClubPlaysIn, StaffManages, PlayerPlaysFor, CompetitionsMatches, Match, \
     Competition
 
@@ -217,6 +217,12 @@ class InsertCompetitionForm(forms.Form):
 
 
 class InsertMatchForm(forms.ModelForm):
+    season = forms.CharField(max_length=9, validators=[RegexValidator(
+        regex='[0-9]{4}-[0-9]{4}',
+        message='Season must follow the format year-year',
+        code='invalid_season'
+    )])
+
     class Meta:
         model = Match
         fields = "__all__"
@@ -255,18 +261,6 @@ class InsertStaffManagesForm(forms.ModelForm):
 class InsertPlayerPlaysForForm(forms.ModelForm):
     class Meta:
         model = PlayerPlaysFor
-        fields = "__all__"
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        for myField in self.fields:
-            self.fields[myField].widget.attrs['class'] = 'form-control'
-
-
-class InsertCompetitionsMatchesForm(forms.ModelForm):
-    class Meta:
-        model = CompetitionsMatches
         fields = "__all__"
 
     def __init__(self, *args, **kwargs):
