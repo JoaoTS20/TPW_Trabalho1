@@ -162,7 +162,6 @@ class SignUpForm(UserCreationForm):
 
 
 class InsertPlayerForm(forms.ModelForm):
-
     class Meta:
         model = Player
         fields = "__all__"
@@ -171,7 +170,8 @@ class InsertPlayerForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-            self.fields[myField].widget.attrs['class'] = 'form-control'
+            if self.fields[myField].label != 'Player img':
+                self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
 class InsertStaffForm(forms.ModelForm):
@@ -179,11 +179,18 @@ class InsertStaffForm(forms.ModelForm):
         model = Staff
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+
 
 class InsertTeamForm(forms.ModelForm):
     # specify the name of model to use
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
 
         for myField in self.fields:
             self.fields[myField].widget.attrs['class'] = 'form-control'
@@ -191,6 +198,7 @@ class InsertTeamForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = "__all__"
+        exclude = ['players']
 
 
 """
@@ -213,11 +221,23 @@ class InsertMatchForm(forms.ModelForm):
         model = Match
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+
 
 class InsertClubPlaysInForm(forms.ModelForm):
     class Meta:
         model = ClubPlaysIn
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
 class InsertStaffManagesForm(forms.ModelForm):
@@ -225,11 +245,23 @@ class InsertStaffManagesForm(forms.ModelForm):
         model = StaffManages
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+
 
 class InsertPlayerPlaysForForm(forms.ModelForm):
     class Meta:
         model = PlayerPlaysFor
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
 class InsertCompetitionsMatchesForm(forms.ModelForm):
@@ -237,8 +269,20 @@ class InsertCompetitionsMatchesForm(forms.ModelForm):
         model = CompetitionsMatches
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
+
 
 class InsertCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'

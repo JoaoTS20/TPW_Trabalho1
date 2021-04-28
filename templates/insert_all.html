@@ -9,15 +9,17 @@
 {% block content %}
     <h1 style="padding-top: 30px">Insert {{ title }}</h1>
     <hr>
-    <form action="." method="post" enctype="multipart/form-data">
+    <form class="form-row"  action="." method="post" enctype="multipart/form-data">
         {% csrf_token %}
         {% for field in form %}
-        <div class="form-group col-md-8">
+        <div class="form-group col-md-6">
         <label>{{ field.label }}</label>
         {{ field }}
         </div>
         {% endfor %}
-        <input type="submit" value="Submit">
+        <div class="form-group col-md-8">
+        <button style="background: #106eea;font-size: 15px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg" value="Submit">Insert</button>
+        </div>
     </form>
 {% endblock %}
 </body>

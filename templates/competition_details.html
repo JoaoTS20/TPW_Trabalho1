@@ -16,7 +16,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{% static competition.competition_badge_img %}" alt="Admin" class="center" style="width: 200px; height: 200px">
+                    <img src="{% static 'img/' %}{{ competition.competition_badge_img.url }}" alt="Admin" class="center" style="width: 200px; height: 200px">
                     <div class="mt-3">
                       <h4>{{ competition.full_name }}</h4>
                       <form action="{% url 'competitions' %}{{ competition.id }}" method="post" >

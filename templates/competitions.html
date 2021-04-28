@@ -30,7 +30,7 @@
             {% for competition in competitions %}
           <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4" data-aos="zoom-in" data-aos-delay="100">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-                <a href="{{ competition.id }}"><img class="center"  style="width: 250px; height: 250px" src="{% static competition.competition_badge_img %}"></a>
+                <a href="{{ competition.id }}"><img class="center"  style="width: 250px; height: 250px" src="{% static 'img/' %}{{ competition.competition_badge_img.url }}"></a>
             </div>
           </div>
             {% endfor %}
