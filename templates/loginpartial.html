@@ -1,9 +1,10 @@
 {% load static %}
 {% if user.is_authenticated %}
 
+<li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
+
 <form id="logoutForm" action="/logout" method="get" class="form-inline my-2 my-lg-0">
     {% csrf_token %}
-    <li><a href="{% url 'profile' %}">{{ user.username }}</a></li>
     <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fas fa-sign-out-alt"></i></a></li>
 </form>
 

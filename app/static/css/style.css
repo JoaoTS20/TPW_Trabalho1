@@ -1,10 +1,3 @@
-/**
-* Template Name: BizLand - v1.2.1
-* Template URL: https://bootstrapmade.com/bizland-bootstrap-business-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
-*/
-
 /*--------------------------------------------------------------
 # General
 --------------------------------------------------------------*/
@@ -447,8 +440,7 @@ h1, h2, h3, h4, h5, h6 {
 --------------------------------------------------------------*/
 #hero {
   width: 100%;
-  height: 75vh;
-  background: url("../../../../../../../../Downloads/BizLand-bootstrap-4/BizLand/assets/img/hero-bg.jpg") top left;
+  height: 35vh;
   background-size: cover;
   position: relative;
 }
@@ -465,12 +457,12 @@ h1, h2, h3, h4, h5, h6 {
 
 #hero .container {
   position: relative;
-  padding-top: 132px;
+  padding-top: 0px;
 }
 
 @media (max-width: 992px) {
   #hero .container {
-    padding-top: 58px;
+    padding-top: 0px;
   }
 }
 
@@ -512,63 +504,15 @@ h1, h2, h3, h4, h5, h6 {
   background: #247cf0;
 }
 
-#hero .btn-watch-video {
-  font-size: 16px;
-  display: inline-block;
-  padding: 10px 25px 8px 40px;
-  transition: 0.5s;
-  margin-left: 25px;
-  color: #222222;
-  position: relative;
-  font-weight: 600;
-}
 
-#hero .btn-watch-video i {
-  color: #106eea;
-  font-size: 32px;
-  position: absolute;
-  left: 0;
-  top: 7px;
-  transition: 0.3s;
-}
 
-#hero .btn-watch-video:hover {
-  color: #106eea;
-}
 
-#hero .btn-watch-video:hover i {
-  color: #3b8af2;
-}
 
-@media (min-width: 1024px) {
-  #hero {
-    background-attachment: fixed;
-  }
-}
 
-@media (max-width: 768px) {
-  #hero {
-    height: 100vh;
-  }
-  #hero h1 {
-    font-size: 28px;
-    line-height: 36px;
-  }
-  #hero h2 {
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 30px;
-  }
-  #hero .btn-get-started, #hero .btn-watch-video {
-    font-size: 13px;
-  }
-}
 
-@media (max-height: 500px) {
-  #hero {
-    height: 120vh;
-  }
-}
+
+
+
 
 /*--------------------------------------------------------------
 # Sections General
