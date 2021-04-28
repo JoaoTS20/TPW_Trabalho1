@@ -21,6 +21,14 @@
         <button style="background: #106eea;font-size: 15px; font-weight: bolder;" type="submit" class="btn btn-primary btn-lg" value="Submit">Insert</button>
         </div>
     </form>
+    <div>
+    {% for field,errors in form.errors.items %}
+        {% for e in errors %}
+            <p>{{ e }}</p>
+        {% endfor %}
+    {% endfor %}
+    <p>{{ error }}</p>
+    </div>
 {% endblock %}
 </body>
 </html>
