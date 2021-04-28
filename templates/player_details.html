@@ -29,6 +29,9 @@
                         {% else %}
                             <button style="background: #106eea;" class="btn btn-primary" value="add" name="add">Add Favourite</button>
                         {% endif %}
+                        {% if deletebbt %}
+                            <button class="btn btn-danger" value="delete" name="delete">Delete</button>
+                        {% endif %}
                       </form>
                       <!--button class="btn btn-outline-primary">Message</button-->
                     </div>
