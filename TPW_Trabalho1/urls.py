@@ -29,12 +29,14 @@ urlpatterns = [
     path('competitions/<int:id>/<str:season>', views.competition_details, name='competition_details_season'),
     path('insertcompetition/', views.insert_competition, name='insert_competition'),
     path('editcompetition/<int:id>/', views.edit_competition, name='edit_competition'),
+    path('insertteamincompetition/<int:compid>/<str:season>/', views.insert_team_in_competition, name='insert_team_in_competition'),
 
     path('teams/', views.teams, name='teams'),
     path('teams/<int:id>', views.team_details, name='team_details'),
     path('teams/<int:id>/<str:season>', views.team_details, name='team_details_season'),
     path('insertteam/', views.insert_team, name='insert_team'),
     path('editteam/<int:id>/', views.edit_team, name='edit_team'),
+    path('insertplayerinteam/<int:teamid>/', views.insert_player_in_team, name='insert_player_in_team'),
 
     path('players/', views.players, name='players'),
     path('players/<int:id>', views.player_details, name='player_details'),
@@ -45,6 +47,8 @@ urlpatterns = [
     path('staff/<int:id>', views.staff_details, name='staff_details'),
     path('insertstaff/', views.insert_staff, name='insert_staff'),
     path('editstaff/<int:id>/', views.edit_staff, name='edit_staff'),
+    path('insertstaffinteam/<int:teamid>/', views.insert_staff_in_team, name='insert_staff_in_team'),
+
 
     path('match/<int:id>',views.match_details, name='match_details'),
     path('insertmatch/',views.insert_match, name='insert_match'),

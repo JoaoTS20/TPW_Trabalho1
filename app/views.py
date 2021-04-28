@@ -602,6 +602,43 @@ def insert_match(request):
     return render(request, "insert_all.html", {"form": form, "title": "Match"})
 
 
+def insert_team_in_competition(request, compid, season):
+    print(season)
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertClubPlaysInForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+    form = InsertClubPlaysInForm(initial={"competition": Competition.objects.get(id=compid)})
+    return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
+
+
+def insert_player_in_team(request, teamid):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertPlayerPlaysForForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+    form = InsertPlayerPlaysForForm(initial={"team": Team.objects.get(id=teamid)})
+    return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
+
+
+def insert_staff_in_team(request, teamid):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertStaffManagesForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+    form = InsertStaffManagesForm(initial={"team": Team.objects.get(id=teamid)})
+    return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})
+
+
 def edit_team(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
@@ -664,6 +701,7 @@ def edit_match(request,id):
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
+            cm = CompetitionsMatches.objects.get(match_id=id)
             match = form.save(commit=False)
             season = form.cleaned_data["season"]
 
@@ -676,7 +714,9 @@ def edit_match(request,id):
                 return
 
             match.save()
-            cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
+            cm.competition = match.competition
+            cm.match = match
+            cm.season = form.cleaned_data["season"]
             cm.save()
             return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
     season = CompetitionsMatches.objects.get(match_id=id).season
