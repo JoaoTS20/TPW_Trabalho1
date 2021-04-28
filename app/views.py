@@ -10,7 +10,7 @@ from django.urls import reverse
 
 from app.forms import TeamFilterForm, SignUpForm, MakeCommentForm, FavouriteForm, \
     InsertCompetitionForm, InsertTeamForm, InsertPlayerForm, InsertStaffForm, InsertMatchForm, InsertClubPlaysInForm, \
-    InsertStaffManagesForm, InsertPlayerPlaysForForm, InsertCompetitionsMatchesForm, PlayerFilterForm, \
+    InsertStaffManagesForm, InsertPlayerPlaysForForm, PlayerFilterForm, \
     CompetitionFilterForm, StaffFilterForm
 from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, FavouriteTeam, Player, CommentCompetition, \
     Match, CommentPlayer, CommentMatch, PlayerPlaysFor, CompetitionsMatches, StaffManages, FavouritePlayer, CommentTeam, \
@@ -577,6 +577,31 @@ def insert_competition(request):
     return render(request, "insert_all.html", {"form": form, "title": "Competition"})
 
 
+def insert_match(request):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertMatchForm(request.POST)
+        if form.is_valid():
+            match = form.save(commit=False)
+            season = form.cleaned_data["season"]
+
+            home_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.home_team, season=season)
+            away_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.away_team, season=season)
+
+            if len(home_team) < 0 or len(away_team) < 0:
+                print("jogo inválido")
+                # página de erro talvez?
+                return
+
+            match.save()
+            cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
+            cm.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+    form = InsertMatchForm()
+    return render(request, "insert_all.html", {"form": form, "title": "Match"})
+
+
 def edit_team(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
@@ -631,5 +656,31 @@ def edit_competition(request, id):
             print(form.errors)
     form = InsertCompetitionForm(instance=Competition.objects.get(id=id))
     return render(request, "edit_all.html", {"form": form, "title": "Competition"})
+
+
+def edit_match(request,id):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertMatchForm(request.POST)
+        if form.is_valid():
+            match = form.save(commit=False)
+            season = form.cleaned_data["season"]
+
+            home_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.home_team, season=season)
+            away_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.away_team, season=season)
+
+            if len(home_team) < 0 or len(away_team) < 0:
+                print("jogo inválido")
+                #página de erro talvez?
+                return
+
+            match.save()
+            cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
+            cm.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+    season = CompetitionsMatches.objects.get(match_id=id).season
+    form = InsertMatchForm(instance=Match.objects.get(id=id), season=season)
+    return render(request, "edit_all.html", {"form": form, "title": "Match"})
 
 

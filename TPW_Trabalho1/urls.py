@@ -47,6 +47,7 @@ urlpatterns = [
     path('editstaff/<int:id>/', views.edit_staff, name='edit_staff'),
 
     path('match/<int:id>',views.match_details, name='match_details'),
+    path('insertmatch/',views.insert_match, name='insert_match'),
 
     path('layoutest/', views.test, name='teste'),
 
