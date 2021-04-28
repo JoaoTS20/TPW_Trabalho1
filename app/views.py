@@ -18,6 +18,10 @@ from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, Favour
     FavouriteCompetition, CommentStaff
 
 
+def error_render(request,code,desc):
+    return render(request, "error.html", {"code": code, "desc": desc})
+
+
 def test(request):
     t1 = Team(full_name="Futebol Clube do Porto",
               name="FC Porto",
@@ -597,8 +601,10 @@ def insert_team(request):
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('teams'))  # return render(request, "insert_all.html", {"form": form, "title": "Team"})
+            return redirect(reverse('teams'))#return render(request, "insert_all.html", {"form": form, "title": "Team"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
     form = InsertTeamForm()
     return render(request, "insert_all.html", {"form": form, "title": "Team"})
 
@@ -610,8 +616,10 @@ def insert_staff(request):
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('staff'))  # return render(request, "insert_all.html", {"form": form, "title": "Staff"})
+            return redirect(reverse('staff'))#return render(request, "insert_all.html", {"form": form, "title": "Staff"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
     form = InsertStaffForm()
     return render(request, "insert_all.html", {"form": form, "title": "Staff"})
 
@@ -623,7 +631,10 @@ def insert_player(request):
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('players'))  # render(request, "insert_all.html", {"form": form, "title": "Player"})
+            return redirect(reverse('players')) #render(request, "insert_all.html", {"form": form, "title": "Player"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
     form = InsertPlayerForm()
     return render(request, "insert_all.html", {"form": form, "title": "Player"})
 
@@ -636,8 +647,10 @@ def insert_competition(request):
         form = InsertCompetitionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
     form = InsertCompetitionForm()
     return render(request, "insert_all.html", {"form": form, "title": "Competition"})
 
@@ -662,24 +675,31 @@ def insert_match(request):
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     form = InsertMatchForm()
     return render(request, "insert_all.html", {"form": form, "title": "Match"})
 
 
 def insert_team_in_competition(request, compid, season):
-    print(season)
     if not request.user.is_authenticated:
         return redirect('/login')
     if request.method == "POST":
         form = InsertClubPlaysInForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
-    form = InsertClubPlaysInForm(initial={"competition": Competition.objects.get(id=compid)})
-    return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
+    try:
+        competition = Competition.objects.get(id=compid)
+        form = InsertClubPlaysInForm(initial={"competition": competition, "season":season})
+        return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
+    except:
+        return error_render(request, 404, "Invalid Team to add staff too")
 
 
 def insert_player_in_team(request, teamid):
@@ -689,10 +709,16 @@ def insert_player_in_team(request, teamid):
         form = InsertPlayerPlaysForForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
-    form = InsertPlayerPlaysForForm(initial={"team": Team.objects.get(id=teamid)})
-    return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
+    try:
+        team = Team.objects.get(id=teamid)
+        form = InsertPlayerPlaysForForm(initial={"team": team})
+        return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
+    except:
+        return error_render(request, 404, "Invalid Team to add staff to")
 
 
 def insert_staff_in_team(request, teamid):
@@ -702,10 +728,16 @@ def insert_staff_in_team(request, teamid):
         form = InsertStaffManagesForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
-    form = InsertStaffManagesForm(initial={"team": Team.objects.get(id=teamid)})
-    return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return error_render(request, 201, "Invalid Form "+form.errors)
+    try:
+        team = Team.objects.get(id=teamid)
+        form = InsertStaffManagesForm(initial={"team": team})
+        return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})
+    except:
+        return error_render(request, 404, "Invalid Team to add staff too")
 
 
 def edit_team(request, id):
@@ -719,8 +751,13 @@ def edit_team(request, id):
                             str(id))  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
-    form = InsertTeamForm(instance=Team.objects.get(id=id))
-    return render(request, "edit_all.html", {"form": form, "title": "Team"})
+            return error_render(request, 201, "Invalid Form "+form.errors)
+    try:
+        team = Team.objects.get(id=id)
+        form = InsertTeamForm(instance=team)
+        return render(request, "edit_all.html", {"form": form, "title": "Team"})
+    except:
+        return error_render(request, 404, "Invalid team to edit")
 
 
 def edit_staff(request, id):
@@ -734,8 +771,13 @@ def edit_staff(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
-    form = InsertStaffForm(instance=Staff.objects.get(id=id))
-    return render(request, "edit_all.html", {"form": form, "title": "Staff"})
+            return error_render(request, 201, "Invalid Form " + form.errors)
+    try:
+        staff = Staff.objects.get(id=id)
+        form = InsertStaffForm(instance=staff)
+        return render(request, "edit_all.html", {"form": form, "title": "Staff"})
+    except:
+        return error_render(request, 404, "Staff not Found")
 
 
 def edit_player(request, id):
@@ -749,8 +791,13 @@ def edit_player(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Player"})
         else:
             print(form.errors)
-    form = InsertPlayerForm(instance=Player.objects.get(id=id))
-    return render(request, "edit_all.html", {"form": form, "title": "Player"})
+            return error_render(request, 201, "Invalid Form " + form.errors)
+    try:
+        player = Player.objects.get(id=id)
+        form = InsertPlayerForm(instance=player)
+        return render(request, "edit_all.html", {"form": form, "title": "Player"})
+    except:
+        return error_render(request, 404, "Player not Found")
 
 
 def edit_competition(request, id):
@@ -764,9 +811,13 @@ def edit_competition(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-    form = InsertCompetitionForm(instance=Competition.objects.get(id=id))
-    return render(request, "edit_all.html", {"form": form, "title": "Competition"})
-
+            return error_render(request, 201, "Invalid Form " + form.errors)
+    try:
+        comp = Competition.objects.get(id=id)
+        form = InsertCompetitionForm(instance=comp)
+        return render(request, "edit_all.html", {"form": form, "title": "Competition"})
+    except:
+        return error_render(request, 404, "Competition not Found")
 
 def edit_match(request, id):
     if not request.user.is_authenticated:
@@ -783,16 +834,23 @@ def edit_match(request, id):
 
             if len(home_team) < 0 or len(away_team) < 0:
                 print("jogo inválido")
-                # página de erro talvez?
-                return
+                #página de erro talvez?
+                return error_render(request, 202, "Invalid Team it isn't in this competition")
 
             match.save()
             cm.competition = match.competition
             cm.match = match
             cm.season = form.cleaned_data["season"]
             cm.save()
-            return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
-    season = CompetitionsMatches.objects.get(match_id=id).season
-    form = InsertMatchForm(instance=Match.objects.get(id=id), season=season)
-    return render(request, "edit_all.html", {"form": form, "title": "Match"})
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            return error_render(request, 201, "Invalid Form " + form.errors)
+    try:
+        match = Match.objects.get(id=id)
+        season = CompetitionsMatches.objects.get(match_id=id).season
+        form = InsertMatchForm(instance=match, season=season)
+        return render(request, "edit_all.html", {"form": form, "title": "Match"})
+    except:
+        return error_render(request, 404, "Match not Found")
+
+
