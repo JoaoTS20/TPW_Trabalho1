@@ -11,10 +11,17 @@
 <body>
 {% block content %}
     <section id="services" class="services" >
+    {% if check %}
         <div class="section-title" >
           <h2>Profile</h2>
           <h3>Hello <span>{{ userInfo.user.username}}</span></h3>
         </div>
+    {% else %}
+        <div class="section-title" >
+          <h2>Profile</h2>
+          <h3>Hello <span>{{ userInfo.username}}</span></h3>
+        </div>
+    {% endif %}
         <h2 align="center"> My Area</h2>
         <hr>
         <br>
@@ -30,6 +37,7 @@
     <br>
 
     </div>
+    {% if check %}
       <div class="container" data-aos="fade-up">
         <h2> Favourite Teams</h2>
           <hr>
@@ -100,6 +108,7 @@
           </tbody>
         </table>
       </div>
+    {% endif %}
     </section>
 
 {% endblock %}

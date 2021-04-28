@@ -1,4 +1,5 @@
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 import datetime
@@ -391,7 +392,7 @@ def player_details(request, id):
         deleteeditbbt = False
     else:
         if request.user.username == 'admin':
-            deleteeditbbt=True
+            deleteeditbbt = True
             favouriteplayer = False
         else:
             normal = NormalUser.objects.get(user__username=request.user.username)
@@ -432,13 +433,15 @@ def staff(request):
             print(order)
             if order != '':
                 t_parms = {
-                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function, nationality__contains=nationality).order_by(
+                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function,
+                                                   nationality__contains=nationality).order_by(
                         order),
                     'form': StaffFilterForm()
                 }
             else:
                 t_parms = {
-                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function, nationality__contains=nationality),
+                    'staffs': Staff.objects.filter(full_name__contains=full_name, function__contains=function,
+                                                   nationality__contains=nationality),
                     'form': StaffFilterForm()
                 }
     else:
@@ -494,13 +497,21 @@ def profile(request):
     if not request.user.is_authenticated:
         return redirect('/login')
     else:
-        t_parms = {
-            'userInfo': NormalUser.objects.get(user__username=request.user.username),
-            'favouriteTeams': Team.objects.filter(favouriteteam__user__user_id=request.user.id),
-            'favouritePlayers': Player.objects.filter(favouriteplayer__user__user_id=request.user.id),
-            'favouriteCompetition': Competition.objects.filter(favouritecompetition__user__user_id=request.user.id)
-        }
+        if request.user.username == 'admin':
+            t_parms = {
+                'userInfo': User.objects.get(username=request.user.username),
+                'check': False
+            }
+        else:
+            t_parms = {
+                'userInfo': NormalUser.objects.get(user__username=request.user.username),
+                'favouriteTeams': Team.objects.filter(favouriteteam__user__user_id=request.user.id),
+                'favouritePlayers': Player.objects.filter(favouriteplayer__user__user_id=request.user.id),
+                'favouriteCompetition': Competition.objects.filter(favouritecompetition__user__user_id=request.user.id),
+                'check': True
+            }
         return render(request, 'profile.html', t_parms)
+
 
 """
 def insert_competition(request):
@@ -684,10 +695,11 @@ def edit_team(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
     if request.method == "POST":
-        form = InsertTeamForm(request.POST, request.FILES,instance=Team.objects.get(id=id))
+        form = InsertTeamForm(request.POST, request.FILES, instance=Team.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect(reverse('team_details'),args=id)#return render(request, "edit_all.html", {"form": form, "title": "Team"})
+            return redirect(reverse('team_details'),
+                            args=id)  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
             return error_render(request, 201, "Invalid Form "+form.errors)
@@ -703,10 +715,11 @@ def edit_staff(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
     if request.method == "POST":
-        form = InsertStaffForm(request.POST, request.FILES,instance=Staff.objects.get(id=id))
+        form = InsertStaffForm(request.POST, request.FILES, instance=Staff.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect(reverse('staff_details'),args=id) #render(request, "edit_all.html", {"form": form, "title": "Staff"})
+            return redirect(reverse('staff_details'),
+                            args=id)  # render(request, "edit_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
             return error_render(request, 201, "Invalid Form " + form.errors)
@@ -725,7 +738,8 @@ def edit_player(request, id):
         form = InsertPlayerForm(request.POST, request.FILES, instance=Player.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect('player_details',str(id)) #render(request, "edit_all.html", {"form": form, "title": "Player"})
+            return redirect('player_details',
+                            str(id))  # render(request, "edit_all.html", {"form": form, "title": "Player"})
         else:
             print(form.errors)
             return error_render(request, 201, "Invalid Form " + form.errors)
@@ -744,7 +758,8 @@ def edit_competition(request, id):
         form = InsertCompetitionForm(request.POST, request.FILES, instance=Competition.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect('competition_details',str(id)) #render(request, "edit_all.html", {"form": form, "title": "Competition"})
+            return redirect('competition_details',
+                            str(id))  # render(request, "edit_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return error_render(request, 201, "Invalid Form " + form.errors)
