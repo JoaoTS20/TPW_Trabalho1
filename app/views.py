@@ -713,8 +713,6 @@ def edit_competition(request, id):
             print(form.errors)
     form = InsertCompetitionForm(instance=Competition.objects.get(id=id))
     return render(request, "edit_all.html", {"form": form, "title": "Competition"})
-<<<<<<< HEAD
-=======
 
 
 def edit_match(request,id):
@@ -746,4 +744,3 @@ def edit_match(request,id):
     return render(request, "edit_all.html", {"form": form, "title": "Match"})
 
 
->>>>>>> 12baa0483dfae2965bb47cef5ebf76ece9180127
