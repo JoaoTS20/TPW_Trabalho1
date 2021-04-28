@@ -89,7 +89,7 @@ class StaffFilterForm(forms.Form):
         ('', 'Order By'),
         ('function', 'Function'),
         ('full_name', 'Full Name'),
-        ('birthday','Birthday')
+        ('birthday', 'Birthday')
     )
     full_name = forms.CharField(label='Search by Name', required=False)
     nationality = forms.CharField(label='Search by Nationality', required=False)
@@ -162,9 +162,16 @@ class SignUpForm(UserCreationForm):
 
 
 class InsertPlayerForm(forms.ModelForm):
+
     class Meta:
         model = Player
         fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for myField in self.fields:
+            self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
 class InsertStaffForm(forms.ModelForm):
@@ -184,6 +191,7 @@ class InsertTeamForm(forms.ModelForm):
     class Meta:
         model = Team
         fields = "__all__"
+
 
 """
 class InsertCompetitionForm(forms.Form):
@@ -234,4 +242,3 @@ class InsertCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = "__all__"
-

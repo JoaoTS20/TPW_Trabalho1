@@ -553,7 +553,7 @@ def insert_player(request):
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, "insert_all.html", {"form": form, "title": "Player"})
+            return redirect(reverse('players')) #render(request, "insert_all.html", {"form": form, "title": "Player"})
     form = InsertPlayerForm()
     return render(request, "insert_all.html", {"form": form, "title": "Player"})
 

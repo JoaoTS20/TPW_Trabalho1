@@ -3,7 +3,7 @@ from datetime import datetime
 from django.db import models
 from django.contrib.auth.models import User
 
-from django.core.validators import RegexValidator
+from django.core.validators import RegexValidator, MaxValueValidator, MinValueValidator
 
 
 def teamdir(instance,filename):
@@ -40,12 +40,12 @@ class Player(models.Model):
     full_name = models.CharField(max_length=120)
     name = models.CharField(max_length=90)
     birthday = models.DateField()
-    height = models.FloatField()
+    height = models.FloatField(validators=[MinValueValidator(0)])
     nationality = models.CharField(max_length=70)
     position = models.CharField(max_length=28, choices=POSITION_CHOICES)
     best_foot = models.CharField(max_length=5, choices=BEST_FOOT)
-    preferred_number = models.IntegerField()
-    player_img = models.CharField(max_length=100, default="default_player.png")
+    preferred_number = models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(100)])
+    player_img = models.ImageField(upload_to=playerdir, default="players/default_player.png")
 
     def to_dict(self):
         return {
@@ -65,7 +65,7 @@ class Staff(models.Model):
     birthday = models.DateField()
     nationality = models.CharField(max_length=70)
     function = models.CharField(max_length=70)
-    staff_img = models.CharField(max_length=100, default="default_staff.png")
+    staff_img = models.ImageField(upload_to=staffdir, default="staff/default_staff.png")
 
     def __str__(self):
         return self.full_name
@@ -76,7 +76,7 @@ class Team(models.Model):
     name = models.CharField(max_length=70)
     abreviated_name = models.CharField(max_length=4)
     founding_year = models.IntegerField()
-    club_badge_img = models.CharField(max_length=100, default="default_club.png")
+    club_badge_img = models.ImageField(upload_to=teamdir, default="teams/default_club.png")
     city = models.CharField(max_length=20)
     country = models.CharField(max_length=20)
     players = models.ManyToManyField(Player, through='PlayerPlaysFor')
@@ -99,7 +99,7 @@ class Team(models.Model):
 
 class Competition(models.Model):
     full_name = models.CharField(max_length=70)
-    competition_badge_img = models.CharField(max_length=100, default="default_league.png")
+    competition_badge_img = models.ImageField(upload_to=compdir, default="competitions/default_league.png")
     teams = models.ManyToManyField(Team, through='ClubPlaysIn')
     region = models.CharField(max_length=70)
     """season = models.CharField(max_length=5, validators=[RegexValidator(
@@ -124,8 +124,8 @@ class Match(models.Model):
     home_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="home_team")
     away_team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="away_team")
     competition = models.ForeignKey(Competition, on_delete=models.CASCADE)
-    home_goals = models.IntegerField()
-    away_goals = models.IntegerField()
+    home_goals = models.PositiveIntegerField()
+    away_goals = models.PositiveIntegerField()
     """season = models.CharField(max_length=9, validators=[RegexValidator(
         regex='[0-9]{4}-[0-9]{4}',
         message='Season must follow the format year-year',
