@@ -53,7 +53,7 @@
           <tbody>
           {% for team in favouriteTeams %}
             <tr>
-                <th scope="row"><a href="{% url 'teams'%}{{ team.id }}"><img src="{% static team.club_badge_img %}" style="width: 30px; height: 30px"></a></th>
+                <th scope="row"><a href="{% url 'teams'%}{{ team.id }}"><img src="{% static 'img/' %}{{ team.club_badge_img }}" style="width: 30px; height: 30px"></a></th>
                 <td><a href="{% url 'teams'%}{{ team.id }}">{{ team.full_name }}</a></td>
               <td>{{ team.country }}</td>
               <td>{{ team.formation }}</td>
@@ -77,7 +77,7 @@
           <tbody>
           {% for player in favouritePlayers %}
             <tr>
-                <th scope="row"><a href="{% url 'players'%}{{ player.id }}"><img src="{% static player.player_img %}" style="width: 30px; height: 30px"></a></th>
+                <th scope="row"><a href="{% url 'players'%}{{ player.id }}"><img src="{% static 'img/' %}{{ player.player_img }}" style="width: 30px; height: 30px"></a></th>
                 <td><a href="{% url 'players'%}{{ player.id }}">{{ player.name }}</a></td>
                 <td>{{ player.height }} m</td>
                 <td>{{ player.position }}</td>
@@ -100,7 +100,7 @@
           <tbody>
           {% for competition in favouriteCompetition %}
             <tr>
-                <th scope="row"><a href="{% url 'competitions'%}{{ competition.id }}"><img src="{% static competition.competition_badge_img %}" style="width: 30px; height: 30px"></a></th>
+                <th scope="row"><a href="{% url 'competitions'%}{{ competition.id }}"><img src="{% static 'img/' %}{{ competition.competition_badge_img }}" style="width: 30px; height: 30px"></a></th>
                 <td><a href="{% url 'competitions'%}{{ competition.id }}">{{ competition.full_name }}</a></td>
                 <td>{{ competition.region }}</td>
             </tr>

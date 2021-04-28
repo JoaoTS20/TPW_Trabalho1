@@ -170,8 +170,9 @@ class InsertPlayerForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
-            if self.fields[myField].label != 'Player img':
-                self.fields[myField].widget.attrs['class'] = 'form-control'
+            if self.fields[myField].label == 'Birthday':
+                self.fields[myField].widget=forms.DateInput(attrs={'type': 'date'})
+            self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
 class InsertStaffForm(forms.ModelForm):
@@ -183,6 +184,8 @@ class InsertStaffForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         for myField in self.fields:
+            if self.fields[myField].label == 'Birthday':
+                self.fields[myField].widget=forms.DateInput(attrs={'type': 'date'})
             self.fields[myField].widget.attrs['class'] = 'form-control'
 
 
@@ -274,6 +277,7 @@ class InsertCompetitionForm(forms.ModelForm):
     class Meta:
         model = Competition
         fields = "__all__"
+        exclude = ['teams']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

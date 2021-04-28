@@ -183,37 +183,52 @@ def competition_details(request, id, season='2020-2021'):
     table.sort(key=lambda k: -k["points"])
     print(table)
     if request.method == 'POST':
-        if not request.user.is_authenticated or request.user.username == 'admin':
+        if not request.user.is_authenticated:
             return redirect('/login')
-        normal = NormalUser.objects.get(user__username=request.user.username)
-        print(normal.id)
-        if 'remove' in request.POST:
-            s = FavouriteCompetition.objects.get(competition_id=id, user_id=normal.id)
-            s.delete()
-            print("Removed from Favourites")
-            return HttpResponseRedirect(str(id))
-        elif 'add' in request.POST:
-            s = FavouriteCompetition(competition_id=id, user_id=normal.id)
-            s.save()
-            print("Added to Favourites")
-            return HttpResponseRedirect(str(id))
-        form = MakeCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.cleaned_data['comment']
-            CommentCompetition(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
-                               competition=Competition.objects.get(id=id)).save()
-            return HttpResponseRedirect(str(id))
-
-    if not request.user.is_authenticated or request.user.username == 'admin':
-        favouritecompetition = False
-    else:
-        normal = NormalUser.objects.get(user__username=request.user.username)
-        if FavouriteCompetition.objects.filter(competition_id=id, user_id=normal.id):
-            favouritecompetition = True
-            print("Está nos Favoritos")
+        if request.user.username == 'admin':
+            if 'delete' in request.POST:
+                s = Competition.objects.get(id=id)
+                s.delete()
+                print("Deleted")
+                return redirect(reverse('competitions'))
+            else:
+                return redirect('/login')
         else:
+            normal = NormalUser.objects.get(user__username=request.user.username)
+            print(normal.id)
+            if 'remove' in request.POST:
+                s = FavouriteCompetition.objects.get(competition_id=id, user_id=normal.id)
+                s.delete()
+                print("Removed from Favourites")
+                return HttpResponseRedirect(str(id))
+            elif 'add' in request.POST:
+                s = FavouriteCompetition(competition_id=id, user_id=normal.id)
+                s.save()
+                print("Added to Favourites")
+                return HttpResponseRedirect(str(id))
+            form = MakeCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.cleaned_data['comment']
+                CommentCompetition(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                                   competition=Competition.objects.get(id=id)).save()
+                return HttpResponseRedirect(str(id))
+
+    if not request.user.is_authenticated:
+        favouritecompetition = False
+        deleteeditbbt = False
+    else:
+        if request.user.username == 'admin':
+            deleteeditbbt = True
             favouritecompetition = False
-            print("Não está nos Favoritos")
+        else:
+            normal = NormalUser.objects.get(user__username=request.user.username)
+            if FavouriteCompetition.objects.filter(competition_id=id, user_id=normal.id):
+                favouritecompetition = True
+                print("Está nos Favoritos")
+            else:
+                favouritecompetition = False
+                print("Não está nos Favoritos")
+            deleteeditbbt = False
     t_parms = {
         'competition': Competition.objects.get(id=id),
         'table': table,
@@ -222,7 +237,8 @@ def competition_details(request, id, season='2020-2021'):
         'formComment': MakeCommentForm(),
         'comments': CommentCompetition.objects.filter(competition_id=id),
         'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
-        'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct()
+        'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct(),
+        'deleteeditbbt': deleteeditbbt
     }
 
     return render(request, 'competition_details.html', t_parms)
@@ -268,37 +284,52 @@ def teams(request):
 
 def team_details(request, id, season='2020-2021'):
     if request.method == 'POST':
-        if not request.user.is_authenticated or request.user.username == 'admin':
+        if not request.user.is_authenticated:
             return redirect('/login')
-        normal = NormalUser.objects.get(user__username=request.user.username)
-        print(normal.id)
-        if 'remove' in request.POST:
-            s = FavouriteTeam.objects.get(team_id=id, user_id=normal.id)
-            s.delete()
-            print("Removed from Favourites")
-            return HttpResponseRedirect(str(id))
-        elif 'add' in request.POST:
-            s = FavouriteTeam(team_id=id, user_id=normal.id)
-            s.save()
-            print("Added to Favourites")
-            return HttpResponseRedirect(str(id))
-        form = MakeCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.cleaned_data['comment']
-            CommentTeam(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
-                        team=Team.objects.get(id=id)).save()
-            return HttpResponseRedirect(str(id))
-
-    if not request.user.is_authenticated or request.user.username == 'admin':
-        favouriteteam = False
-    else:
-        normal = NormalUser.objects.get(user__username=request.user.username)
-        if FavouriteTeam.objects.filter(team_id=id, user_id=normal.id):
-            favouriteteam = True
-            print("Está nos Favoritos")
+        if request.user.username == 'admin':
+            if 'delete' in request.POST:
+                s = Team.objects.get(id=id)
+                s.delete()
+                print("Deleted")
+                return redirect(reverse('teams'))
+            else:
+                return redirect('/login')
         else:
+            normal = NormalUser.objects.get(user__username=request.user.username)
+            print(normal.id)
+            if 'remove' in request.POST:
+                s = FavouriteTeam.objects.get(team_id=id, user_id=normal.id)
+                s.delete()
+                print("Removed from Favourites")
+                return HttpResponseRedirect(str(id))
+            elif 'add' in request.POST:
+                s = FavouriteTeam(team_id=id, user_id=normal.id)
+                s.save()
+                print("Added to Favourites")
+                return HttpResponseRedirect(str(id))
+            form = MakeCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.cleaned_data['comment']
+                CommentTeam(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                            team=Team.objects.get(id=id)).save()
+                return HttpResponseRedirect(str(id))
+
+    if not request.user.is_authenticated:
+        favouriteteam = False
+        deleteeditbbt = False
+    else:
+        if request.user.username == 'admin':
             favouriteteam = False
-            print("Não está nos Favoritos")
+            deleteeditbbt = True
+        else:
+            normal = NormalUser.objects.get(user__username=request.user.username)
+            if FavouriteTeam.objects.filter(team_id=id, user_id=normal.id):
+                favouriteteam = True
+                print("Está nos Favoritos")
+            else:
+                favouriteteam = False
+                print("Não está nos Favoritos")
+            deleteeditbbt = False
     t_parms = {
         'team': Team.objects.get(id=id),
         'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
@@ -308,6 +339,7 @@ def team_details(request, id, season='2020-2021'):
         'comments': CommentTeam.objects.filter(team_id=id),
         'favouriteteam': favouriteteam,
         'formComment': MakeCommentForm(),
+        'deleteeditbbt': deleteeditbbt
     }
     return render(request, 'team_details.html', t_parms)
 
@@ -450,22 +482,39 @@ def staff(request):
 
 def staff_details(request, id):
     if request.method == 'POST':
-        if not request.user.is_authenticated or request.user.username == 'admin':
+        if not request.user.is_authenticated:
             return redirect('/login')
-        normal = NormalUser.objects.get(user__username=request.user.username)
-        print(normal.id)
-        form = MakeCommentForm(request.POST)
-        if form.is_valid():
-            comment = form.cleaned_data['comment']
-            CommentStaff(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
-                         staff=Staff.objects.get(id=id)).save()
-            return HttpResponseRedirect(str(id))  # render(request, 'player_details.html', t_parms)
+        if request.user.username == 'admin':
+            if 'delete' in request.POST:
+                s = Staff.objects.get(id=id)
+                s.delete()
+                print("Deleted")
+                return redirect(reverse('staff'))
+            else:
+                return redirect('/login')
+        else:
+            normal = NormalUser.objects.get(user__username=request.user.username)
+            print(normal.id)
+            form = MakeCommentForm(request.POST)
+            if form.is_valid():
+                comment = form.cleaned_data['comment']
+                CommentStaff(user=NormalUser.objects.get(user__username=request.user.username), comment=comment,
+                             staff=Staff.objects.get(id=id)).save()
+                return HttpResponseRedirect(str(id))  # render(request, 'player_details.html', t_parms)
+
+    if request.user.username == 'admin':
+        deleteeditbbt = True
+    else:
+        deleteeditbbt = False
+
     t_parms = {
         'staff': Staff.objects.get(id=id),
         'teams': Team.objects.filter(staffmanages__staff_id=id),
         'seasons': StaffManages.objects.filter(staff_id=id),
         'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
         'formComment': MakeCommentForm(),
+        'comments': CommentStaff.objects.filter(staff_id=id),
+        'deleteeditbbt': deleteeditbbt
     }
     return render(request, 'staff_details.html', t_parms)
 
@@ -613,7 +662,8 @@ def insert_match(request):
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertMatchForm()
     return render(request, "insert_all.html", {"form": form, "title": "Match"})
 
@@ -626,7 +676,8 @@ def insert_team_in_competition(request, compid, season):
         form = InsertClubPlaysInForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertClubPlaysInForm(initial={"competition": Competition.objects.get(id=compid)})
     return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
 
@@ -638,7 +689,8 @@ def insert_player_in_team(request, teamid):
         form = InsertPlayerPlaysForForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertPlayerPlaysForForm(initial={"team": Team.objects.get(id=teamid)})
     return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
 
@@ -650,7 +702,8 @@ def insert_staff_in_team(request, teamid):
         form = InsertStaffManagesForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertStaffManagesForm(initial={"team": Team.objects.get(id=teamid)})
     return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})
 
@@ -662,8 +715,8 @@ def edit_team(request, id):
         form = InsertTeamForm(request.POST, request.FILES, instance=Team.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect(reverse('team_details'),
-                            args=id)  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
+            return redirect('team_details',
+                            str(id))  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
     form = InsertTeamForm(instance=Team.objects.get(id=id))
@@ -677,8 +730,8 @@ def edit_staff(request, id):
         form = InsertStaffForm(request.POST, request.FILES, instance=Staff.objects.get(id=id))
         if form.is_valid():
             form.save()
-            return redirect(reverse('staff_details'),
-                            args=id)  # render(request, "edit_all.html", {"form": form, "title": "Staff"})
+            return redirect('staff_details',
+                            str(id))  # render(request, "edit_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
     form = InsertStaffForm(instance=Staff.objects.get(id=id))
@@ -715,7 +768,7 @@ def edit_competition(request, id):
     return render(request, "edit_all.html", {"form": form, "title": "Competition"})
 
 
-def edit_match(request,id):
+def edit_match(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
     if request.method == "POST":
@@ -730,7 +783,7 @@ def edit_match(request,id):
 
             if len(home_team) < 0 or len(away_team) < 0:
                 print("jogo inválido")
-                #página de erro talvez?
+                # página de erro talvez?
                 return
 
             match.save()
@@ -738,9 +791,8 @@ def edit_match(request,id):
             cm.match = match
             cm.season = form.cleaned_data["season"]
             cm.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
     season = CompetitionsMatches.objects.get(match_id=id).season
     form = InsertMatchForm(instance=Match.objects.get(id=id), season=season)
     return render(request, "edit_all.html", {"form": form, "title": "Match"})
-
-

@@ -26,6 +26,10 @@
                         {% else %}
                             <button style="background: #106eea;" class="btn btn-primary" value="add" name="add">Add Favourite</button>
                         {% endif %}
+                          {% if deleteeditbbt %}
+                            <button class="btn btn-info"  name="edit"><a  href="{% url 'edit_competition' competition.id %}" style="color: white">Edit</a></button>
+                            <button class="btn btn-danger" value="delete" name="delete">Delete</button>
+                        {% endif %}
                       </form>
                     </div>
                   </div>

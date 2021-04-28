@@ -21,7 +21,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="d-flex flex-column align-items-center text-center">
-                    <img src="{% static team.club_badge_img %}" alt="Admin" class="center" style="width: 200px; height: 200px">
+                    <img src="{% static 'img/' %}{{ team.club_badge_img }}" alt="Admin" class="center" style="width: 200px; height: 200px">
                     <div class="mt-3">
                       <h4>{{ team.name }}</h4>
                       <p class="text-secondary mb-1">{{ team.abreviated_name }}</p>
@@ -31,6 +31,10 @@
                             <button style="background: #106eea;" class="btn btn-primary" name="remove" remove="remove"> Remove Favourite</button>
                         {% else %}
                             <button style="background: #106eea;" class="btn btn-primary" value="add" name="add">Add Favourite</button>
+                        {% endif %}
+                        {% if deleteeditbbt %}
+                            <button class="btn btn-info"  name="edit"><a  href="{% url 'edit_team' team.id %}" style="color: white">Edit</a></button>
+                            <button class="btn btn-danger" value="delete" name="delete">Delete</button>
                         {% endif %}
                       </form>
                       <!--button class="btn btn-outline-primary">Message</button-->

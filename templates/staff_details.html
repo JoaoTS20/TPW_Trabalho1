@@ -20,6 +20,13 @@
                       <h4>{{ staff.name }}</h4>
                       <p class="text-secondary mb-1">{{ staff.birthday }} ({{ age }})</p>
                       <p class="text-muted font-size-sm">{{ staff.function }}</p>
+                        {% if deleteeditbbt %}
+                            <form method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-info"  name="edit"><a  href="{% url 'edit_staff' staff.id %}" style="color: white">Edit</a></button>
+                            <button class="btn btn-danger" value="delete" name="delete">Delete</button>
+                            </form>
+                        {% endif %}
                     </div>
                   </div>
                 </div>
