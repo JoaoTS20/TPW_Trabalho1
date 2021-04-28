@@ -635,7 +635,6 @@ def insert_match(request):
 
 
 def insert_team_in_competition(request, compid, season):
-    print(season)
     if not request.user.is_authenticated:
         return redirect('/login')
     if request.method == "POST":
@@ -648,7 +647,7 @@ def insert_team_in_competition(request, compid, season):
             return error_render(request, 201, "Invalid Form "+form.errors)
     try:
         competition = Competition.objects.get(id=compid)
-        form = InsertClubPlaysInForm(initial={"competition": competition})
+        form = InsertClubPlaysInForm(initial={"competition": competition, "season":season})
         return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
     except:
         return error_render(request, 404, "Invalid Team to add staff too")
@@ -671,6 +670,7 @@ def insert_player_in_team(request, teamid):
         return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
     except:
         return error_render(request, 404, "Invalid Team to add staff to")
+
 
 def insert_staff_in_team(request, teamid):
     if not request.user.is_authenticated:
