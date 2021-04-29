@@ -4,6 +4,9 @@
 ### Link:
  >**http://joaots.pythonanywhere.com/**
 
+## GitHub Repository:
+ >**https://github.com/JoaoTS20/TPW_Trabalho1**
+
 ## Description
 
 - *Football Nerds.* is a Website with Data related to the Football World
@@ -84,8 +87,7 @@
       - Full Name
       - Height
   
-
-    Para reiniciar a pesquisa simplesmente pesquise com parametros vazios.
+***Para reiniciar a pesquisa simplesmente pesquise com parametros vazios.***
 
 ### Visualizar Dados em Detalhe:
 - **NoLogin/NormalUser/Admin**:
@@ -96,7 +98,9 @@
     - **Staff:** Pode Visualizar Comentários, Dados sobre o Staff e as Teams que o Staff "participou" em determinada época.
   
 
-    Por Default sem selecionar uma época os dados expostos são sobre a atual época 2020-2021
+
+***Por Default sem selecionar uma época os dados expostos são sobre a atual época 2020-2021***
+
 ### Inserir Dados
   - **NoLogin:**
       - Não pode Inserir Dados
