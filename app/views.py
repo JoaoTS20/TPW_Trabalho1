@@ -1123,35 +1123,7 @@ def profile(request):
         return render(request, 'profile.html', t_parms)
 
 
-"""
-def insert_competition(request):
-    # TODO: inserir autenticação
-    if request.method == "POST":
-        print("entrou aqui")
-        print(request.FILES)
-        form = InsertCompetitionForm(request.POST, request.FILES)
-        if form.is_valid():
 
-            c = Competition(full_name=form.cleaned_data["full_name"],
-                            region=form.cleaned_data["region"])
-            c.save()
-
-            # Escrever ficheiro
-            f = request.FILES['file']
-            with open(os.path.join(django_settings.STATIC_ROOT,
-                                   'img/competitions/' + str(c.id) + "." + f.name.split(".")[1]), 'wb+') as destination:
-                for chunk in f.chunks():
-                    destination.write(chunk)
-
-            c.competition_badge_img = str(c.id) + "." + f.name.split(".")[1]
-            c.save()
-            return render(request, "insert_competition.html", {"form": form})
-        else:
-            print(form.errors)
-    else:
-        form = InsertCompetitionForm()
-        return render(request, "insert_competition.html", {"form": form})
-"""
 
 
 def user_verification_insert_edit(request):
@@ -1163,7 +1135,6 @@ def user_verification_insert_edit(request):
     return None
 
 
-# TODO: Meter os edit e os inserts que faltam !!!!!!!!!!!!!
 def insert_team(request):
     if user_verification_insert_edit(request) is not None:
         return user_verification_insert_edit(request)
@@ -1298,7 +1269,7 @@ def insert_team_in_competition(request, compid, season):
         if form.is_valid():
             form.save()
             return redirect(
-                'competitions',str(compid))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+                'competition_details',str(compid))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
