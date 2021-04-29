@@ -98,7 +98,10 @@
                 </div>
               </div>
                 <br>
-            <h2>Players</h2><a href="/insertplayerinteam/{{ team.id }}">+</a>
+            <h2>Players</h2>
+                {% if deleteeditbbt %}
+                <a href="/insertplayerinteam/{{ team.id }}">+</a>
+                {% endif %}
             <hr>
             <div class="card mb-3">
                 <div class="card-body">
@@ -116,7 +119,10 @@
             </div>
     </div>
           </div>
-                <h2>Staff Members</h2><a href="/insertstaffinteam/{{ team.id }}">+</a>
+                <h2>Staff Members</h2>
+                {% if deleteeditbbt %}
+                <a href="/insertstaffinteam/{{ team.id }}">+</a>
+                {% endif %}
             <hr>
             <div class="card mb-3">
                 <div class="card-body">

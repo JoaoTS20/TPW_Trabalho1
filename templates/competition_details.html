@@ -66,7 +66,8 @@
                     {% endfor %}
                 </select>
                 <br>
-                <h2>Teams</h2><a id="insert_team" href="/insertteamincompetition/{{ competition.id }}/{{ season }}">+</a>
+                <h2>Teams</h2>
+                {% if deleteeditbbt %}<a id="insert_team" href="/insertteamincompetition/{{ competition.id }}/{{ season }}">+</a>{% endif %}
                 <hr>
             <div class="card mb-3">
                 <div class="card-body">
@@ -117,7 +118,8 @@
                   {% endfor %}
                   </tbody>
                 </table>
-        <h2>Matches</h2><a id="insert_match" href="/insertmatch/{{ competition.id }}">+</a>
+        <h2>Matches</h2>
+        {% if deleteeditbbt %}<a id="insert_match" href="/insertmatch/{{ competition.id }}">+</a>{% endif %}
 
         <hr>
               <table class="table table-striped">
