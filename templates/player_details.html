@@ -104,7 +104,7 @@
                     <div class="card mb-3">
                 <div class="card-body">
                 {% for team in teams %}
-                {% for sea in season %}
+                    {% for sea in season %}
                     <div class="row">
                     <div class="col-sm-3">
                        <a href="{% url 'teams' %}{{ team.id }}"><h6 class="mb-0">{{ team.name}}</h6></a>
@@ -116,7 +116,7 @@
                     </div>
                   </div>
                   <hr>
-                {% endfor %}
+                    {% endfor %}
                 {% endfor %}
                 </div>
                 </div>
