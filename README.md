@@ -1,4 +1,9 @@
 # TPW_Trabalho1 - Football Nerds.
+
+João Soares Nmec 93078
+
+Hugo Ferreira Nmec 93093
+
 ### Practical Work 1 - Foorball Nerds
 
 ### Link:
@@ -176,3 +181,4 @@
 - `Pillow 2.8.0`
 
 - `pip 20.2.3`
+
