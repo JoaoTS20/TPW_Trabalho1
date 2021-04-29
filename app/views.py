@@ -267,7 +267,7 @@ def team_details(request, id, season='2020-2021'):
             'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
             'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
             'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
-            'staff': StaffManages.objects.filter(team_id=id, team__staffmanages__season=season).distinct(),
+            'staff': Staff.objects.filter(staffmanages__team_id=id, staffmanages__season=season),
             'comments': CommentTeam.objects.filter(team_id=id),
             'favouriteteam': favouriteteam,
             'formComment': MakeCommentForm(),
