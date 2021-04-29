@@ -445,7 +445,7 @@ def staff_details(request, id):
     try:
         t_parms = {
             'staff': Staff.objects.get(id=id),
-            'teams': Team.objects.filter(staffmanages__staff_id=id),
+            'teams': set(Team.objects.filter(staffmanages__staff_id=id).distinct()),
             'seasons': StaffManages.objects.filter(staff_id=id),
             'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
             'formComment': MakeCommentForm(),
