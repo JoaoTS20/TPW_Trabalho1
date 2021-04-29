@@ -607,12 +607,19 @@ def insert_competition(request):
 """
 
 
-# TODO: Meter os edit e os inserts que faltam !!!!!!!!!!!!!
-def insert_team(request):
+def user_verification_insert_edit(request):
     if not request.user.is_authenticated:
+        print("lol")
         return redirect('/login')
     if request.user.username != 'admin':
         return error_render(request, 403, "User not allowed")
+    return None
+
+
+# TODO: Meter os edit e os inserts que faltam !!!!!!!!!!!!!
+def insert_team(request):
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
@@ -626,10 +633,8 @@ def insert_team(request):
 
 
 def insert_staff(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
@@ -643,10 +648,8 @@ def insert_staff(request):
 
 
 def insert_player(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
@@ -660,10 +663,8 @@ def insert_player(request):
 
 
 def insert_competition(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         print(request.FILES)
         form = InsertCompetitionForm(request.POST, request.FILES)
@@ -678,10 +679,8 @@ def insert_competition(request):
 
 
 def insert_match(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
@@ -696,7 +695,6 @@ def insert_match(request):
                 # página de erro talvez?
                 return render(request, "insert_all.html", {"form": form, "title": "Match",
                                                            "error": "One of the teams is not in this Competition"})
-
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
@@ -710,10 +708,8 @@ def insert_match(request):
 
 
 def insert_match_compid(request, compid):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
@@ -728,7 +724,6 @@ def insert_match_compid(request, compid):
                 # página de erro talvez?
                 return render(request, "insert_all.html", {"form": form, "title": "Match",
                                                            "error": "One of the teams is not in this Competition"})
-
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
@@ -745,10 +740,8 @@ def insert_match_compid(request, compid):
 
 
 def insert_team_in_competition(request, compid, season):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertClubPlaysInForm(request.POST)
         if form.is_valid():
@@ -766,10 +759,8 @@ def insert_team_in_competition(request, compid, season):
 
 
 def insert_player_in_team(request, teamid):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerPlaysForForm(request.POST)
         if form.is_valid():
@@ -787,10 +778,8 @@ def insert_player_in_team(request, teamid):
 
 
 def insert_staff_in_team(request, teamid):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffManagesForm(request.POST)
         if form.is_valid():
@@ -808,10 +797,8 @@ def insert_staff_in_team(request, teamid):
 
 
 def edit_team(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertTeamForm(request.POST, request.FILES, instance=Team.objects.get(id=id))
         if form.is_valid():
@@ -830,10 +817,8 @@ def edit_team(request, id):
 
 
 def edit_staff(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffForm(request.POST, request.FILES, instance=Staff.objects.get(id=id))
         if form.is_valid():
@@ -852,10 +837,8 @@ def edit_staff(request, id):
 
 
 def edit_player(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerForm(request.POST, request.FILES, instance=Player.objects.get(id=id))
         if form.is_valid():
@@ -874,10 +857,8 @@ def edit_player(request, id):
 
 
 def edit_competition(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertCompetitionForm(request.POST, request.FILES, instance=Competition.objects.get(id=id))
         if form.is_valid():
@@ -894,11 +875,10 @@ def edit_competition(request, id):
     except:
         return error_render(request, 404, "Competition not Found")
 
+
 def edit_match(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
-    if request.user.username != 'admin':
-        return error_render(request, 403, "User not allowed")
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
@@ -914,7 +894,6 @@ def edit_match(request, id):
                 #página de erro talvez?
                 return render(request, "insert_all.html", {"form": form, "title": "Match",
                                                            "error": "One of the teams is not in this Competition"})
-
             match.save()
             cm.competition = match.competition
             cm.match = match
@@ -930,5 +909,3 @@ def edit_match(request, id):
         return render(request, "edit_all.html", {"form": form, "title": "Match"})
     except:
         return error_render(request, 404, "Match not Found")
-
-
