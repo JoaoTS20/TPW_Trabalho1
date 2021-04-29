@@ -1278,7 +1278,7 @@ def insert_match_compid(request, compid):
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect('competition_details',str(compid))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return render(request, "insert_all.html", {"form": form, "title": "Match"})
@@ -1298,7 +1298,7 @@ def insert_team_in_competition(request, compid, season):
         if form.is_valid():
             form.save()
             return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+                'competitions',str(compid))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
@@ -1318,7 +1318,7 @@ def insert_player_in_team(request, teamid):
         if form.is_valid():
             form.save()
             return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+                'team_details',str(teamid))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
@@ -1338,7 +1338,7 @@ def insert_staff_in_team(request, teamid):
         if form.is_valid():
             form.save()
             return redirect(
-                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
+                'team_details', str(teamid))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})

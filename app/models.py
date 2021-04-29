@@ -195,7 +195,7 @@ class CompetitionsMatches(models.Model):
     )])
 
     def __str__(self):
-        return self.competition.full_name + '-' + self.match + '-' + self.season
+        return self.competition.full_name + '-' + self.match.description + '-' + self.season
 
 
 class NormalUser(models.Model):

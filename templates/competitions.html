@@ -38,7 +38,7 @@
             {% for competition in competitions %}
           <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-3">
             <div class="icon-box" data-aos="fade-up" data-aos-delay="100">
-                <a href="{{ competition.id }}"><img class="center"  src="{% static 'img/' %}{{ competition.competition_badge_img.url }}"></a>
+                <a href="{{ competition.id }}"><img class="center"  src="{% static 'img/' %}{{ competition.competition_badge_img }}"></a>
                 <br>
                 <h2 class="ClubName" style="text-align: center"><a  class="ClubName" href="{{ competition.id }}">{{ competition.full_name }}</a></h2>
             </div>
