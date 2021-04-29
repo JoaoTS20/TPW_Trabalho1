@@ -70,17 +70,19 @@
                 <div class="card-body">
                     {% for team in teams %}
                     {% for sea in seasons %}
+                    {% if sea.team.id == team.id %}
                   <div class="row">
                     <div class="col-sm-3">
                       <a href="{% url 'teams' %}{{ team.id }}"><h6 class="mb-0">{{ team.name}}</h6></a>
                     </div>
                     <div class="col-sm-9 text-secondary">
-                        {% if sea.team.id == team.id %}
+
                         {{sea.season}}
-                        {% endif %}
+
                     </div>
                   </div>
                         <hr>
+                        {% endif %}
                     {% endfor %}
                     {% endfor %}
                   </div>
