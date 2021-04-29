@@ -667,10 +667,6 @@ def match_details(request, id):
 # Competition Related:
 
 def competitions(request):
-    p1 = Player(full_name="Diogo António Cupido Gonçalves", name="Diogo Gonçalves", height=1.78,
-                nationality="Portuguese", position="Right Back", best_foot="Right", preferred_number=17)
-    p1.save()
-
     if request.method == 'POST':
         form = CompetitionFilterForm(request.POST)
         if form.is_valid():
