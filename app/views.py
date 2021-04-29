@@ -18,7 +18,7 @@ from app.models import Staff, Team, Competition, ClubPlaysIn, NormalUser, Favour
     FavouriteCompetition, CommentStaff
 
 
-def error_render(request,code,desc):
+def error_render(request, code, desc):
     return render(request, "error.html", {"code": code, "desc": desc})
 
 
@@ -56,6 +56,510 @@ def test(request):
               founding_year=1921)
     t4.save()
 
+    t5 = Team(full_name="Futebol Clube Paços de Ferreira",
+              abreviated_name="FCPF",
+              name="Paços de Ferreira",
+              formation="4-3-3",
+              country="Portugal",
+              city="Paços de Ferreira",
+              founding_year=1950)
+    t5.save()
+
+    t6 = Team(full_name="Vitória Sport Clube",
+              abreviated_name="VSC",
+              name="Vitória de Guimarães",
+              formation="4-3-3",
+              country="Portugal",
+              city="Guimarães",
+              founding_year=1922)
+    t6.save()
+    t7 = Team(full_name="Moreirense Futebol Clube",
+              abreviated_name="MFC",
+              name="Moreirense",
+              formation="3-4-3",
+              country="Portugal",
+              city="Moreira de Cónegos",
+              founding_year=1938)
+    t7.save()
+    t8 = Team(full_name="Clube Desportivo Santa Clara",
+              abreviated_name="CDSC",
+              name="Santa Clara",
+              formation="4-3-3",
+              country="Portugal",
+              city="Ponta Delgada",
+              founding_year=1927)
+    t8.save()
+    t9 = Team(full_name="Clube Desportivo de Tondela",
+              abreviated_name="CDT",
+              name="Tondela",
+              formation="4-3-3",
+              country="Portugal",
+              city="Tondela",
+              founding_year=1933)
+    t9.save()
+    t10 = Team(full_name="Os Belenenses Futebol, SAD",
+               abreviated_name="BEL",
+               name="Belenenses SAD",
+               formation="3-4-3",
+               country="Portugal",
+               city="Lisboa",
+               founding_year=2018)
+    t10.save()
+    t11 = Team(full_name="Futebol Clube de Famalicão",
+               abreviated_name="FCF",
+               name="FC Famalicão",
+               formation="4-3-3",
+               country="Portugal",
+               city="Vila Nova de Familicão",
+               founding_year=1931)
+    t11.save()
+    t12 = Team(full_name="Portimonense Sporting Clube",
+               abreviated_name="PSC",
+               name="Portimonense",
+               formation="4-3-3",
+               country="Portugal",
+               city="Portimão",
+               founding_year=1914)
+    t12.save()
+    t13 = Team(full_name="Gil Vicente Futebol Clube",
+               abreviated_name="GVFC",
+               name="Gil Vicente",
+               formation="4-3-3",
+               country="Portugal",
+               city="Barcelos",
+               founding_year=1924)
+    t13.save()
+    t14 = Team(full_name="Club Sport Marítimo",
+               abreviated_name="CSM",
+               name="Marítimo",
+               formation="4-5-1",
+               country="Portugal",
+               city="Funchal",
+               founding_year=1910)
+    t14.save()
+    t15 = Team(full_name="Clube Desportivo Nacional",
+               abreviated_name="CDN",
+               name="Nacional",
+               formation="3-5-2",
+               country="Portugal",
+               city="Funchal",
+               founding_year=1910)
+    t15.save()
+
+    t16 = Team(full_name="Rio Ave Futebol Clube",
+               abreviated_name="Rio",
+               name="Rio Ave",
+               formation="4-3-3",
+               country="Portugal",
+               city="Vila do Conde",
+               founding_year=1939)
+    t16.save()
+
+    t17 = Team(full_name="Boavista Futebol Clube",
+               abreviated_name="Boa",
+               name="Boavista FC",
+               formation="3-4-3",
+               country="Portugal",
+               city="Porto",
+               founding_year=1903)
+    t17.save()
+
+    t18 = Team(full_name="Sporting Clube Farense",
+               abreviated_name="SCF",
+               name="SC Farense",
+               formation="4-5-1",
+               country="Portugal",
+               city="Faro",
+               founding_year=1910)
+    t18.save()
+
+    p1 = Player(full_name="Diogo António Cupido Gonçalves", name="Diogo Gonçalves", height=1.78,
+                nationality="Portuguese", position="Right Back", best_foot="Right", preferred_number=17,
+                birthday="1997-02-06")
+    p1.save()
+
+    p2 = Player(full_name="Jan Bert Lieve Vertonghen", name="Jan Vertonghen", height=1.89, nationality="Belgium",
+                position="Center Back", best_foot="Left", preferred_number=5, birthday="1987-04-24")
+    p2.save()
+
+    p3 = Player(full_name="Nicolás Hernán Gonzalo Otamendi", name="Otamendi", height=1.83, nationality="Argentine",
+                position="Center Back", best_foot="Right", preferred_number=30, birthday="1988-02-12")
+    p3.save()
+
+    p4 = Player(full_name="André Gomes Magalhães de Almeida",
+                name="André Almeida",
+                height=1.86,
+                nationality="Portuguese",
+                position="Right Back",
+                best_foot="Right",
+                preferred_number=34,
+                birthday="1990-09-10")
+    p4.save()
+
+    p5 = Player(full_name="Francisco Leonel Lima Silva Machado",
+                name="Chiquinho",
+                height=1.74,
+                nationality="Portuguese",
+                position="Central Attacking Midfielder",
+                best_foot="Right",
+                preferred_number=10,
+                birthday="1995-07-19")
+    p5.save()
+    p6 = Player(full_name="Julian Weigl",
+                name="Julian Weigl",
+                height=1.86,
+                nationality="German",
+                position="Central Defensive Midfielder",
+                best_foot="Right",
+                preferred_number=6,
+                birthday="1995-09-08")
+    p6.save()
+    p7 = Player(full_name="Luís Miguel Afonso Fernandes",
+                name="Pizzi",
+                height=1.76,
+                nationality="Portuguese",
+                position="Central Attacking Midfielder",
+                best_foot="Right",
+                preferred_number=21,
+                birthday="1989-10-06")
+    p7.save()
+    p8 = Player(full_name="Rafael Alexandre Fernandes Ferreira Silva",
+                name="Rafa",
+                height=1.70,
+                nationality="Portuguese",
+                position="Right Winger",
+                best_foot="Right",
+                preferred_number=7,
+                birthday="1993-05-17")
+    p8.save()
+    p9 = Player(full_name="Képler Laveran Lima Ferreira",
+                name="Pepe",
+                height=1.88,
+                nationality="Portuguese",
+                position="Center Back",
+                best_foot="Right",
+                preferred_number=3,
+                birthday="1983-02-26")
+    p9.save()
+    p10 = Player(full_name="Agustin Federico Marchesin",
+                 name="Marchesin",
+                 height=1.88,
+                 nationality="Argentine",
+                 position="Goalkeeper",
+                 best_foot="Right",
+                 preferred_number=1,
+                 birthday="1988-03-16")
+    p10.save()
+    p11 = Player(full_name="Francisco Fernandes da Conceição",
+                 name="Francisco Conceição",
+                 height=1.70,
+                 nationality="Portuguese",
+                 position="Right Winger",
+                 best_foot="Left",
+                 preferred_number=10,
+                 birthday="2002-12-14")
+    p11.save()
+    p12 = Player(full_name="Rui Filipe Caetano Moura",
+                 name="Carraça",
+                 height=1.77,
+                 nationality="Portuguese",
+                 position="Right Back",
+                 best_foot="Right",
+                 preferred_number=2,
+                 birthday="1993-03-01")
+    p12.save()
+    p13 = Player(full_name="Diogo Filipe Monteiro Pinto Leite",
+                 name="Diogo Leite",
+                 height=1.88,
+                 nationality="Portuguese",
+                 position="Center Back",
+                 best_foot="Left",
+                 preferred_number=4,
+                 birthday="1999-01-23")
+    p13.save()
+    p14 = Player(full_name="Fábio Daniel Ferreira Vieira",
+                 name="Fábio Vieira",
+                 height=1.70,
+                 nationality="Portuguese",
+                 position="Central Attacking Midfielder",
+                 best_foot="Left",
+                 preferred_number=10,
+                 birthday="2000-05-30")
+    p14.save()
+    p15 = Player(full_name="Jesús Manuel Corona Ruíz",
+                 name="Jesús Corona",
+                 height=1.73,
+                 nationality="Mexican",
+                 position="Right Winger",
+                 best_foot="Right",
+                 preferred_number=17,
+                 birthday="1993-01-06")
+    p15.save()
+    p16 = Player(full_name="Sérgio Miguel Relvas de Oliveira",
+                 name="Sérgio Oliveira",
+                 height=1.81,
+                 nationality="Portuguese",
+                 position="Central Midfielder",
+                 best_foot="Right",
+                 preferred_number=8,
+                 birthday="1992-06-02")
+    p16.save()
+    p17 = Player(full_name="Jovane Eduardo Borges Cabral",
+                 name="Jovane Cabral",
+                 height=1.76,
+                 nationality="Cape Verdean",
+                 position="Left Winger",
+                 best_foot="Right",
+                 preferred_number=7,
+                 birthday="1998-06-14")
+    p17.save()
+    p18 = Player(full_name="Nuno Alexandre Tavares Mendes",
+                 name="Nuno Mendes",
+                 height=1.76,
+                 nationality="Portuguese",
+                 position="Left Back",
+                 best_foot="Left",
+                 preferred_number=5,
+                 birthday="2002-06-19")
+    p18.save()
+
+    p19 = Player(full_name="Luís Carlos Novo Neto",
+                 name="Luís Neto",
+                 height=1.87,
+                 nationality="Portuguese",
+                 position="Center Back",
+                 best_foot="Right",
+                 preferred_number=3,
+                 birthday="1988-05-26")
+    p19.save()
+
+    p20 = Player(full_name="",
+                 name="João Palhinha",
+                 height=1.90,
+                 nationality="Portuguese",
+                 position="Central Defensive Midfielder",
+                 best_foot="Right",
+                 preferred_number=6,
+                 birthday="1995-07-09")
+    p20.save()
+    p21 = Player(full_name="João Mário Naval da Costa Eduardo",
+                 name="João Mário",
+                 height=1.79,
+                 nationality="Portuguese",
+                 position="Central Midfielder",
+                 best_foot="Right",
+                 preferred_number=10,
+                 birthday="1993-01-19")
+    p21.save()
+    p22 = Player(full_name="Daniel Santos Bragança",
+                 name="Daniel Bragança",
+                 height=1.76,
+                 nationality="Portuguese",
+                 position="Central Defensive Midfielder",
+                 best_foot="Right",
+                 preferred_number=6,
+                 birthday="1999-05-27")
+    p22.save()
+    p23 = Player(full_name="Nuno Miguel Gomes dos Santos",
+                 name="Nuno Santos",
+                 height=1.76,
+                 nationality="Portuguese",
+                 position="Left Winger",
+                 best_foot="Left",
+                 preferred_number=11,
+                 birthday="1995-02-13")
+    p23.save()
+    p24 = Player(full_name="Pedro António Pereira Gonçalves",
+                 name="Pedro Gonçalves",
+                 height=1.73,
+                 nationality="Portuguese",
+                 position="Central Attacking Midfielder",
+                 best_foot="Right",
+                 preferred_number=8,
+                 birthday="1998-06-28")
+    p24.save()
+
+    p25 = Player(full_name="Nuno Miguel Ribeiro Cruz Jerónimo Sequeira",
+                 name="Nuno Sequeira",
+                 height=1.84,
+                 nationality="Portuguese",
+                 position="Left Back",
+                 best_foot="Left",
+                 preferred_number=5,
+                 birthday="1990-08-19")
+    p25.save()
+
+    p26 = Player(full_name="David Mota Veiga Teixeira Carmo",
+                 name="David Carmo",
+                 height=1.96,
+                 nationality="Portuguese",
+                 position="Center Back",
+                 best_foot="Right",
+                 preferred_number=2,
+                 birthday="1999-07-19")
+    p26.save()
+
+    p27 = Player(full_name="Osvaldo Fabián Nicolás Gaitán",
+                 name="Nico Gaitán",
+                 height=1.74,
+                 nationality="Argentine",
+                 position="Left Winger",
+                 best_foot="Right",
+                 preferred_number=10,
+                 birthday="1988-02-23")
+    p27.save()
+
+    p28 = Player(full_name="Ricardo Sousa Esgaio",
+                 name="Ricardo Esgaio",
+                 height=1.73,
+                 nationality="Portuguese",
+                 position="Right Back",
+                 best_foot="Right",
+                 preferred_number=2,
+                 birthday="1993-05-16")
+    p28.save()
+
+    p29 = Player(full_name="João Pedro Barradas Novais",
+                 name="João Novais",
+                 height=1.80,
+                 nationality="Portuguese",
+                 position="Central Attacking Midfielder",
+                 best_foot="Right",
+                 preferred_number=10,
+                 birthday="1993-07-10")
+    p29.save()
+
+    p30 = Player(full_name="André Filipe Luz Horta",
+                 name="André Horta",
+                 height=1.75,
+                 nationality="Portuguese",
+                 position="Central Midfielder",
+                 best_foot="Right",
+                 preferred_number=8,
+                 birthday="1996-11-07")
+    p30.save()
+
+    p31 = Player(full_name="Ricardo Jorge Luz Horta",
+                 name="Ricardo Horta",
+                 height=1.73,
+                 nationality="Portuguese",
+                 position="Left Winger",
+                 best_foot="Right",
+                 preferred_number=21,
+                 birthday="1994-09-15")
+    p31.save()
+
+    p32 = Player(full_name="Tiago Magalhães de Sá",
+                 name="Tiago Sá",
+                 height=1.85,
+                 nationality="Portuguese",
+                 position="Goalkeeper",
+                 best_foot="Right",
+                 preferred_number=1,
+                 birthday="1995-01-11")
+    p32.save()
+
+    s1 = Staff(name="Aurélio Pereira",
+               full_name="Aurélio da Silva Pereira",
+               birthday="1947-10-01",
+               nationality="Portuguese",
+               function="Scout")
+    s1.save()
+
+    s2 = Staff(name="Rúben Amorim",
+               full_name="Rúben Filipe Marques Amorim",
+               birthday="1985-01-27",
+               nationality="Portuguese",
+               function="Manager")
+    s2.save()
+    s3 = Staff(name="Frederico Varandas",
+               full_name="Frederico Nuno Faro Varandas",
+               birthday="1979-09-19",
+               nationality="Portuguese",
+               function="President")
+    s3.save()
+    s4 = Staff(name="Hugo Viana",
+               full_name="Hugo Miguel Ferreira Gomes Viana",
+               birthday="1983-01-15",
+               nationality="Portuguese",
+               function="Football Director")
+    s4.save()
+    s5 = Staff(name="Sérgio Conceição",
+               full_name="Sérgio Paulo Marceneiro Conceição",
+               birthday="1974-11-15",
+               nationality="Portuguese",
+               function="Manager")
+    s5.save()
+    s6 = Staff(name="Siramana Dembelé",
+               full_name="Siramana Dembelé",
+               birthday="1977-01-27",
+               nationality="French",
+               function="Assistant Manager")
+    s6.save()
+    s7 = Staff(name="Pinto da Costa",
+               full_name="Jorge Nuno de Lima Pinto da Costa",
+               birthday="1937-12-28",
+               nationality="Portuguese",
+               function="President")
+    s7.save()
+    s8 = Staff(name="Vítor Baía",
+               full_name="Vítor Manuel Martins Baía",
+               birthday="1969-10-15",
+               nationality="Portuguese",
+               function="Vice-President")
+    s8.save()
+    s9 = Staff(name="Jorge Jesus",
+               full_name="Jorge Fernando Pinheiro de Jesus",
+               birthday="1954-07-24",
+               nationality="Portuguese",
+               function="Manager")
+    s9.save()
+    s10 = Staff(name="Pedro Ferreira",
+                full_name="Pedro Miguel Carneiro Ferreira",
+                birthday="1982-08-11",
+                nationality="Portuguese",
+                function="Scout")
+    s10.save()
+    s11 = Staff(name="Luís Filipe Vieira",
+                full_name="Luís Filipe Ferreira Vieira",
+                birthday="1949-06-22",
+                nationality="Portuguese",
+                function="President")
+    s11.save()
+    s12 = Staff(name="Rui Costa",
+                full_name="Rui Manuel César Costa",
+                birthday="1972-03-29",
+                nationality="Portuguese",
+                function="Football Director")
+    s12.save()
+    s13 = Staff(name="Alan",
+                full_name="Alan Osório da Costa Silva",
+                birthday="1979-09-01",
+                nationality="Brazilian",
+                function="Director")
+    s13.save()
+
+    s14 = Staff(name="Carlos Carvalhal",
+                full_name="Carlos Augusto Soares da Costa Faria Carvalhal",
+                birthday="1965-12-04",
+                nationality="Portuguese",
+                function="Manager")
+    s14.save()
+
+    s15 = Staff(name="António Salvador",
+                full_name="António Salvador da Costa Rodrigues",
+                birthday="1970-12-29",
+                nationality="Portuguese",
+                function="President")
+    s15.save()
+
+    s16 = Staff(name="Paulo Meneses",
+                full_name="Paulo Meneses",
+                birthday="1972-11-13",
+                nationality="Portuguese",
+                function="Scout")
+    s16.save()
+
     c = Competition(full_name="Liga NOS", region="Portugal")
     c.save()
 
@@ -70,6 +574,49 @@ def test(request):
 
     cpf = ClubPlaysIn(competition=c, team=t4, season="2020-2021")
     cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t5, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t6, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t7, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t8, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t9, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t10, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t11, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t12, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t13, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t14, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t15, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t16, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t17, season="2020-2021")
+    cpf.save()
+
+    cpf = ClubPlaysIn(competition=c, team=t18, season="2020-2021")
+    cpf.save()
+
 
     m1 = Match(ngame=1, competition=c, home_team=t1, away_team=t2,
                home_goals=3, away_goals=1, description="Matchday 1")
@@ -117,6 +664,10 @@ def match_details(request, id):
 # Competition Related:
 
 def competitions(request):
+    p1 = Player(full_name="Diogo António Cupido Gonçalves", name="Diogo Gonçalves", height=1.78,
+                nationality="Portuguese", position="Right Back", best_foot="Right", preferred_number=17)
+    p1.save()
+
     if request.method == 'POST':
         form = CompetitionFilterForm(request.POST)
         if form.is_valid():
@@ -601,10 +1152,11 @@ def insert_team(request):
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('teams'))#return render(request, "insert_all.html", {"form": form, "title": "Team"})
+            return redirect(
+                reverse('teams'))  # return render(request, "insert_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     form = InsertTeamForm()
     return render(request, "insert_all.html", {"form": form, "title": "Team"})
 
@@ -616,10 +1168,11 @@ def insert_staff(request):
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('staff'))#return render(request, "insert_all.html", {"form": form, "title": "Staff"})
+            return redirect(
+                reverse('staff'))  # return render(request, "insert_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     form = InsertStaffForm()
     return render(request, "insert_all.html", {"form": form, "title": "Staff"})
 
@@ -631,10 +1184,10 @@ def insert_player(request):
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('players')) #render(request, "insert_all.html", {"form": form, "title": "Player"})
+            return redirect(reverse('players'))  # render(request, "insert_all.html", {"form": form, "title": "Player"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     form = InsertPlayerForm()
     return render(request, "insert_all.html", {"form": form, "title": "Player"})
 
@@ -647,10 +1200,11 @@ def insert_competition(request):
         form = InsertCompetitionForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     form = InsertCompetitionForm()
     return render(request, "insert_all.html", {"form": form, "title": "Competition"})
 
@@ -675,7 +1229,8 @@ def insert_match(request):
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
             return error_render(request, 201, "Invalid Form " + form.errors)
@@ -690,13 +1245,14 @@ def insert_team_in_competition(request, compid, season):
         form = InsertClubPlaysInForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     try:
         competition = Competition.objects.get(id=compid)
-        form = InsertClubPlaysInForm(initial={"competition": competition, "season":season})
+        form = InsertClubPlaysInForm(initial={"competition": competition, "season": season})
         return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
     except:
         return error_render(request, 404, "Invalid Team to add staff too")
@@ -709,10 +1265,11 @@ def insert_player_in_team(request, teamid):
         form = InsertPlayerPlaysForForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     try:
         team = Team.objects.get(id=teamid)
         form = InsertPlayerPlaysForForm(initial={"team": team})
@@ -728,10 +1285,11 @@ def insert_staff_in_team(request, teamid):
         form = InsertStaffManagesForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     try:
         team = Team.objects.get(id=teamid)
         form = InsertStaffManagesForm(initial={"team": team})
@@ -751,7 +1309,7 @@ def edit_team(request, id):
                             str(id))  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form "+form.errors)
+            return error_render(request, 201, "Invalid Form " + form.errors)
     try:
         team = Team.objects.get(id=id)
         form = InsertTeamForm(instance=team)
@@ -819,6 +1377,7 @@ def edit_competition(request, id):
     except:
         return error_render(request, 404, "Competition not Found")
 
+
 def edit_match(request, id):
     if not request.user.is_authenticated:
         return redirect('/login')
@@ -834,7 +1393,7 @@ def edit_match(request, id):
 
             if len(home_team) < 0 or len(away_team) < 0:
                 print("jogo inválido")
-                #página de erro talvez?
+                # página de erro talvez?
                 return error_render(request, 202, "Invalid Team it isn't in this competition")
 
             match.save()
@@ -842,7 +1401,8 @@ def edit_match(request, id):
             cm.match = match
             cm.season = form.cleaned_data["season"]
             cm.save()
-            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+            return redirect(
+                reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             return error_render(request, 201, "Invalid Form " + form.errors)
     try:
@@ -852,5 +1412,3 @@ def edit_match(request, id):
         return render(request, "edit_all.html", {"form": form, "title": "Match"})
     except:
         return error_render(request, 404, "Match not Found")
-
-
