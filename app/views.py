@@ -369,7 +369,6 @@ def player_details(request, id):
         t_parms = {
             'player': Player.objects.get(id=id),
             'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),
-            # TODO: Encontrar melhor solução
             'season': PlayerPlaysFor.objects.filter(player_id=id),
             'comments': CommentPlayer.objects.filter(player_id=id),
             'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
