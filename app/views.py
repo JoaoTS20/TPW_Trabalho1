@@ -505,8 +505,8 @@ def user_verification_insert_edit(request):
 
 
 def insert_team(request):
-    if user_verification_insert_edit(request) is not None:
-        return user_verification_insert_edit(request)
+    if not request.user.is_authenticated:
+        return redirect('/login')
     if request.method == "POST":
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
@@ -521,8 +521,8 @@ def insert_team(request):
 
 
 def insert_staff(request):
-    if user_verification_insert_edit(request) is not None:
-        return user_verification_insert_edit(request)
+    if not request.user.is_authenticated:
+        return redirect('/login')
     if request.method == "POST":
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
@@ -537,8 +537,8 @@ def insert_staff(request):
 
 
 def insert_player(request):
-    if user_verification_insert_edit(request) is not None:
-        return user_verification_insert_edit(request)
+    if not request.user.is_authenticated:
+        return redirect('/login')
     if request.method == "POST":
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
@@ -552,8 +552,8 @@ def insert_player(request):
 
 
 def insert_competition(request):
-    if user_verification_insert_edit(request) is not None:
-        return user_verification_insert_edit(request)
+    if not request.user.is_authenticated:
+        return redirect('/login')
     if request.method == "POST":
         print(request.FILES)
         form = InsertCompetitionForm(request.POST, request.FILES)
