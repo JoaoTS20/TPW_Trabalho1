@@ -54,7 +54,6 @@ urlpatterns = [
     path('insertmatch/', views.insert_match, name='insert_match'),
     path('insertmatch/<int:compid>', views.insert_match_compid, name='insert_match_compid'),
 
-    path('layoutest/', views.test, name='teste'),
 
 
     path('login/', auth_views.LoginView.as_view(template_name= 'login.html', authentication_form=LogInForm), name='login'),
