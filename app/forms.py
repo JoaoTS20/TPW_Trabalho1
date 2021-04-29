@@ -190,7 +190,6 @@ class InsertStaffForm(forms.ModelForm):
 
 
 class InsertTeamForm(forms.ModelForm):
-    # specify the name of model to use
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 

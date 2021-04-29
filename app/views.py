@@ -503,6 +503,7 @@ def user_verification_insert_edit(request):
         return error_render(request, 403, "User not allowed")
     return None
 
+# Inserts
 
 def insert_team(request):
     if not request.user.is_authenticated:
@@ -611,7 +612,6 @@ def insert_match_compid(request, compid):
 
             if len(home_team) < 1 or len(away_team) < 1:
                 print("jogo inválido")
-                # página de erro talvez?
                 return render(request, "insert_all.html", {"form": form, "title": "Match",
                                                            "error": "One of the teams is not in this Competition"})
             match.save()
@@ -692,6 +692,7 @@ def insert_staff_in_team(request, teamid):
     except:
         return error_render(request, 404, "Invalid Team to add staff too")
 
+# Edits
 
 def edit_team(request, id):
     if user_verification_insert_edit(request) is not None:
@@ -788,7 +789,6 @@ def edit_match(request, id):
 
             if len(home_team) < 0 or len(away_team) < 0:
                 print("jogo inválido")
-                # página de erro talvez?
                 return render(request, "insert_all.html", {"form": form, "title": "Match",
                                                            "error": "One of the teams is not in this Competition"})
             match.save()
