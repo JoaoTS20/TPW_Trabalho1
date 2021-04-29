@@ -498,7 +498,6 @@ def profile(request):
 
 def user_verification_insert_edit(request):
     if not request.user.is_authenticated:
-        print("lol")
         return redirect('/login')
     if request.user.username != 'admin':
         return error_render(request, 403, "User not allowed")
