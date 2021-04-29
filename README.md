@@ -1,15 +1,15 @@
 # TPW_Trabalho1 - Football Nerds.
-###Practical Work 1 - Foorball Nerds
+### Practical Work 1 - Foorball Nerds
 
-###Link:
+### Link:
  >**http://joaots.pythonanywhere.com/**
 
-##Description
+## Description
 
 - *Football Nerds.* is a Website with Data related to the Football World
 
 
-##Contas
+## Contas
 - *Admin* Account:
   - username: admin
   - password: admin1234
@@ -19,10 +19,10 @@
   - username: user1
   - password: 3=eX6xXK
   
-##Funcionalidades e Autorizações
+## Funcionalidades e Autorizações
 
 
-###Sign Up/Login
+### Sign Up/Login
 
 - **NoLogin:**
     - Poderá realizar Sign Up apenas de NormalUser
@@ -36,7 +36,7 @@
 - **Admin:**
    - Pode realizar Login
 
-###Adicionar Comentários
+### Adicionar Comentários
 - **NoLogin:**
    - Não pode adicionar comentários na Página_Detalhada de ***Competitions/Teams/Players/Staff***.
 - **NormalUser:**
@@ -44,7 +44,7 @@
 - **Admin:**
    - Não pode adicionar comentários na Página_Detalhada de ***Competitions/Teams/Players/Staff***.
 
-###Adicionar/Remover Favoritos
+### Adicionar/Remover Favoritos
 - **NoLogin:**
    - Não pode adicionar/remover Favoritos.
   
@@ -54,7 +54,7 @@
 - **Admin:**
    - Não pode adicionar/remover Favoritos.
 
-###Pesquisa Filtrada:
+### Pesquisa Filtrada:
 - ***NormalUser/Admin/NoLogin*** podem pesquisar ***Teams/Competitions/Players/Staff*** por diferentes parâmetros ao mesmo tempo:
   - **Team**
     - Search By:
@@ -128,7 +128,7 @@
     - Pode Eliminar ***Team/Staff/Player/Competition*** e consequentemente as suas Relações.
   
     
-##URLs
+## URLs
     competitions/ 
     competitions/<int:id>
     competitions/<int:id>/<str:season>
@@ -164,7 +164,7 @@
     profile/
 
 -  Inserido um URL incorreto ou sem autorização para o aceder é redirecionado para uma página de erro
-##Requirements
+## Requirements
 - `Python 3.8 / 3.9`
 
 - `Django 3.2`
