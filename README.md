@@ -3,7 +3,9 @@
 João Soares Nmec 93078
 
 Hugo Ferreira Nmec 93093
-
+####Note:
+Os Dados locais podem ter ligeiras diferenças da versão online.\
+Players como o "Palhinha" demonstram algumas das funcionalidades.
 ### Practical Work 1 - Foorball Nerds
 
 ### Link:
