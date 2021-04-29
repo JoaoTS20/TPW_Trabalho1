@@ -66,7 +66,7 @@
                     {% endfor %}
                 </select>
                 <br>
-                <h2>Teams</h2>
+                <h2>Teams</h2><a id="insert_team" href="/insertteamincompetition/{{ competition.id }}/{{ season }}">+</a>
                 <hr>
             <div class="card mb-3">
                 <div class="card-body">
@@ -117,12 +117,13 @@
                   {% endfor %}
                   </tbody>
                 </table>
-        <h2>Matches</h2>
+        <h2>Matches</h2><a id="insert_match" href="/insertmatch/{{ competition.id }}">+</a>
+
         <hr>
               <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th style="text-align:center" scope="col">Ngame</th>
+                      <th style="text-align:center" scope="col">Round</th>
                       <th style="text-align:center" scope="col">Description</th>
                       <th style="text-align:center" scope="col">Home Team</th>
                       <th style="text-align:center" scope="col">Away Team</th>

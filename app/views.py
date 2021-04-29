@@ -241,6 +241,7 @@ def competition_details(request, id, season='2020-2021'):
             'competition': Competition.objects.get(id=id),
             'table': table,
             'teams': teams,
+            'season': season,
             'favouritecompetition': favouritecompetition,
             'formComment': MakeCommentForm(),
             'comments': CommentCompetition.objects.filter(competition_id=id),
@@ -695,6 +696,40 @@ def insert_match(request):
             return render(request, "insert_all.html", {"form": form, "title": "Match"})
     form = InsertMatchForm()
     return render(request, "insert_all.html", {"form": form, "title": "Match"})
+
+
+
+def insert_match_compid(request, compid):
+    if not request.user.is_authenticated:
+        return redirect('/login')
+    if request.method == "POST":
+        form = InsertMatchForm(request.POST)
+        if form.is_valid():
+            match = form.save(commit=False)
+            season = form.cleaned_data["season"]
+
+            home_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.home_team, season=season)
+            away_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.away_team, season=season)
+
+            if len(home_team) < 1 or len(away_team) < 1:
+                print("jogo inválido")
+                # página de erro talvez?
+                return render(request, "insert_all.html", {"form": form, "title": "Match",
+                                                           "error": "One of the teams is not in this Competition"})
+
+            match.save()
+            cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
+            cm.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Match"})
+    try:
+        competition = Competition.objects.get(id=compid)
+        form = InsertMatchForm(initial={"competition": competition})
+        return render(request, "insert_all.html", {"form": form, "title": "Match"})
+    except:
+        return error_render(request, 404, "Invalid Competition to add Match too")
 
 
 def insert_team_in_competition(request, compid, season):
