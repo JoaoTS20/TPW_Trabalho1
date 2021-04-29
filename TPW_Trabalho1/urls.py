@@ -50,8 +50,9 @@ urlpatterns = [
     path('insertstaffinteam/<int:teamid>/', views.insert_staff_in_team, name='insert_staff_in_team'),
 
 
-    path('match/<int:id>',views.match_details, name='match_details'),
-    path('insertmatch/',views.insert_match, name='insert_match'),
+    path('match/<int:id>', views.match_details, name='match_details'),
+    path('insertmatch/', views.insert_match, name='insert_match'),
+    path('insertmatch/<int:compid>', views.insert_match_compid, name='insert_match_compid'),
 
     path('layoutest/', views.test, name='teste'),
 

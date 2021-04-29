@@ -654,11 +654,14 @@ def home(request):
 
 
 def match_details(request, id):
-    t_parms = {
-        'match': Match.objects.get(id=id),
-        'comments': CommentMatch.objects.get(match_id=id)
-    }
-    return render(request, 'match_details.html', t_parms)
+    try:
+        t_parms = {
+            'match': Match.objects.get(id=id),
+            'comments': CommentMatch.objects.get(match_id=id)
+        }
+        return render(request, 'match_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Match not Found")
 
 
 # Competition Related:
@@ -784,19 +787,23 @@ def competition_details(request, id, season='2020-2021'):
                 favouritecompetition = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-    t_parms = {
-        'competition': Competition.objects.get(id=id),
-        'table': table,
-        'teams': teams,
-        'favouritecompetition': favouritecompetition,
-        'formComment': MakeCommentForm(),
-        'comments': CommentCompetition.objects.filter(competition_id=id),
-        'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
-        'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct(),
-        'deleteeditbbt': deleteeditbbt
-    }
+    try:
+        t_parms = {
+            'competition': Competition.objects.get(id=id),
+            'table': table,
+            'teams': teams,
+            'season': season,
+            'favouritecompetition': favouritecompetition,
+            'formComment': MakeCommentForm(),
+            'comments': CommentCompetition.objects.filter(competition_id=id),
+            'matches': Match.objects.filter(competitionsmatches__competition_id=id, competitionsmatches__season=season),
+            'seasons': ClubPlaysIn.objects.filter(competition_id=id).values_list('season', flat=True).distinct(),
+            'deleteeditbbt': deleteeditbbt
+        }
 
-    return render(request, 'competition_details.html', t_parms)
+        return render(request, 'competition_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Competition not Found")
 
 
 # Team Related
@@ -885,18 +892,21 @@ def team_details(request, id, season='2020-2021'):
                 favouriteteam = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-    t_parms = {
-        'team': Team.objects.get(id=id),
-        'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
-        'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
-        'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
-        'staff': StaffManages.objects.filter(team_id=id),
-        'comments': CommentTeam.objects.filter(team_id=id),
-        'favouriteteam': favouriteteam,
-        'formComment': MakeCommentForm(),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'team_details.html', t_parms)
+    try:
+        t_parms = {
+            'team': Team.objects.get(id=id),
+            'competitions': Competition.objects.filter(clubplaysin__team_id=id, clubplaysin__season=season),
+            'players': Player.objects.filter(playerplaysfor__team_id=id, playerplaysfor__season=season),
+            'seasons': ClubPlaysIn.objects.filter(team_id=id).values_list('season', flat=True).distinct(),
+            'staff': StaffManages.objects.filter(team_id=id),
+            'comments': CommentTeam.objects.filter(team_id=id),
+            'favouriteteam': favouriteteam,
+            'formComment': MakeCommentForm(),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'team_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Team not Found")
 
 
 # Player Related
@@ -986,18 +996,20 @@ def player_details(request, id):
                 favouriteplayer = False
                 print("Não está nos Favoritos")
             deleteeditbbt = False
-
-    t_parms = {
-        'player': Player.objects.get(id=id),
-        'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),  # TODO: Encontrar melhor solução
-        'season': PlayerPlaysFor.objects.filter(player_id=id),
-        'comments': CommentPlayer.objects.filter(player_id=id),
-        'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
-        'favouriteplayer': favouriteplayer,
-        'formComment': MakeCommentForm(),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'player_details.html', t_parms)
+    try:
+        t_parms = {
+            'player': Player.objects.get(id=id),
+            'teams': set(Team.objects.filter(playerplaysfor__player_id=id).distinct()),  # TODO: Encontrar melhor solução
+            'season': PlayerPlaysFor.objects.filter(player_id=id),
+            'comments': CommentPlayer.objects.filter(player_id=id),
+            'age': int((datetime.date.today() - Player.objects.get(id=id).birthday).days / 365),
+            'favouriteplayer': favouriteplayer,
+            'formComment': MakeCommentForm(),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'player_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Player not Found")
 
 
 # Staff Related
@@ -1061,17 +1073,19 @@ def staff_details(request, id):
         deleteeditbbt = True
     else:
         deleteeditbbt = False
-
-    t_parms = {
-        'staff': Staff.objects.get(id=id),
-        'teams': Team.objects.filter(staffmanages__staff_id=id),
-        'seasons': StaffManages.objects.filter(staff_id=id),
-        'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
-        'formComment': MakeCommentForm(),
-        'comments': CommentStaff.objects.filter(staff_id=id),
-        'deleteeditbbt': deleteeditbbt
-    }
-    return render(request, 'staff_details.html', t_parms)
+    try:
+        t_parms = {
+            'staff': Staff.objects.get(id=id),
+            'teams': Team.objects.filter(staffmanages__staff_id=id),
+            'seasons': StaffManages.objects.filter(staff_id=id),
+            'age': int((datetime.date.today() - Staff.objects.get(id=id).birthday).days / 365),
+            'formComment': MakeCommentForm(),
+            'comments': CommentStaff.objects.filter(staff_id=id),
+            'deleteeditbbt': deleteeditbbt
+        }
+        return render(request, 'staff_details.html', t_parms)
+    except:
+        return error_render(request, 404, "Staff not Found")
 
 
 # User Related
@@ -1144,10 +1158,19 @@ def insert_competition(request):
 """
 
 
+def user_verification_insert_edit(request):
+    if not request.user.is_authenticated:
+        print("lol")
+        return redirect('/login')
+    if request.user.username != 'admin':
+        return error_render(request, 403, "User not allowed")
+    return None
+
+
 # TODO: Meter os edit e os inserts que faltam !!!!!!!!!!!!!
 def insert_team(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertTeamForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1156,14 +1179,14 @@ def insert_team(request):
                 reverse('teams'))  # return render(request, "insert_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Team"})
     form = InsertTeamForm()
     return render(request, "insert_all.html", {"form": form, "title": "Team"})
 
 
 def insert_staff(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1172,14 +1195,14 @@ def insert_staff(request):
                 reverse('staff'))  # return render(request, "insert_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Staff"})
     form = InsertStaffForm()
     return render(request, "insert_all.html", {"form": form, "title": "Staff"})
 
 
 def insert_player(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerForm(request.POST, request.FILES)
         if form.is_valid():
@@ -1187,14 +1210,14 @@ def insert_player(request):
             return redirect(reverse('players'))  # render(request, "insert_all.html", {"form": form, "title": "Player"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Player"})
     form = InsertPlayerForm()
     return render(request, "insert_all.html", {"form": form, "title": "Player"})
 
 
 def insert_competition(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         print(request.FILES)
         form = InsertCompetitionForm(request.POST, request.FILES)
@@ -1204,14 +1227,14 @@ def insert_competition(request):
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Competition"})
     form = InsertCompetitionForm()
     return render(request, "insert_all.html", {"form": form, "title": "Competition"})
 
 
 def insert_match(request):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
@@ -1221,11 +1244,11 @@ def insert_match(request):
             home_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.home_team, season=season)
             away_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.away_team, season=season)
 
-            if len(home_team) < 0 or len(away_team) < 0:
+            if len(home_team) < 1 or len(away_team) < 1:
                 print("jogo inválido")
                 # página de erro talvez?
-                return
-
+                return render(request, "insert_all.html", {"form": form, "title": "Match",
+                                                           "error": "One of the teams is not in this Competition"})
             match.save()
             cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
             cm.save()
@@ -1233,14 +1256,47 @@ def insert_match(request):
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Match"})
     form = InsertMatchForm()
     return render(request, "insert_all.html", {"form": form, "title": "Match"})
 
 
+
+def insert_match_compid(request, compid):
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
+    if request.method == "POST":
+        form = InsertMatchForm(request.POST)
+        if form.is_valid():
+            match = form.save(commit=False)
+            season = form.cleaned_data["season"]
+
+            home_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.home_team, season=season)
+            away_team = ClubPlaysIn.objects.filter(competition=match.competition, team=match.away_team, season=season)
+
+            if len(home_team) < 1 or len(away_team) < 1:
+                print("jogo inválido")
+                # página de erro talvez?
+                return render(request, "insert_all.html", {"form": form, "title": "Match",
+                                                           "error": "One of the teams is not in this Competition"})
+            match.save()
+            cm = CompetitionsMatches(competition=match.competition, match=match, season=season)
+            cm.save()
+            return redirect(reverse('competitions'))#render(request, "insert_all.html", {"form": form, "title": "Competition"})
+        else:
+            print(form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Match"})
+    try:
+        competition = Competition.objects.get(id=compid)
+        form = InsertMatchForm(initial={"competition": competition})
+        return render(request, "insert_all.html", {"form": form, "title": "Match"})
+    except:
+        return error_render(request, 404, "Invalid Competition to add Match too")
+
+
 def insert_team_in_competition(request, compid, season):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertClubPlaysInForm(request.POST)
         if form.is_valid():
@@ -1249,7 +1305,7 @@ def insert_team_in_competition(request, compid, season):
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Team in Competition"})
     try:
         competition = Competition.objects.get(id=compid)
         form = InsertClubPlaysInForm(initial={"competition": competition, "season": season})
@@ -1259,8 +1315,8 @@ def insert_team_in_competition(request, compid, season):
 
 
 def insert_player_in_team(request, teamid):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerPlaysForForm(request.POST)
         if form.is_valid():
@@ -1269,7 +1325,7 @@ def insert_player_in_team(request, teamid):
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Player in Team"})
     try:
         team = Team.objects.get(id=teamid)
         form = InsertPlayerPlaysForForm(initial={"team": team})
@@ -1279,8 +1335,8 @@ def insert_player_in_team(request, teamid):
 
 
 def insert_staff_in_team(request, teamid):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffManagesForm(request.POST)
         if form.is_valid():
@@ -1289,7 +1345,7 @@ def insert_staff_in_team(request, teamid):
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "insert_all.html", {"form": form, "title": "Staff in Team"})
     try:
         team = Team.objects.get(id=teamid)
         form = InsertStaffManagesForm(initial={"team": team})
@@ -1299,8 +1355,8 @@ def insert_staff_in_team(request, teamid):
 
 
 def edit_team(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertTeamForm(request.POST, request.FILES, instance=Team.objects.get(id=id))
         if form.is_valid():
@@ -1309,7 +1365,7 @@ def edit_team(request, id):
                             str(id))  # return render(request, "edit_all.html", {"form": form, "title": "Team"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "edit_all.html", {"form": form, "title": "Team"})
     try:
         team = Team.objects.get(id=id)
         form = InsertTeamForm(instance=team)
@@ -1319,8 +1375,8 @@ def edit_team(request, id):
 
 
 def edit_staff(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertStaffForm(request.POST, request.FILES, instance=Staff.objects.get(id=id))
         if form.is_valid():
@@ -1329,7 +1385,7 @@ def edit_staff(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Staff"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "edit_all.html", {"form": form, "title": "Staff"})
     try:
         staff = Staff.objects.get(id=id)
         form = InsertStaffForm(instance=staff)
@@ -1339,8 +1395,8 @@ def edit_staff(request, id):
 
 
 def edit_player(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertPlayerForm(request.POST, request.FILES, instance=Player.objects.get(id=id))
         if form.is_valid():
@@ -1349,7 +1405,7 @@ def edit_player(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Player"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "edit_all.html", {"form": form, "title": "Player"})
     try:
         player = Player.objects.get(id=id)
         form = InsertPlayerForm(instance=player)
@@ -1359,8 +1415,8 @@ def edit_player(request, id):
 
 
 def edit_competition(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertCompetitionForm(request.POST, request.FILES, instance=Competition.objects.get(id=id))
         if form.is_valid():
@@ -1369,7 +1425,7 @@ def edit_competition(request, id):
                             str(id))  # render(request, "edit_all.html", {"form": form, "title": "Competition"})
         else:
             print(form.errors)
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "edit_all.html", {"form": form, "title": "Competition"})
     try:
         comp = Competition.objects.get(id=id)
         form = InsertCompetitionForm(instance=comp)
@@ -1379,8 +1435,8 @@ def edit_competition(request, id):
 
 
 def edit_match(request, id):
-    if not request.user.is_authenticated:
-        return redirect('/login')
+    if user_verification_insert_edit(request) is not None:
+        return user_verification_insert_edit(request)
     if request.method == "POST":
         form = InsertMatchForm(request.POST)
         if form.is_valid():
@@ -1393,9 +1449,9 @@ def edit_match(request, id):
 
             if len(home_team) < 0 or len(away_team) < 0:
                 print("jogo inválido")
-                # página de erro talvez?
-                return error_render(request, 202, "Invalid Team it isn't in this competition")
-
+                #página de erro talvez?
+                return render(request, "insert_all.html", {"form": form, "title": "Match",
+                                                           "error": "One of the teams is not in this Competition"})
             match.save()
             cm.competition = match.competition
             cm.match = match
@@ -1404,7 +1460,7 @@ def edit_match(request, id):
             return redirect(
                 reverse('competitions'))  # render(request, "insert_all.html", {"form": form, "title": "Competition"})
         else:
-            return error_render(request, 201, "Invalid Form " + form.errors)
+            return render(request, "edit_all.html", {"form": form, "title": "Match"})
     try:
         match = Match.objects.get(id=id)
         season = CompetitionsMatches.objects.get(match_id=id).season

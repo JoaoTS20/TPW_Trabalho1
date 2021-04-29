@@ -99,6 +99,9 @@
               </div>
                 <br>
             <h2>Players</h2>
+                {% if deleteeditbbt %}
+                <button style="background: #106eea;" class="btn btn-primary"><a href="/insertplayerinteam/{{ team.id }}" style="color: white">Add</a></button>
+                {% endif %}
             <hr>
             <div class="card mb-3">
                 <div class="card-body">
@@ -117,6 +120,9 @@
     </div>
           </div>
                 <h2>Staff Members</h2>
+                {% if deleteeditbbt %}
+                <button style="background: #106eea;" class="btn btn-primary"><a href="/insertstaffinteam/{{ team.id }}" style="color: white">Add</a></button>
+                {% endif %}
             <hr>
             <div class="card mb-3">
                 <div class="card-body">

@@ -67,6 +67,9 @@
                 </select>
                 <br>
                 <h2>Teams</h2>
+                {% if deleteeditbbt %}
+                    <button style="background: #106eea;" class="btn btn-primary"><a id="insert_team" style="color: white" href="/insertteamincompetition/{{ competition.id }}/{{ season }}">Add</a></button>
+                {% endif %}
                 <hr>
             <div class="card mb-3">
                 <div class="card-body">
@@ -118,11 +121,14 @@
                   </tbody>
                 </table>
         <h2>Matches</h2>
+        {% if deleteeditbbt %}
+            <button style="background: #106eea;" class="btn btn-primary" ><a id="insert_match" style="color: white" href="/insertmatch/{{ competition.id }}">Add</a></button>{% endif %}
+
         <hr>
               <table class="table table-striped">
                   <thead>
                     <tr>
-                      <th style="text-align:center" scope="col">Ngame</th>
+                      <th style="text-align:center" scope="col">Round</th>
                       <th style="text-align:center" scope="col">Description</th>
                       <th style="text-align:center" scope="col">Home Team</th>
                       <th style="text-align:center" scope="col">Away Team</th>
